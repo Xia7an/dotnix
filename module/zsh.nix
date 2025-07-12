@@ -14,4 +14,7 @@
       tree = "eza --icons always --classify always --tree";
     };
   };
+  home.file.".p10k.zsh" ={
+    source = ../config/powerlevel10k/.p10k.zsh;
+  };
 }
