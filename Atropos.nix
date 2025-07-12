@@ -9,12 +9,15 @@
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-hardware.nix
       ./module/NixOS/desktop.nix
+      ./module/NixOS/python.nix
     ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
 
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
