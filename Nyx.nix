@@ -100,6 +100,16 @@
     enable = true;
     wayland.enable = true;
   };
+
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+    
+  };
+  services.tailscale.enable = true;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -129,10 +139,19 @@
 
 
   # Open ports in the firewall.
-  #networking.firewall.allowedTCPPorts = [22];
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [22 47984 47989 47990 48010 ];
+    allowedUDPPortRanges = [
+      { from = 47998; to = 48000; }
+      { from = 8000; to = 8010; }
+    ];
+    allowedUDPPorts = [config.services.tailscale.port];
+    trustedInterfaces = ["tailscale0"];
+  };
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  # networking.firewall.enable = false;
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
