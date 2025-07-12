@@ -9,7 +9,7 @@
     rofi-power-menu
     rofi-wayland
     wl-clipboard
-    brightnessctl
+    swaynotificationcenter
     grim
     slurp
   ];
