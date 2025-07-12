@@ -94,8 +94,12 @@
   bat
   zsh-powerlevel10k
   ];
-  services.openssh.enable = true;
 
+  services.openssh.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -132,6 +136,9 @@
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
   };
   # This value determines the NixOS release from which the default
