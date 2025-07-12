@@ -2,12 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Nyx-hardware.nix
+      ./module/NixOS/desktop.nix
     ];
 
   # Bootloader.
@@ -15,7 +16,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "Nyx"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -69,6 +70,8 @@
     layout = "jp";
     variant = "";
   };
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.inoyu = {
@@ -93,13 +96,10 @@
   eza
   bat
   zsh-powerlevel10k
+  sunshine
   ];
 
   services.openssh.enable = true;
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-  };
 
   services.sunshine = {
     enable = true;
