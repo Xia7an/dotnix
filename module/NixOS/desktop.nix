@@ -10,6 +10,7 @@
     rofi-wayland
     wl-clipboard
     swaynotificationcenter
+    hyprpaper
     grim
     slurp
   ];
