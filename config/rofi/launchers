@@ -1,0 +1,2 @@
+chromium --ozone-platform=wayland
+

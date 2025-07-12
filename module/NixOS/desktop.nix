@@ -6,7 +6,8 @@
     hyprland
     kitty
     waybar
-    dmenu
+    rofi-power-menu
+    rofi-wayland
     wl-clipboard
     brightnessctl
     grim
