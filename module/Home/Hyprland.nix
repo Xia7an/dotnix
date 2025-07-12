@@ -13,4 +13,9 @@
     source = ../../config/rofi;
     recursive = true;
   };
+  home.file.".config/swaync" = {
+    source = ../../config/swaync;
+    recursive = true;
+  };
 }
+
