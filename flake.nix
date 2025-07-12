@@ -17,9 +17,28 @@
           ./Nyx.nix
         ];
       };
+      Atropos = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86-64-linux";
+        modules = [
+          ./Atropos.nix
+        ];
+      };
     };
     homeConfigurations = {
       NyxHome = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import inputs.nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true; # プロプライエタリなパッケージを許可
+          overlays = [(import inputs.rust-overlay)];
+        };
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          ./home.nix
+        ];
+      };
+      AtroposHome = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = import inputs.nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true; # プロプライエタリなパッケージを許可
