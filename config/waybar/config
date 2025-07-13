@@ -246,7 +246,7 @@
     "tooltip": false
   }, 
   "custom/launcher": {
-    "format": " ",
+    "format": "  ",
     "on-click": "sleep 0.1 && rofi -show drun",
     "tooltip": false
   },

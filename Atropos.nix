@@ -19,6 +19,21 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
 
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        users = [ "inoyu" ];
+        commands = [
+          {
+            command = "ALL";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
+  };
+
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.open = true;  # see the note above
@@ -47,9 +62,9 @@
   networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
   networking = {
     wireless.enable = true;
-    wireless.secretsFile = "/run/secrets/wireless.conf"; # 中身は psk_home=おうちwifiのpassword
+    wireless.secretsFile = "home/inoyu/secrets/wireless.conf"; # 中身は psk_home=おうちwifiのpassword
     wireless.networks."aterm-b43571-a" = {
-      pskRaw = "ext:psk_home";
+      pskRaw = "ext:psk";
     };
   };
 
@@ -99,6 +114,8 @@
   };
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "inoyu";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.inoyu = {
