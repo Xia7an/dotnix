@@ -62,7 +62,7 @@
   networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
   networking = {
     wireless.enable = true;
-    wireless.secretsFile = "home/inoyu/secrets/wireless.conf"; # 中身は psk_home=おうちwifiのpassword
+    wireless.secretsFile = "/home/inoyu/secrets/wireless.conf"; # 中身は psk_home=おうちwifiのpassword
     wireless.networks."aterm-b43571-a" = {
       pskRaw = "ext:psk";
     };
