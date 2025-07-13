@@ -47,7 +47,7 @@
     highlight:     underline bold #ffffff;
 
     transparent: rgba(0,0,0,0);
-    font: "Source Code Pro 10";
+    font: "Rounded Mgen+ 2cp regular:style=regular";
 }
 window {
     location: center;

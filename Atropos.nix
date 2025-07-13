@@ -10,6 +10,7 @@
       ./hardware/Atropos-hardware.nix
       ./module/NixOS/desktop.nix
       ./module/NixOS/python.nix
+      ./module/NixOS/discord.nix
     ];
 
   # Bootloader.
@@ -95,6 +96,7 @@
       noto-fonts-cjk-sans
       noto-fonts-emoji
       hackgen-nf-font
+      rounded-mgenplus
     ];
     fontDir.enable = true;
     fontconfig = {
@@ -139,6 +141,7 @@
   wget
   eza
   bat
+  ripgrep
   zsh-powerlevel10k
   sunshine
   ];
@@ -165,12 +168,6 @@
   programs = {
     git = {
       enable = true;
-    };
-    neovim = {
-      enable = true;
-      defaultEditor = true; # $EDITOR=nvimに設定
-      viAlias = true;
-      vimAlias = true;
     };
     zsh = {
       enable = true;
