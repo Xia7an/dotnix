@@ -47,7 +47,7 @@
     highlight:     underline bold #ffffff;
 
     transparent: rgba(0,0,0,0);
-    font: "Rounded Mgen+ 2cp regular:style=regular";
+    font: "Rounded Mgen+ 10";
 }
 window {
     location: center;
@@ -74,7 +74,7 @@ message {
     background-color: @tcyan;
 }
 message {
-    font: "Source Code Pro 8";
+    font: "Rounded Mgen+ 10";
     color: @black;
 }
 inputbar {
@@ -84,7 +84,7 @@ inputbar {
     border: 2px 2px 2px 2px;
     border-radius:  15px 15px 0px 0px;
     border-color: @foreground;
-    font: "Source Code Pro 18";
+    font: "Rounded Mgen+ 10";
 }
 entry,prompt,case-indicator {
     text-font: inherit;
@@ -157,7 +157,7 @@ mode-switcher {
     border: 0px 0px 0px 0px;
 }
 button {
-    font: "FontAwesome 22";
+    font: "Rounded Mgen+ 10";
     padding: 6px;
     border: 2px 0px 2px 2px;
     border-radius: 4px 0px 0px 4px;

@@ -1,6 +1,7 @@
 {
   imports = [
     ./module/Home/chrome.nix
+    ./module/Home/Vivaldi.nix
     ./module/Home/git.nix
     ./module/Home/kitty.nix
     ./module/Home/zsh.nix
