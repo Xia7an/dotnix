@@ -11,6 +11,9 @@
       ./module/NixOS/desktop.nix
       ./module/NixOS/python.nix
       ./module/NixOS/discord.nix
+      ./module/NixOS/gaming.nix
+      ./module/NixOS/gemini.nix
+      ./module/NixOS/ollama.nix
     ];
 
   # Bootloader.
@@ -144,6 +147,11 @@
   ripgrep
   zsh-powerlevel10k
   sunshine
+  gcc
+  libgcc
+  gnumake
+  cmake
+  extra-cmake-modules
   ];
 
   services.openssh.enable = true;

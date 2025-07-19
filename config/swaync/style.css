@@ -9,7 +9,7 @@
 .notification-action,
 .notification-default-action,
 .control-center {
-  font-family: "HackGen Console NF";
+  font-family: "Rounded Mgen+ 2c";
   font-weight: bold;
 	border-radius: 0.75em;
 	border: 2px solid alpha(@color4, 0.3);
