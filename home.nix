@@ -9,6 +9,7 @@
     ./module/Home/Hyprland.nix
     ./module/Home/vscode.nix
     ./module/Home/neovim.nix
+    ./module/Home/direnv.nix
   ];
   home = rec { # recでAttribute Set内で他の値を参照できるようにする
     username="inoyu";
