@@ -9,11 +9,14 @@
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-hardware.nix
       ./module/NixOS/desktop.nix
+      ./module/NixOS/Fcitx5.nix
       ./module/NixOS/python.nix
+      ./module/NixOS/Sunshine.nix
       ./module/NixOS/discord.nix
       ./module/NixOS/gaming.nix
       ./module/NixOS/gemini.nix
       ./module/NixOS/ollama.nix
+      ./module/NixOS/dolphin.nix
     ];
 
   # Bootloader.
@@ -74,6 +77,7 @@
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
+  time.hardwareClockInLocalTime = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
@@ -89,10 +93,7 @@
     LC_TELEPHONE = "ja_JP.UTF-8";
     LC_TIME = "ja_JP.UTF-8";
   };
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = [pkgs.fcitx5-mozc];
-  };
+
   fonts = {
     fonts = with pkgs; [
       noto-fonts-cjk-serif
@@ -113,10 +114,10 @@
   };
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "jp";
-    variant = "";
-  };
+  #services.xserver.xkb = {
+  #  layout = "jp";
+  #  variant = "";
+  #};
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.autoLogin.enable = true;
@@ -156,13 +157,6 @@
 
   services.openssh.enable = true;
 
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
-    
-  };
   services.tailscale.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are

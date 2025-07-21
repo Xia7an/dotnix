@@ -13,6 +13,7 @@
     hyprpaper
     grim
     slurp
+    rofi-screenshot
   ];
 
   services.dbus.enable = true;
