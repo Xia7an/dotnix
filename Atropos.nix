@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-hardware.nix
       ./module/NixOS/desktop.nix
+      ./mobule/NixOS/utils.nix
       ./module/NixOS/Fcitx5.nix
       ./module/NixOS/python.nix
       ./module/NixOS/Sunshine.nix

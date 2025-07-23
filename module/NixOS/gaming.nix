@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = [
-    pkgs.lutris
+  environment.systemPackages = with pkgs ;[
+    bottles
   ];
 }
