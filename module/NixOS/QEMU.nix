@@ -7,10 +7,23 @@ let
 in {
   users.users.inoyu.extraGroups = with lib; [ "libvirtd" "kvm" ];
 
+  boot.kernelParams = [ "intel_iommu=on" "iommu=pt" ];
+  boot.extraModprobeConfig = ''
+    options vfio-pci ids=10de:128b,110de:0e0f
+  '';
+  boot.kernelModules = [ "vfio" "vfio_pci" "vfio_iommu_type1" "kvm" "kvm_intel" ]; # または "kvm_amd"
+
+
   environment.systemPackages = with pkgs; [
-    virt-manager virt-viewer
-    spice spice-gtk spice-protocol
-    win-virtio win-spice
+    qemu
+    libvirt
+    virt-manager 
+    virt-viewer
+    spice 
+    spice-gtk 
+    spice-protocol
+    win-virtio 
+    win-spice
     dnsmasq
   ];
 
@@ -28,8 +41,6 @@ in {
 
   services.spice-vdagentd.enable = true;
 
-  # VM定義
-  virtualisation.libvirtd.extraStartVirtManagerArgs = "--no-fork";
 
   # 以下は libvirt XML 編集が必要なら追加で設定
   # nested virtualization なども調整可 :contentReference[oaicite:11]{index=11}

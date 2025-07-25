@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-hardware.nix
       ./module/NixOS/desktop.nix
-      ./mobule/NixOS/utils.nix
+      ./module/NixOS/utils.nix
       ./module/NixOS/Fcitx5.nix
       ./module/NixOS/python.nix
       ./module/NixOS/Sunshine.nix
@@ -18,6 +18,7 @@
       ./module/NixOS/gemini.nix
       ./module/NixOS/ollama.nix
       ./module/NixOS/dolphin.nix
+      ./module/NixOS/QEMU.nix
     ];
 
   # Bootloader.
@@ -43,9 +44,8 @@
   };
 
   hardware.graphics.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" "nvidiaLegacy470" ];
   hardware.nvidia.open = true;  # see the note above
-
 
   networking.hostName = "Atropos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -154,6 +154,9 @@
   gnumake
   cmake
   extra-cmake-modules
+  nvtopPackages.nvidia
+  toybox
+  pciutils
   ];
 
   services.openssh.enable = true;
