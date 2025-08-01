@@ -1,5 +1,6 @@
 {
   imports = [
+    ./module/Home/Fcitx5.nix
     ./module/Home/chrome.nix
     ./module/Home/Vivaldi.nix
     ./module/Home/git.nix

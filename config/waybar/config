@@ -10,7 +10,6 @@
     "hyprland/workspaces",
     "tray",
     "mpris"
-    //"mpd#2",
     //"mpd#3",
     //"mpd#4",
     //"mpd"
@@ -256,17 +255,16 @@
         "on-click": "sleep 0.1 && ~/.config/hypr/scripts/clip"
     },
   "mpris": {
-  	"format": "{player_icon} {title:.30} | {position}",
-  	"format-paused": "{player_icon} {title:.30} | {position}",
+    "player-icons": true,
     "interval": 1,
-  	"player-icons": {
-  		"default": "▶",
-  		"mpv": "🎵"
-  	},
-  	"status-icons": {
-  		"paused": "⏸"
-  	},
-  	// "ignored-players": ["firefox"]
+    "format": "󰒮 {status_icon} 󰒭 {title:.30} | {position}",
+    "format-stopped": "󰒮 {status_icon} 󰒭", 
+    "status-icons": {
+      "playing": "",
+		  "paused":  "",
+      "stopped": "",
+    }
+	},
   },
   "custom/notification": {
     "tooltip": false,

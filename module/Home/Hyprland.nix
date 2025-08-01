@@ -24,6 +24,10 @@
     source = ../../config/swaync;
     recursive = true;
   };
+  home.file.".config/environment.d" = {
+    source = ../../config/environment.d;
+    recursive = true;
+  };
 
 }
 

@@ -6,6 +6,8 @@
     hyprland
     kitty
     waybar
+    mpv
+    playerctl
     rofi-power-menu
     rofi-wayland
     wl-clipboard

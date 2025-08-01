@@ -25,6 +25,7 @@ in {
     win-virtio 
     win-spice
     dnsmasq
+    looking-glass-client
   ];
 
   virtualisation = {
