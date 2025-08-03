@@ -7,7 +7,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware/Atropos-hardware.nix
+      ./hardware/Atropos-SSD-hardware.nix
+      ./module/NixOS/Ibus.nix
       ./module/NixOS/desktop.nix
       ./module/NixOS/utils.nix
       ./module/NixOS/python.nix
@@ -154,7 +155,6 @@
   cmake
   extra-cmake-modules
   nvtopPackages.nvidia
-  toybox
   pciutils
   ];
 

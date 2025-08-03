@@ -1,6 +1,5 @@
 {
   imports = [
-    ./module/Home/Fcitx5.nix
     ./module/Home/chrome.nix
     ./module/Home/Vivaldi.nix
     ./module/Home/git.nix
@@ -11,6 +10,8 @@
     ./module/Home/vscode.nix
     ./module/Home/neovim.nix
     ./module/Home/direnv.nix
+    #./module/Home/anyrun.nix
+    ./module/Home/walker.nix
   ];
   home = rec { # recでAttribute Set内で他の値を参照できるようにする
     username="inoyu";

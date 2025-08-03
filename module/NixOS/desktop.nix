@@ -8,14 +8,15 @@
     waybar
     mpv
     playerctl
-    rofi-power-menu
-    rofi-wayland
+    anyrun
+#    rofi-power-menu
+#    rofi-wayland
     wl-clipboard
     swaynotificationcenter
     hyprpaper
     grim
     slurp
-    rofi-screenshot
+#    rofi-screenshot
   ];
 
   services.dbus.enable = true;
