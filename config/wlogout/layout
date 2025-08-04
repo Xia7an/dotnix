@@ -1,27 +1,18 @@
 {
-    "label": "lock",
-    "action": "lockscreen.sh",
-    "text": "Lock",
-    "keybind": "l"
+    "label" : "logout",
+    "action" : "logout",
+    "text" : "ログアウト",
+    "keybind" : "e"
 }
-
 {
-    "label": "logout",
-    "action": "hyprctl dispatch exit 0",
-    "text": "Logout",
-    "keybind": "e"
+    "label" : "reboot",
+    "action" : "sudo reboot",
+    "text" : "再起動",
+    "keybind" : "r"
 }
-
 {
-    "label": "shutdown",
-    "action": "systemctl poweroff",
-    "text": "Shutdown",
-    "keybind": "s"
-}
-
-{
-    "label": "reboot",
-    "action": "systemctl reboot",
-    "text": "Reboot",
-    "keybind": "r"
+    "label" : "shutdown",
+    "action" : "sudo shutdown -h now",
+    "text" : "シャットダウン",
+    "keybind" : "s"
 }
