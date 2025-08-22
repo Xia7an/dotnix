@@ -1,5 +1,4 @@
 { inputs, pkgs, ... }: {
-  programs.kitty.enable = true; # required for the default Hyprland config
   wayland.windowManager.hyprland.enable = true; # enable Hyprland
   wayland.windowManager.hyprland.settings = {
     input = {
@@ -7,6 +6,10 @@
       kb_variant = "";
     };
   };
+
+  wayland.windowManager.hyprland.plugins = [
+    inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
+  ];
 
   home.file.".config/hypr" = {
     source = ../../config/hypr;

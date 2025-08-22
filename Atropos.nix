@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-SSD-hardware.nix
-      ./module/NixOS/Ibus.nix
       ./module/NixOS/desktop.nix
       ./module/NixOS/utils.nix
       ./module/NixOS/python.nix
@@ -20,6 +19,7 @@
       ./module/NixOS/dolphin.nix
       ./module/NixOS/QEMU.nix
       ./module/NixOS/docker.nix
+      ./module/NixOS/parsec.nix
     ];
 
   # Bootloader.
@@ -129,7 +129,7 @@
   users.users.inoyu = {
     isNormalUser = true;
     description = "Inoyu";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };
