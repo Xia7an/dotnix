@@ -1,0 +1,87 @@
+@define-color color2 #0342ab;
+@define-color color3 #bfccde;
+@define-color color4 #94abcc;
+
+.blank-window {
+	background: transparent;
+}
+
+.notification-action,
+.notification-default-action,
+.control-center {
+  font-family: "Rounded Mgen+ 2c";
+  font-weight: bold;
+	border-radius: 0.75em;
+	border: 2px solid alpha(@color4, 0.3);
+	background: alpha(#94abcc, 0.8);
+}
+
+.notification {
+	box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.5);
+}
+
+.control-center-clear-all {
+    background-color: @color3;
+    color: #ffffff;
+	  border: 2px solid alpha(@color4, 0.3);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-weight: bold;
+}
+
+.notification-content {
+	margin: 5px;
+}
+
+.control-center .notification-row {
+	background: alpha(@color4, 0.2);
+}
+
+.widget-dnd {
+	font-weight: bold;
+	margin: 1em;
+}
+
+.widget-dnd>switch {
+	border: 1px solid alpha(@color4, 0.3);
+	border-radius: 0.75em;
+	background: alpha(@color3, 0.5);
+	padding: 1px;
+
+}
+.widget-dnd>switch:checked {
+	border: 1px solid alpha(@color4, 0.3);
+	border-radius: 0.75em;
+	background: alpha(@color2, 0.5);
+	padding: 1px;
+}
+
+.widget-dnd> switch slider {
+	border: 1px solid alpha(black, 0.3);
+	border-radius: 0.75em;
+	background: @color3;
+	box-shadow: none;
+}
+
+.widget-mpris {
+	border-radius: 0.75em;
+	background: alpha(black, 0.5);
+	margin: 1em;
+}
+
+.widget-buttons-grid {
+	margin: 1em;
+	background: alpha(black, 0.5);
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button {
+	box-shadow: none;
+	color: @foreground;
+	font-style: normal;
+	border: 1px solid alpha(@color3, 0.3);
+	background: @background;
+}
+
+.widget-buttons-grid>flowbox>flowboxchild>button:hover {
+	background: black;
+}

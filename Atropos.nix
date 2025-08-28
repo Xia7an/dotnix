@@ -20,6 +20,7 @@
       ./module/NixOS/QEMU.nix
       ./module/NixOS/docker.nix
       ./module/NixOS/parsec.nix
+      ./module/NixOS/blender.nix
     ];
 
   # Bootloader.

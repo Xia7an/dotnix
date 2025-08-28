@@ -15,49 +15,6 @@ in
     vimAlias = true;
     vimdiffAlias = true;
     extraPackages = with pkgs; [
-      deno
-      gnumake
-      nodejs
-      tree-sitter
-      imagemagick
-      deno
-      nodejs-slim
-      tree-sitter
-      bash-language-server
-      clang-tools
-      cmake-language-server
-      matlab-language-server
-      csharp-ls
-      dockerfile-language-server-nodejs
-      efm-langserver
-      haskell-language-server
-      haskellPackages.lsp
-      lua-language-server
-      nil
-      nixpkgs-fmt
-      nixpkgs-lint
-      nodePackages.eslint
-      nodePackages.prettier
-      # pyright
-      python312Packages.debugpy
-      python312Packages.jedi-language-server
-      ruff
-      rust-analyzer
-      glsl_analyzer
-      shellcheck
-      stylelint-lsp
-      stylua
-      tailwindcss-language-server
-      taplo
-      texlab
-      tinymist
-      typescript-language-server
-      typstyle
-      vim-language-server
-      vscode-langservers-extracted
-      yaml-language-server
-      yamlfmt
-      yamllint
     ];
     plugins = with pkgs.vimPlugins; [ 
     lazy-nvim 

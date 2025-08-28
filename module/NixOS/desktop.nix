@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  
+  programs.ydotool.enable = true;
   programs.hyprland.enable = true;
   environment.systemPackages = with pkgs; [
     hyprland
@@ -16,6 +18,8 @@
     hyprpaper
     grim
     slurp
+    mupdf
+    vlc
 #    rofi-screenshot
   ];
 

@@ -1,4 +1,4 @@
-{
+{ inputs, pkgs, ... } : {
   imports = [
     ./module/Home/Fcitx5.nix
     ./module/Home/chrome.nix

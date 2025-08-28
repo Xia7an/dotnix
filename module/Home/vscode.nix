@@ -7,7 +7,7 @@
   };
   xdg.desktopEntries.vscode-wayland = {
     name = "Visual Studio Code (Wayland)";
-    exec = "${pkgs.vscode}/bin/code --ozone-platform=auto --enable-wayland-ime";
+    exec = "${pkgs.vscode}/bin/code --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=1";
     icon = "code";
     categories = [ "Development" "IDE" ];
     terminal = false;

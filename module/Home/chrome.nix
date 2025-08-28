@@ -7,5 +7,8 @@ in{
       commandLineArgs = chromeArgs;
       enable = true;
     };
+    chromium = {
+        commandLineArgs = chromeArgs;
+    };
   };
 }
