@@ -21,6 +21,7 @@
       ./module/NixOS/docker.nix
       ./module/NixOS/parsec.nix
       ./module/NixOS/blender.nix
+      ./module/NixOS/stock-ticker.nix
     ];
 
   # Bootloader.
@@ -62,6 +63,12 @@
   networking.interfaces."wlp3s0" = {
     ipv4.addresses = [{
       address = "192.168.10.100"; # 利便性のため静的IPを要求
+      prefixLength = 24;
+    }];
+  };
+  networking.interfaces."eno1" = {
+    ipv4.addresses = [{
+      address = "192.168.0.101";
       prefixLength = 24;
     }];
   };

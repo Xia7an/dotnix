@@ -3,5 +3,6 @@
     unzip
     zip
     bottom
+    yazi
   ];
 }

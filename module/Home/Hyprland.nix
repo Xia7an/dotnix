@@ -75,14 +75,15 @@
         };
         hyprbars = {
           bar_height = 24;
-          bar_color = "rgba(333333aa)";
+          bar_color = "rgba(333333ff)";
           bar_blur = true;
-          bar_precedence_over_border = true;
+          bar_precedence_over_border = false;
           bar_buttons_alignment = "left";
           bar_button_padding = 4;
           bar_text_font = "Rounded Mgen+ 2m";
-          icon_on_hover = true;
-          inactive_button_color = "rgba(ffffffaa)";
+          bar_text_size = 14;
+          col.text = "rgb(94abcc)";
+          bar_part_of_window = false;
           #"hyprbars-button" = [
           #  "rgb(ff4040), 16, 󰖭, hyprctl dispatch killactive, rgb(ffffff)"
           #  "rgb(11ee33), 16, , hyprctl dispatch fullscreen, rgb(ffffff)"

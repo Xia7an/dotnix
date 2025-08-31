@@ -11,13 +11,15 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    anyrun = {
-      url = "github:anyrun-org/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #anyrun = {
+    #  url = "github:anyrun-org/anyrun";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+
+    stock-ticker.url = "github:clundin55/stock-ticker";
   };
 
-  outputs = inputs: {
+  outputs = inputs@{ nixpkgs, home-manager, stock-ticker, ... } : {
     nixosConfigurations = {
       Nyx = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -27,6 +29,9 @@
       };
       Atropos = inputs.nixpkgs.lib.nixosSystem {
         system = "x86-64-linux";
+        specialArgs = {
+          stock-ticker = stock-ticker.packages."x86_64-linux".default;
+        };
         modules = [
           ./Atropos.nix
         ];
