@@ -36,7 +36,7 @@
       #================================#
       "$terminal" = "kitty";
       "$fileManager" = "dolphin";
-      "$menu" = "walker --modules applications";
+      "$menu" = "anyrun --plugins ~/dotnix/config/anyrun/plugins/libapplications.so --plugins libwebsearch.so";
 
       #================================#
       # Autostart
@@ -82,7 +82,7 @@
           bar_button_padding = 4;
           bar_text_font = "Rounded Mgen+ 2m";
           bar_text_size = 14;
-          col.text = "rgb(94abcc)";
+          title_color = "rgb(94abcc)";
           bar_part_of_window = false;
           #"hyprbars-button" = [
           #  "rgb(ff4040), 16, 󰖭, hyprctl dispatch killactive, rgb(ffffff)"
