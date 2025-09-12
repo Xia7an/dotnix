@@ -22,6 +22,7 @@
       ./module/NixOS/parsec.nix
       ./module/NixOS/blender.nix
       ./module/NixOS/stock-ticker.nix
+      ./module/NixOS/wine.nix
     ];
 
   # Bootloader.
@@ -62,7 +63,7 @@
   networking.useNetworkd = true;
   networking.interfaces."wlp3s0" = {
     ipv4.addresses = [{
-      address = "192.168.10.100"; # 利便性のため静的IPを要求
+      address = "192.168.10.10"; # 利便性のため静的IPを要求
       prefixLength = 24;
     }];
   };

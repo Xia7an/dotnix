@@ -42,7 +42,6 @@ in {
 
   services.spice-vdagentd.enable = true;
 
-
   # 以下は libvirt XML 編集が必要なら追加で設定
   # nested virtualization なども調整可 :contentReference[oaicite:11]{index=11}
 }
