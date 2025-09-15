@@ -1,10 +1,20 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./nautilus.nix
+    ./thunderbird.nix
+  ];
   
   programs.ydotool.enable = true;
   programs.hyprland.enable = true;
   environment.systemPackages = with pkgs; [
+    gobject-introspection
+    gtk3
+    python3
+    python3Packages.pygobject3
+
+
     hyprland
     kitty
     waybar
@@ -20,6 +30,9 @@
     slurp
     mupdf
     vlc
+    geeqie
+    networkmanagerapplet
+    pavucontrol
 #    rofi-screenshot
   ];
 

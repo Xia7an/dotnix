@@ -35,7 +35,7 @@
       # My Programs
       #================================#
       "$terminal" = "kitty";
-      "$fileManager" = "dolphin";
+      "$fileManager" = "nautilus";
       "$menu" = "anyrun --plugins ~/dotnix/config/anyrun/plugins/libapplications.so --plugins libwebsearch.so";
 
       #================================#
@@ -99,8 +99,8 @@
         gaps_in = 5;
         gaps_out = 15;
         border_size = 4;
-        "col.active_border" = "rgba(c9ecf4ee) rgba(0342abee)";
-        "col.inactive_border" = "rgba(595959ee)";
+        "col.active_border" = "rgba(94abccff)";
+        "col.inactive_border" = "rgba(333333ff)";
         resize_on_border = false;
         allow_tearing = false;
         layout = "dwindle";
@@ -112,7 +112,7 @@
         active_opacity = 1.0;
         inactive_opacity = 1.0;
         shadow = {
-          enabled = true;
+          enabled = false;
           range = 4;
           render_power = 3;
           color = "rgba(1a1a1aee)";

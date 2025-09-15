@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-SSD-hardware.nix
-      ./module/NixOS/desktop.nix
+      ./module/NixOS/desktop
       ./module/NixOS/utils.nix
       ./module/NixOS/python.nix
       ./module/NixOS/Sunshine.nix
@@ -103,7 +103,7 @@
     fonts = with pkgs; [
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
-      noto-fonts-emoji
+      #noto-fonts-emoji
       hackgen-nf-font
       rounded-mgenplus
     ];

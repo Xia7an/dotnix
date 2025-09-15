@@ -9,7 +9,10 @@
     "custom/launcher",
     "hyprland/workspaces",
     "tray",
-    "mpris"
+    "mpris",
+    "mpris#2",
+    "mpris#3",
+    "mpris#4"
     //"mpd#3",
     //"mpd#4",
     //"mpd"
@@ -34,7 +37,7 @@
         "disable-scroll": false,
         "on-scroll-up": "hyprctl dispatch workspace e-1",
         "on-scroll-down": "hyprctl dispatch workspace e+1",
-     		"format": "{icon}",
+     		"format": "{icon} {windows}",
         "on-click": "activate",
    		  "format-icons": {
    		  	"1": "1",
@@ -46,7 +49,13 @@
    		  	// "active": "",
    		  	// "default": "",
              "sort-by-number": true
-         }
+        },
+        "workspace-taskbar": {
+          "enable": true,
+          "update-active-window": true,
+          "format": "{icon}",
+          "icon-size": 18
+        }
     },
   "mpd": {
     "tooltip": true,
@@ -111,6 +120,7 @@
     "spacing": 5
   },
   "clock": {
+    "locale": "ja_JP.UTF-8",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "month",
@@ -255,16 +265,30 @@
         "on-click": "sleep 0.1 && ~/.config/hypr/scripts/clip"
   },
   "mpris": {
-    "player-icons": true,
-    "interval": 1,
-    "format": "󰒮 {status_icon} 󰒭 {title:.30} | {position}",
-    "format-stopped": "󰒮 {status_icon} 󰒭", 
-    "status-icons": {
-      "playing": "",
-		  "paused":  "",
-      "stopped": "",
-    }
-	},
+    "tooltip": true,
+    "tooltip-format": "{artist} - {album} - {title} - Total Time: {length}",
+    "format-playing": "{artist} - {album} - {title}  {position}",
+    "format-paused": "{artist} - {album} - {title}  {position}",
+    "format-stopped": "{artist} - {album} - {title}  Not Playing",
+    "format-no-player": "⚠ No Player",
+    "on-click": "playerctl play-pause",
+    "interval": 1
+  },
+  "mpris#2": {
+    "format": "",
+    "on-click": "playerctl previous"
+  },
+  "mpris#3": {
+    "format-playing": "",
+    "format-paused": "",
+    "format-stopped": "",
+    "format-no-player": "",
+    "on-click": "playerctl play-pause"
+  },
+  "mpris#4": {
+    "format": "",
+    "on-click": "playerctl next"
+  },
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",
@@ -288,7 +312,13 @@
   "custom/mouse_mode": {
     "exec": "~/.config/waybar/modules/mouse_mode.sh",
     "interval": 1
+  },
+  "custom/workspaces_with_icons": {
+    "exec": "nix-shell -p python3 python3Packages.pygobject3 gobject-introspection gtk3 --run '/home/inoyu/.config/waybar/scripts/workspaces_with_icons.py'",
+    "return-type": "json",
+    "on-click": "hyprctl dispatch workspace {id}"
   }
+
 
 }
 

@@ -83,6 +83,7 @@ window#waybar {
 #workspaces button {
   color: @base;
   border-radius: 10px;
+  font-weight: bold;
   /* background-color: @base; */
   /* margin-left: 1px; */
   /* margin-right: 1px; */
@@ -192,6 +193,41 @@ window#waybar {
 #mpd.2,
 #mpd.3,
 #mpd.4 {
+  background-color: @base;
+  font-size: 14px;
+}
+
+#mpris {
+  border-radius: 10px;
+  color: @base;
+  margin-left: 5px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#mpris.2 {
+  border-radius: 10px 0px 0px 10px;
+  color: @mauve;
+  margin: 8px 0px 8px 6px;
+  padding: 4px 12px 4px 10px;
+}
+
+#mpris.3 {
+  border-radius: 0px 0px 0px 0px;
+  color: @mauve;
+  margin: 8px 0px 8px 0px;
+  padding: 4px;
+}
+
+#mpris.4 {
+  border-radius: 0px 10px 10px 0px;
+  color: @mauve;
+  margin: 8px 0px 8px 0px;
+  padding: 4px 10px 4px 14px;
+}
+
+#mpris.2,
+#mpris.3,
+#mpris.4 {
   background-color: @base;
   font-size: 14px;
 }
