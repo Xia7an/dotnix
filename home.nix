@@ -11,6 +11,7 @@
     ./module/Home/vscode.nix
     ./module/Home/neovim.nix
     ./module/Home/direnv.nix
+    ./module/Home/discord.nix
     ./module/Home/anyrun.nix
     ./module/Home/walker.nix
     ./module/Home/wlogout.nix

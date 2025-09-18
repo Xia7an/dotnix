@@ -12,7 +12,6 @@
       ./module/NixOS/utils.nix
       ./module/NixOS/python.nix
       ./module/NixOS/Sunshine.nix
-      ./module/NixOS/discord.nix
       ./module/NixOS/gaming.nix
       ./module/NixOS/gemini.nix
       ./module/NixOS/ollama.nix
@@ -31,6 +30,7 @@
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.theme = ./misc/Vimix;
 
   security.sudo = {
     enable = true;

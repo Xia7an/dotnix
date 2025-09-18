@@ -8,7 +8,6 @@
   "modules-left": [
     "custom/launcher",
     "hyprland/workspaces",
-    "tray",
     "mpris",
     "mpris#2",
     "mpris#3",
@@ -19,10 +18,9 @@
   ],
   "modules-center": ["clock"],
   "modules-right": [
-    "backlight",
+    "tray",
     "pulseaudio",
     "temperature",
-    "custom/clipboard",
     "memory",
     "network",
     "custom/notification",
@@ -251,7 +249,7 @@
     },
   "custom/power": {
     "format": " ⏻ ",
-    "on-click": "sleep 0.1 && rofi -show power-menu -modi power-menu:rofi-power-menu",
+    "on-click": "sleep 0.1 && wlogout",
     "tooltip": false
   }, 
   "custom/launcher": {
@@ -265,11 +263,9 @@
         "on-click": "sleep 0.1 && ~/.config/hypr/scripts/clip"
   },
   "mpris": {
-    "tooltip": true,
-    "tooltip-format": "{artist} - {album} - {title} - Total Time: {length}",
-    "format-playing": "{artist} - {album} - {title}  {position}",
-    "format-paused": "{artist} - {album} - {title}  {position}",
-    "format-stopped": "{artist} - {album} - {title}  Not Playing",
+    "format-playing": " {position}",
+    "format-paused": " {position}",
+    "format-stopped": " Not Playing",
     "format-no-player": "⚠ No Player",
     "on-click": "playerctl play-pause",
     "interval": 1

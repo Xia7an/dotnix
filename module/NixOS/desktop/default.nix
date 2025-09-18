@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./udiskie.nix
     ./nautilus.nix
     ./thunderbird.nix
   ];

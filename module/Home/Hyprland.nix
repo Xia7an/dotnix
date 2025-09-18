@@ -48,6 +48,7 @@
         "fcitx5"
         "swaync"
         "hyprpm reload -n"
+        "discord"
       ];
 
       #================================#
