@@ -9,8 +9,8 @@
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-SSD-hardware.nix
       ./module/NixOS/desktop
+      ./module/NixOS/develop
       ./module/NixOS/utils.nix
-      ./module/NixOS/python.nix
       ./module/NixOS/Sunshine.nix
       ./module/NixOS/gaming.nix
       ./module/NixOS/gemini.nix
