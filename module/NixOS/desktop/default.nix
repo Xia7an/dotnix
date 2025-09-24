@@ -5,6 +5,7 @@
     ./udiskie.nix
     ./nautilus.nix
     ./thunderbird.nix
+    ./kdeconnect.nix
   ];
   
   programs.ydotool.enable = true;

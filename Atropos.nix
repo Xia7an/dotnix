@@ -132,7 +132,7 @@
   users.users.inoyu = {
     isNormalUser = true;
     description = "Inoyu";
-    extraGroups = [ "networkmanager" "wheel" "docker"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "storage"];
     packages = with pkgs; [];
     shell = pkgs.zsh;
   };

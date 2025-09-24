@@ -118,8 +118,9 @@
     "spacing": 5
   },
   "clock": {
-    "locale": "ja_JP.UTF-8",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "locale": "ja_JP.utf8",
+    "timezone": "Asia/Tokyo",
+    "tooltip-format": "<span size='13pt'><tt><small>{calendar}</small></tt></span>",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
@@ -127,11 +128,11 @@
       "on-scroll": 1,
       "on-click-right": "mode",
       "format": {
-        "months": "<span color='#ffead3'><b>{}</b></span>",
-        "days": "<span color='#ecc6d9'><b>{}</b></span>",
-        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+        "months": "<span color='#ffead3' font='HackGen Console NF'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9' font='HackGen Console NF'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd' font='HackGen Console NF'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66' font='HackGen Console NF'><b>{}</b></span>",
+        "today": "<span color='#ff6699' font='HackGen Console NF'><b><u>{}</u></b></span>"
       }
     },
     "actions": {
@@ -142,7 +143,7 @@
       "on-scroll-down": "shift_down"
     },
     //"format": "  {:%a %d %b  %I:%M %p}", //12 hour format
-     "format": " {:%Y年%m月%d日   %H:%M:%S}",	//24 hour format
+     "format": " {:L%Y年%m月%d日 (%A)   %H:%M:%S}",	//24 hour format
     "format-alt": "  {:%d/%m/%Y  %H:%M}",
     // //"max-length": 200
     "interval": 1
