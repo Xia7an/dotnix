@@ -469,3 +469,10 @@ font-size: 20px;
       color: #bf616a;
   } */
 
+.niri-taskbar button {
+  /* This is useful to prevent the icon being resized when there's no unread. */
+  padding: 4px 4px 8px 4px;
+}
+
+.niri-taskbar button.unread {
+}
