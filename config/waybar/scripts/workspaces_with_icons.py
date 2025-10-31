@@ -40,3 +40,4 @@ for ws in workspaces:
     })
 
 print(json.dumps(result))
+

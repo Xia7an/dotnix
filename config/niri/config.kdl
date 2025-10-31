@@ -165,6 +165,12 @@ binds {
     MOD+O                               repeat=false { toggle-overview; }
 }
 
+gestures {
+    hot-corners {
+        off
+    }
+}
+
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 

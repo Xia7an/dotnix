@@ -52,7 +52,7 @@ in
     ];
   };
 
-  xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/home/inoyu/dotnix/config/nvim";
-  };
+  #xdg.configFile."nvim" = {
+  #  source = config.lib.file.mkOutOfStoreSymlink "/home/inoyu/dotnix/config/nvim";
+  #};
 }

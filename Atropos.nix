@@ -127,6 +127,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.autoLogin.enable = true;
   services.xserver.displayManager.autoLogin.user = "inoyu";
+  programs.fish.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.inoyu = {
@@ -134,7 +135,7 @@
     description = "Inoyu";
     extraGroups = [ "networkmanager" "wheel" "docker" "storage"];
     packages = with pkgs; [];
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
 
   # Enable automatic login for the user.
