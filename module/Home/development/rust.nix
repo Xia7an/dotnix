@@ -1,11 +1,15 @@
-{pkgs, inputs, ...} : {
-    programs.rust = {
-    enable = true;          # Rust を有効化
-    package = pkgs.rustup;  # rustup 経由でインストール
-  };
+{pkgs, config, inputs, ...} : {
+  # Rust 開発環境（rustup で cargo と rustc を管理）
+  home.packages = with pkgs; [
+    rustup
+  ];
 
-  # PATH に ~/.cargo/bin を追加
+  # Cargo のバイナリディレクトリを PATH に追加
   home.sessionVariables = {
-    PATH = "${pkgs.rustup}/bin:${pkgs.cargo}/bin:${pkgs.zsh}/bin:${config.home.path}";
+    CARGO_HOME = "${config.home.homeDirectory}/.cargo";
   };
+  
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.cargo/bin"
+  ];
 }

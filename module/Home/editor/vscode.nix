@@ -28,53 +28,56 @@ in
     # 3. メタ情報を追加した最終的なパッケージを指定する
     package = vscode-wayland;
 
-    extensions = with pkgs.vscode-extensions; [
-      # Vim 拡張
-      vscodevim.vim
+    # 新しいプロファイル形式に対応
+    profiles.default = {
+      extensions = with pkgs.vscode-extensions; [
+        # Vim 拡張
+        vscodevim.vim
 
-      # 日本語言語パック
-      ms-ceintl.vscode-language-pack-ja
+        # 日本語言語パック
+        ms-ceintl.vscode-language-pack-ja
 
-      # Python
-      ms-python.python
-      ms-python.vscode-pylance
+        # Python
+        ms-python.python
+        ms-python.vscode-pylance
 
-      # Rust
-      rust-lang.rust-analyzer
+        # Rust
+        rust-lang.rust-analyzer
 
-      # Web 開発 (HTML, CSS, JS/TS)
-      # (組み込みで提供されているため、追加拡張不要な場合が多い)
+        # Web 開発 (HTML, CSS, JS/TS)
+        # (組み込みで提供されているため、追加拡張不要な場合が多い)
 
-      # SSH
-      ms-vscode-remote.remote-ssh
+        # SSH
+        ms-vscode-remote.remote-ssh
 
-      # GitHub Copilot
-      github.copilot
-      github.copilot-chat
+        # GitHub Copilot
+        github.copilot
+        github.copilot-chat
 
-      # Typst
-      # nvarner.typst-lsp  # 利用可能な場合
-    ];
+        # Typst
+        # nvarner.typst-lsp  # 利用可能な場合
+      ];
 
-    userSettings = {
-      "editor.fontFamily" = "'HackGen Console NF'";
-      "editor.editContext" = false;
-      "mcp" = {
-      "servers" = {
-        "notionMCP" = {
-          "command" = "npx";
-            "args" = [
-              "-y"
-              "mcp-remote"
-              "https://mcp.notion.com/sse"
-            ];
+      userSettings = {
+        "editor.fontFamily" = "'HackGen Console NF'";
+        "editor.editContext" = false;
+        "mcp" = {
+        "servers" = {
+          "notionMCP" = {
+            "command" = "npx";
+              "args" = [
+                "-y"
+                "mcp-remote"
+                "https://mcp.notion.com/sse"
+              ];
+            };
           };
         };
-      };
-      "chat" = {
-        "tools" = {
-          "global" = {
-            "autoApprove" = true;
+        "chat" = {
+          "tools" = {
+            "global" = {
+              "autoApprove" = true;
+            };
           };
         };
       };

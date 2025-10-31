@@ -1,19 +1,10 @@
-# ~/.config/home-manager/steam.nix
-# SteamとProton-GEを管理するための最終的な設定
+# Steam は NixOS レベルで設定する必要があります
+# このファイルは現在使用されていません
+# module/NixOS/apps/gaming.nix を参照してください
 
 { pkgs, ... }:
 
 {
-  # Steamなどのプロプライエタリなパッケージを許可
-  nixpkgs.config.allowUnfree = true;
-
-  # Steamをhome-managerの専用オプションで管理
-  programs.steam = {
-    enable = true;
-    
-    # このオプションがProton-GEを自動的に展開し、正しい場所に配置します
-    extraCompatPackages = [
-      pkgs.proton-ge-bin
-    ];
-  };
+  # Steam 関連の設定は NixOS で行います
+  # Home Manager では個人設定のみ
 }
