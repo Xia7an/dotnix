@@ -21,7 +21,7 @@
       ./module/NixOS/parsec.nix
       ./module/NixOS/blender.nix
       ./module/NixOS/stock-ticker.nix
-      ./module/NixOS/wine.nix
+      ./module/NixOS/windows
     ];
 
   # Bootloader.

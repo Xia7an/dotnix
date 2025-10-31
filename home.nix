@@ -15,6 +15,8 @@
     ./module/Home/anyrun.nix
     ./module/Home/walker.nix
     ./module/Home/wlogout.nix
+    ./module/Home/Niri.nix
+    ./module/Home/Alacritty.nix
   ];
   home = rec { # recでAttribute Set内で他の値を参照できるようにする
     username="inoyu";

@@ -6,6 +6,7 @@
     ./nautilus.nix
     ./thunderbird.nix
     ./kdeconnect.nix
+    ./niri.nix
   ];
   
   programs.ydotool.enable = true;
@@ -15,7 +16,8 @@
     gtk3
     python3
     python3Packages.pygobject3
-
+    alacritty
+    wofi
 
     hyprland
     kitty

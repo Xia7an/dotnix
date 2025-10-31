@@ -2,7 +2,7 @@
 require("config.lazy")
 return {
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     config = function()
       require("mason").setup()
     end,
