@@ -8,11 +8,11 @@
     discord
 
     # ドキュメント/ビューワ
-    okular
+    kdePackages.okular # Qt6 版 Okular
 
     # ファイルマネージャー
     nautilus
-    gnome-sushi # Nautilus のプレビュー機能
+    sushi # Nautilus のプレビュー機能
 
     # Notion と Obsidian (AppImage または公式パッケージ)
     # Notion は公式 Electron アプリ、Obsidian は Nix で利用可能

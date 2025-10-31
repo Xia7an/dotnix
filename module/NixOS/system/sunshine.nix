@@ -16,8 +16,8 @@
     ];
   };
 
-  # OpenGLの有効化（NVENCなど使う場合も含む）
-  hardware.opengl = {
+  # グラフィックス有効化（NVENCなど使う場合も含む）
+  hardware.graphics = {
     enable = true;
   };
 

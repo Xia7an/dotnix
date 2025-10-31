@@ -93,7 +93,7 @@
   };
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
       #noto-fonts-emoji
@@ -117,9 +117,9 @@
     variant = "";
   };
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "inoyu";
+  services.displayManager.gdm.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "inoyu";
   programs.fish.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

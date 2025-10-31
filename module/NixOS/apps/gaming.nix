@@ -2,17 +2,17 @@
 
 {
   # Mesa / Vulkan
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
-      mesa.drivers
+      mesa
       vulkan-loader
       vulkan-validation-layers
       vulkan-tools
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
-      mesa.drivers
+      mesa
       vulkan-loader
     ];
   };
