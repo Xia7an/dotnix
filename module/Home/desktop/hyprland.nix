@@ -309,21 +309,21 @@
     '';
   };
   home.file.".config/waybar" = {
-    source = ../../config/waybar;
+    source = ../../../config/waybar;
     recursive = true;
   };
   home.file.".config/rofi" = {
-    source = ../../config/rofi;
+    source = ../../../config/rofi;
     recursive = true;
   };
   home.file.".config/swaync" = {
-    source = ../../config/swaync;
+    source = ../../../config/swaync;
     recursive = true;
   };
   home.file.".config/hypr/hyprpaper.conf" = {
-    source = ../../config/hypr/hyprpaper.conf;
+    source = ../../../config/hypr/hyprpaper.conf;
   };
   home.file.".config/hypr/shiroha.png" = {
-    source = ../../config/hypr/shiroha.png;
+    source = ../../../config/hypr/shiroha.png;
   };
 }

@@ -7,6 +7,7 @@
     ./thunderbird.nix
     ./kdeconnect.nix
     ./niri.nix
+    ./apps.nix
   ];
   
   programs.ydotool.enable = true;

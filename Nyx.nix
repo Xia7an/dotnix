@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Nyx-hardware.nix
-      ./module/NixOS/desktop.nix
+      ./module/NixOS/desktop
     ];
 
   # Bootloader.

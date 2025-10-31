@@ -4,7 +4,7 @@
   ];
 
   home.file.".config/walker" = {
-    source = ../../config/walker;
+    source = ../../../config/walker;
     recursive = true;
   };
 }

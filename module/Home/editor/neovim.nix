@@ -5,7 +5,7 @@
 
 }:
 let
-  pwd = (import ./pwd.nix { inherit config; }).pwd;
+  pwd = (import ../development/pwd.nix { inherit config; }).pwd;
 in
 {
   programs.neovim = {
@@ -52,7 +52,7 @@ in
     ];
   };
 
-  #xdg.configFile."nvim" = {
-  #  source = config.lib.file.mkOutOfStoreSymlink "/home/inoyu/dotnix/config/nvim";
-  #};
+  xdg.configFile."nvim" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/home/inoyu/dotnix/config/nvim";
+  };
 }

@@ -3,7 +3,7 @@
     enable = true;
   };
   home.file.".config/wlogout" = {
-    source = ../../config/wlogout;
+    source = ../../../config/wlogout;
     recursive = true;
   };
 }

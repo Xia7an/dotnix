@@ -8,18 +8,12 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-SSD-hardware.nix
+      
+      # カテゴリーごとに整理されたモジュール
       ./module/NixOS/desktop
       ./module/NixOS/develop
-      ./module/NixOS/utils.nix
-      ./module/NixOS/Sunshine.nix
-      ./module/NixOS/gaming.nix
-      ./module/NixOS/gemini.nix
-      ./module/NixOS/ollama.nix
-      ./module/NixOS/dolphin.nix
-      ./module/NixOS/docker.nix
-      ./module/NixOS/parsec.nix
-      ./module/NixOS/blender.nix
-      ./module/NixOS/stock-ticker.nix
+      ./module/NixOS/system
+      ./module/NixOS/apps
       ./module/NixOS/windows
     ];
 
@@ -118,10 +112,10 @@
   };
 
   # Configure keymap in X11
-  #services.xserver.xkb = {
-  #  layout = "jp";
-  #  variant = "";
-  #};
+  services.xserver.xkb = {
+    layout = "jp";
+    variant = "";
+  };
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.autoLogin.enable = true;
