@@ -36,6 +36,25 @@ in
     userSettings = {
       "editor.fontFamily" = "'HackGen Console NF'";
       "editor.editContext" = false;
+      "mcp" = {
+      "servers" = {
+        "notionMCP" = {
+          "command" = "npx";
+            "args" = [
+              "-y"
+              "mcp-remote"
+              "https://mcp.notion.com/sse"
+            ];
+          };
+        };
+      };
+      "chat" = {
+        "tools" = {
+          "global" = {
+            "autoApprove" = true;
+          };
+        };
+      };
     };
   };
 }

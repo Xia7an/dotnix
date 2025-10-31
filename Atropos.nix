@@ -16,7 +16,6 @@
       ./module/NixOS/gemini.nix
       ./module/NixOS/ollama.nix
       ./module/NixOS/dolphin.nix
-      ./module/NixOS/QEMU.nix
       ./module/NixOS/docker.nix
       ./module/NixOS/parsec.nix
       ./module/NixOS/blender.nix
@@ -161,6 +160,7 @@
   extra-cmake-modules
   nvtopPackages.nvidia
   pciutils
+  nodejs
   ];
 
   services.openssh.enable = true;
