@@ -10,7 +10,7 @@ let
       wrapProgram $out/bin/code \
         --add-flags "--ozone-platform=wayland" \
         --add-flags "--enable-wayland-ime" \
-        --add-flags "--wayland-text-input-version=1"
+        --add-flags "--wayland-text-input-version=3"
 
     '';
   };

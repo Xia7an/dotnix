@@ -8,9 +8,10 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/discord \
-        --add-flags "--enable-features=UseOzonePlatform" \
-        --add-flags "--ozone-platform-wayland" \
-        --add-flags "--enable-wayland-ime"
+        --add-flags "--enable-features=UseOzonePlatform,WaylandWindowDecorations" \
+        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--enable-wayland-ime" \
+        --add-flags "--wayland-text-input-version=3"
     '';
   };
 
