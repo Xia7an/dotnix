@@ -15,6 +15,7 @@
       ./module/NixOS/system
       ./module/NixOS/apps
       ./module/NixOS/windows
+      ./module/NixOS/input
     ];
 
   # Bootloader.

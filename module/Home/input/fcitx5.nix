@@ -10,12 +10,4 @@
     ];
   };
 
-  # Electron アプリで Fcitx5 を使うための環境変数
-  home.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
-    GLFW_IM_MODULE = "ibus";
-    SDL_IM_MODULE = "fcitx";
-  };
 }

@@ -5,7 +5,7 @@
 
   i18n.inputMethod = {
     enabled = "ibus";
-    ibus.engines = with pkgs.ibus-engines; [ mozc-ut];
+    ibus.engines = with pkgs.ibus-engines; [ mozc];
   };
 
   # XKB設定（Waylandでもキーマップに影響）

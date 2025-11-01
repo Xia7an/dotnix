@@ -10,7 +10,6 @@ let
       wrapProgram $out/bin/code \
         --add-flags "--ozone-platform-hint=auto" \
         --add-flags "--enable-wayland-ime" \
-
     '';
   };
 
@@ -32,7 +31,6 @@ in
       extensions = with pkgs.vscode-extensions; [
         # Vim 拡張
         vscodevim.vim
-
         # 日本語言語パック
         ms-ceintl.vscode-language-pack-ja
 
