@@ -8,9 +8,8 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/code \
-        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--ozone-platform-hint=auto" \
         --add-flags "--enable-wayland-ime" \
-        --add-flags "--wayland-text-input-version=3"
 
     '';
   };
