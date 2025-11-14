@@ -74,6 +74,8 @@
     };
   };
 
+  nixpkgs.config.allowBroken = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
   time.hardwareClockInLocalTime = true;
@@ -187,12 +189,13 @@
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [22 47984 47989 47990 48010 ];
+    allowedTCPPorts = [22 3389 47984 47989 47990 48010 ];
+
     allowedUDPPortRanges = [
       { from = 47998; to = 48000; }
       { from = 8000; to = 8010; }
     ];
-    allowedUDPPorts = [config.services.tailscale.port];
+    allowedUDPPorts = [config.services.tailscale.port 3389];
     trustedInterfaces = ["tailscale0"];
   };
   # networking.firewall.allowedUDPPorts = [ ... ];

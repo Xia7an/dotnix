@@ -1,23 +1,28 @@
-{ lib, pkgs, config, ... }: {
+{ lib, pkgs, config, inputs, ... }: {
+  # anyrunの代わりにwofiを使用（より安定）
   home.packages = with pkgs; [
-    rink
+    wofi
   ];
-  programs.anyrun = {
-    enable = true;
-    extraCss = builtins.readFile ../../../config/anyrun/style.css;
-    extraConfigFiles = {
-      "applications.ron".text = builtins.readFile ../../../config/anyrun/applications.ron;
-      "randr.ron".text = builtins.readFile ../../../config/anyrun/randr.ron;
-      "websearch.ron".text = builtins.readFile ../../../config/anyrun/websearch.ron;
-      "nix-run.ron".text = builtins.readFile ../../../config/anyrun/nix-run.ron;
-    };
-    config.plugins = [ 
-      "${config.home.homeDirectory}/dotnix/config/anyrun/plugins/libapplications.so"
-    ];
-  };
-  xdg.configFile = lib.mkMerge [
-    {
-      "anyrun/config.ron".text = lib.mkForce (builtins.readFile ../../../config/anyrun/config.ron);
-    }
-  ];
+  
+  # wofiの設定
+  xdg.configFile."wofi/config".text = ''
+    width=800
+    height=400
+    location=center
+    show=drun
+    prompt=Search...
+    filter_rate=100
+    allow_markup=true
+    no_actions=true
+    halign=fill
+    orientation=vertical
+    content_halign=fill
+    insensitive=true
+    allow_images=true
+    image_size=40
+    gtk_dark=true
+  '';
+  
+  # wofiのスタイル（既存のanyrunスタイルを参考に）
+  xdg.configFile."wofi/style.css".source = ../../../config/anyrun/style.css;
 }

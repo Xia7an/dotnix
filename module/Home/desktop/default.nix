@@ -9,5 +9,6 @@
     ./wlogout.nix
     ./anyrun.nix
     ./walker.nix
+    ./swww.nix
   ];
 }

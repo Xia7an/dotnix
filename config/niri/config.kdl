@@ -7,7 +7,8 @@
 input {
     keyboard {
         xkb {
-            layout "jp" // Use the German keyboard layout
+            layout "jp" // 日本語キーボードレイアウト
+            model "jp106" // 日本語106/109キーボードモデル
             options "ctrl:nocaps"
         }
         numlock // Enable numlock on startup
@@ -41,7 +42,7 @@ binds {
 
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: alacritty" { spawn-sh "alacritty"; }
-    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: wofi" { spawn-sh "wofi --show drun --style ~/.config/wofi/menu.css"; }
+    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: wofi" { spawn-sh "wofi --show drun"; }
     MOD+B                               hotkey-overlay-title="Open Browser: firefox" { spawn-sh "firefox"; }
     // MOD+ALT+L                           hotkey-overlay-title="Lock Screen: swaylock" { spawn-sh "swaylock"; }
     
@@ -133,7 +134,6 @@ binds {
     MOD+CTRL+8                          { move-column-to-workspace 8; }
     MOD+CTRL+9                          { move-column-to-workspace 9; }
 
-    MOD+TAB                             { focus-workspace-previous; }
 
     // ─── Layout Controls ───
     MOD+CTRL+F                          { expand-column-to-available-width; }
@@ -162,7 +162,7 @@ binds {
     // ─── Exit / Power ───
     CTRL+ALT+DELETE                     { quit; } // Also quits Niri
     MOD+SHIFT+P                         { power-off-monitors; } // Turn off screens (useful for OLED or privacy)
-    MOD+O                               repeat=false { toggle-overview; }
+    MOD+TAB                             repeat=false { toggle-overview; }
 }
 
 gestures {
@@ -177,8 +177,8 @@ gestures {
     spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
     spawn-sh-at-startup "ibus start"
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
-    spawn-sh-at-startup "swww img /usr/share/wallpapers/cachyos-wallpapers/Skyscraper.png" // Set wallpaper
-    spawn-sh-at-startup "waybar" // Launch waybar
+    spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
+    spawn-sh-at-startup "waybar -c ~/.config/waybar/Top" // Launch waybar Top
 
     prefer-no-csd // Disable program decorations
     screenshot-path null // Disable screenshot saving
@@ -259,17 +259,21 @@ gestures {
         clip-to-geometry true
     }
 
+    overview {
+        zoom 0.4
+    }
+
 // ────────────── Environment Variables ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#environment
 
-    environment {
-        DISPLAY ":1"
-        ELECTRON_OZONE_PLATFORM_HINT "auto"
-        QT_QPA_PLATFORM "wayland"
-        QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
-        XDG_SESSION_TYPE "wayland"
-        XDG_CURRENT_DESKTOP "niri"
-    }
+    //environment {
+    //    DISPLAY ":1"
+    //    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    //    QT_QPA_PLATFORM "wayland"
+    //    QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
+    //    XDG_SESSION_TYPE "wayland"
+    //    XDG_CURRENT_DESKTOP "niri"
+    //}
 
     hotkey-overlay {
         skip-at-startup

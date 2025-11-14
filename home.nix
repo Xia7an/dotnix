@@ -6,6 +6,8 @@
     ./module/Home/desktop
     ./module/Home/apps
     ./module/Home/development
+    ./module/Home/input
+    ./module/Home/windows
   ];
   
   home = rec { # recでAttribute Set内で他の値を参照できるようにする

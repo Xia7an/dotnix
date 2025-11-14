@@ -25,7 +25,7 @@
     waybar
     mpv
     playerctl
-    anyrun
+    # anyrun は Home Manager で管理
 #    rofi-power-menu
 #    rofi-wayland
     wl-clipboard

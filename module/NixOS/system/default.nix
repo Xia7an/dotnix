@@ -3,12 +3,13 @@
   imports = [
     ./utils.nix
     ./docker.nix
-    ./qemu.nix
+    # ./qemu.nix
     ./sunshine.nix
     ./parsec.nix
-    ./ollama.nix
+    # ./ollama.nix cudaが壊れてるらしいから一時的にコメントアウト
     ./gemini.nix
-    ./stock-ticker.nix
+    ./copilotcli.nix
+    # ./stock-ticker.nix
     ./wine.nix
   ];
 }

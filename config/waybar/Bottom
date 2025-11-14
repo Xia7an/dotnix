@@ -1,0 +1,315 @@
+{
+  "layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "height": 20,
+  "margin": "0 0 0 0",
+  //"width": 1350, // Waybar width
+  // Choose the order of the modules idle_inhibitor
+ 
+  "modules-center": ["clock"],
+ 
+
+  // Modules configuration
+
+   "hyprland/workspaces": {
+        "active-only": false,
+        "all-outputs": false,
+        "disable-scroll": false,
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
+     		"format": "{icon} {windows}",
+        "on-click": "activate",
+   		  "format-icons": {
+   		  	"1": "1",
+   		  	"2": "2",
+   		  	"3": "3",
+   		  	"4": "4",
+   		  	"5": "5",
+   		  	// "urgent": "",
+   		  	// "active": "",
+   		  	// "default": "",
+             "sort-by-number": true
+        },
+        "workspace-taskbar": {
+          "enable": true,
+          "update-active-window": true,
+          "format": "{icon}",
+          "icon-size": 18
+        }
+    },
+  "mpd": {
+    "tooltip": true,
+    "tooltip-format": "{artist} - {album} - {title} - Total Time : {totalTime:%M:%S}",
+    "format": " {elapsedTime:%M:%S}",
+    "format-disconnected": "⚠  Disconnected",
+    "format-stopped": " Not Playing",
+    "on-click": "mpc toggle",
+    "state-icons": {
+      "playing": "",
+      "paused": ""
+    }
+  },
+  "mpd#2": {
+    "format": "",
+    "format-disconnected": "",
+    "format-paused": "",
+    "format-stopped": "",
+    // Commands to execute on events
+    "on-click": "mpc -q pause && mpc -q prev && mpc -q start"
+  },
+  "mpd#3": {
+    "interval": 1,
+    "format": "{stateIcon}",
+    "format-disconnected": "",
+    "format-paused": "{stateIcon}",
+    "format-stopped": "",
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    // Commands to execute on events
+    "on-click": "mpc toggle"
+  },
+  "mpd#4": {
+    "format": "",
+    "format-disconnected": "",
+    "format-paused": "",
+    "format-stopped": "",
+    // Commands to execute on events
+    "on-click": "mpc -q pause && mpc -q next && mpc -q start"
+  },
+  "custom/swap": {
+    "on-click": "sleep 0.1 && ~/.config/waybar/hypr/scripts/swap.sh",
+    "tooltip": "Swap between waybar configs",
+    "format": "Bg  "
+  },
+  "custom/mpd": {
+    "format": " {title} - {artist}",
+    "interval": 5,
+    "exec": "mpc current --format='\"title\":\"%title%\",\"artist\":\"%artist%\"'"
+  },
+      "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "tray": {
+    "icon-size": 18,
+    "spacing": 5
+  },
+  "clock": {
+    "locale": "ja_JP.utf8",
+    "timezone": "Asia/Tokyo",
+    "tooltip-format": "<span size='13pt'><tt><small>{calendar}</small></tt></span>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "on-click-right": "mode",
+      "format": {
+        "months": "<span color='#ffead3' font='HackGen Console NF'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9' font='HackGen Console NF'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd' font='HackGen Console NF'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66' font='HackGen Console NF'><b>{}</b></span>",
+        "today": "<span color='#ff6699' font='HackGen Console NF'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-click-forward": "tz_up",
+      "on-click-backward": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    },
+    //"format": "  {:%a %d %b  %I:%M %p}", //12 hour format
+     "format": " {:L%Y年%m月%d日 (%A)   %H:%M:%S}",	//24 hour format
+    "format-alt": "  {:%d/%m/%Y  %H:%M}",
+    // //"max-length": 200
+    "interval": 1
+  },
+// "clock": {
+  //     "format": "  {:%H:%M:%S}",
+  //     "format-alt": "  {:%A, %B %d, %Y (%R)}",
+  //     "tooltip-format": "<tt><small>{calendar}</small></tt>",
+  //     "calendar": {
+  //         "mode"          : "month",
+  //         "mode-mon-col"  : 3,
+  //         "weeks-pos"     : "right",
+  //         "on-scroll"     : 1,
+  //         "on-click-right": "mode",
+  //         "format": {
+  //             "months":     "<span color='#ffead3'><b>{}</b></span>",
+  //             "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+  //             "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+  //             "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+  //             "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+  //         }
+  //     },
+  //     "actions": {
+  //         "on-click-right": "mode",
+  //         "on-click-forward": "tz_up",
+  //         "on-click-backward": "tz_down",
+  //         "on-scroll-up": "shift_up",
+  //         "on-scroll-down": "shift_down"
+  //     },
+  //     "interval": 1
+  // },
+  "cpu": {
+    "format": " {}%",
+    "on-click": "foot -e btop"
+  },
+  "memory": {
+    "format": " {}%",
+    "on-click": "foot -e btop"
+  },
+  "temperature": {
+        //"tooltip":false,
+        //"thermal-zone": 2,
+        //"hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+        "critical-threshold": 80,
+        "format-critical": " {temperatureC}°C",
+        "format": " {temperatureC}°C",
+        //"on-click": "foot -e sensors"
+    },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon} {percent: >1}%",
+    "format-icons": ["", ""],
+     "on-scroll-down": "brightnessctl -c backlight set 5%-",
+    //"on-scroll-down": "light -A 5",
+    "on-scroll-up": "brightnessctl -c backlight set +5%"
+    //"on-scroll-up": "light -U 5"
+  },
+  "battery": {
+    "states": {
+      // "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity: >3}%",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": ["", "", "", "", ""]
+    //"format-icons": ["", "", "", "", "", "", "", "", "", ""]
+  },
+  "network": {
+    // "interface": "wlp2s0", // (Optional) To force the use of this interface
+    "format": "⚠  Disabled",
+    "format-wifi": "  {essid}",
+    // "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
+    "format-ethernet": "  Wired",
+    "format-disconnected": "⚠  Disconnected",
+    // "on-click": "foot -e nmtui"
+    "on-click": "nm-connection-editor"
+  },
+  "pulseaudio": {
+    "scroll-step": 1,
+    "format": "{icon} {volume: >1}%",
+    "format-bluetooth": "{icon} {volume: >3}%",
+    "format-muted": " muted",
+    "format-icons": {
+      "headphones": "",
+      "handsfree": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", ""]
+    },
+    "on-click": "pavucontrol",
+    "on-scroll-up": "pamixer -ui 2",
+    "on-scroll-down": "pamixer -ud 2"
+  },
+    "custom/updates":{
+        "format": "{black} Update(s)",
+        "exec": "checkupdates | wc -l",
+        "exec-if": "[[ $(checkupdates | wc -l) != 0 ]]",
+        "interval": 24,
+        "on-click": "foot -e yay -Syu && notify-send 'The system has been updated' "
+    },
+  "custom/power": {
+    "format": " ⏻ ",
+    "on-click": "sleep 0.1 && wlogout",
+    "tooltip": false
+  }, 
+  "custom/launcher": {
+    "format": "󰣇 ",
+    "on-click": "sleep 0.1 && rofi -show drun",
+    "tooltip": false
+  },
+  "custom/clipboard":{
+        "format":"󰅍 Clip",
+        "tooltip":false,
+        "on-click": "sleep 0.1 && ~/.config/hypr/scripts/clip"
+  },
+  "mpris": {
+    "format-playing": " {position}",
+    "format-paused": " {position}",
+    "format-stopped": " Not Playing",
+    "format-no-player": "⚠ No Player",
+    "on-click": "playerctl play-pause",
+    "interval": 1
+  },
+  "mpris#2": {
+    "format": "",
+    "on-click": "playerctl previous"
+  },
+  "mpris#3": {
+    "format-playing": "",
+    "format-paused": "",
+    "format-stopped": "",
+    "format-no-player": "",
+    "on-click": "playerctl play-pause"
+  },
+  "mpris#4": {
+    "format": "",
+    "on-click": "playerctl next"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "  <span foreground='red'><sup></sup></span>",
+      "none": "  ",
+      "dnd-notification": "  <span foreground='red'><sup></sup></span>",
+      "dnd-none": "  ",
+      "inhibited-notification": "  <span foreground='red'><sup></sup></span>",
+      "inhibited-none": "  ",
+      "dnd-inhibited-notification": "  <span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": "  "
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "custom/mouse_mode": {
+    "exec": "~/.config/waybar/modules/mouse_mode.sh",
+    "interval": 1
+  },
+  "custom/workspaces_with_icons": {
+    "exec": "nix-shell -p python3 python3Packages.pygobject3 gobject-introspection gtk3 --run '/home/inoyu/.config/waybar/scripts/workspaces_with_icons.py'",
+    "return-type": "json",
+    "on-click": "hyprctl dispatch workspace {id}"
+  },
+
+  "niri/window": {
+  	"format": "{}",
+    "icon" : true,
+  	"rewrite": {
+  		"(.*) - Mozilla Firefox": "🌎 $1",
+  		"(.*) - zsh": "> [$1]"
+  	}
+  },
+  "cffi/niri-taskbar": {
+    "module_path": "/usr/lib/waybar/libniri_taskbar.so",
+  },
+
+
+}
+

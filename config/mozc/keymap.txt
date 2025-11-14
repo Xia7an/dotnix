@@ -1,0 +1,43 @@
+# Mozc キーマップ設定ファイル
+# このファイルは Mozc のキーバインドをカスタマイズします
+# 変換キー（Henkan）で IME を有効化
+# 無変換キー（Muhenkan）で IME を無効化
+
+# フォーマット: status	key	command
+
+# ============================================
+# DirectInput（直接入力モード）
+# ============================================
+DirectInput	Henkan	IMEOn
+DirectInput	Muhenkan	IMEOff
+
+# ============================================
+# Precomposition（入力前状態）
+# ============================================
+Precomposition	Henkan	IMEOn
+Precomposition	Muhenkan	IMEOff
+
+# ============================================
+# Composition（変換前入力中）
+# ============================================
+Composition	Henkan	IMEOn
+Composition	Muhenkan	IMEOff
+
+# ============================================
+# Conversion（変換候補選択中）
+# ============================================
+Conversion	Henkan	Commit
+Conversion	Muhenkan	IMEOff
+
+# ============================================
+# その他の便利なキーバインド
+# ============================================
+# Ctrl+Space でも切り替え可能にする場合は以下を追加
+# DirectInput	Ctrl Space	IMEOn
+# Precomposition	Ctrl Space	IMEOff
+
+# 全角/半角キーでも切り替え可能（デフォルト動作）
+DirectInput	Hankaku/Zenkaku	IMEOn
+Precomposition	Hankaku/Zenkaku	IMEOff
+Composition	Hankaku/Zenkaku	IMEOff
+Conversion	Hankaku/Zenkaku	IMEOff

@@ -11,15 +11,17 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #anyrun = {
-    #  url = "github:anyrun-org/anyrun";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-
-    stock-ticker.url = "github:clundin55/stock-ticker";
+    anyrun = {
+      url = "github:anyrun-org/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, stock-ticker, ... } : {
+  outputs = inputs@{ nixpkgs, home-manager, anyrun, winapps, ... } : {
     nixosConfigurations = {
       Nyx = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -27,13 +29,26 @@
           ./Nyx.nix
         ];
       };
-      Atropos = inputs.nixpkgs.lib.nixosSystem {
+      Atropos = inputs.nixpkgs.lib.nixosSystem rec {
         system = "x86-64-linux";
         specialArgs = {
-          stock-ticker = stock-ticker.packages."x86_64-linux".default;
+          inherit inputs;
         };
         modules = [
           ./Atropos.nix
+          (
+            {
+              pkgs,
+              system ? pkgs.system,
+              ...
+            }:
+            {
+              environment.systemPackages = [
+                winapps.packages."x86_64-linux".winapps
+                winapps.packages."x86_64-linux".winapps-launcher # optional
+              ];
+            }
+          )
         ];
       };
     };

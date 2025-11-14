@@ -2,6 +2,6 @@
 {
   imports = [
     # ./fcitx5.nix
-    ./ibus.nix  # Alternative to Fcitx5
+    # ./ibus.nix  # Alternative to Fcitx5
   ];
 }

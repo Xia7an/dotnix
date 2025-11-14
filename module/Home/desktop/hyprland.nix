@@ -45,7 +45,7 @@
         "waybar"
         "hyprpaper"
         "sunshine"
-        "fcitx5"
+        "ibus-daemon --xim --daemonize --replace"  # IBusデーモンを起動
         "swaync"
         "hyprpm reload -n"
         "discord"
