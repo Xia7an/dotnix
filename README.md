@@ -167,6 +167,21 @@ home-manager switch --flake .#NyxHome
 
 **注意**: `config/` ディレクトリの内容は直接変更してください。Nix 設定からは参照のみ行います。
 
+### カスタムパッケージ: niri-taskbar
+
+- `pkgs/niri-taskbar`: Waybar 用の Niri タスクバー拡張モジュールを Cargo でビルド
+- `overlays/default.nix`: `niri-taskbar` を `pkgs.niri-taskbar` として提供するオーバーレイ
+- `flake.nix`: `nix build .#niri-taskbar` でビルド可能なパッケージ出力と、Home Manager/NixOS 双方でオーバーレイを読み込むよう更新
+- Waybar の `config/waybar/{Bottom,Top}` では `module_path` を `~/.nix-profile/lib/libniri_taskbar.so` に設定済み（Home Manager が `niri-taskbar` を `home.packages` に含めるため、プロファイル経由で解決されます）
+
+ビルド確認:
+
+```fish
+nix build .#niri-taskbar
+```
+
+生成された `libniri_taskbar.so` を Waybar の `cffi/niri-taskbar` モジュールから参照することで、Niri 専用のタスクバーが利用できます。
+
 ## よくある操作
 
 ### 新しいパッケージを追加

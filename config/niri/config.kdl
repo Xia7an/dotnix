@@ -147,7 +147,7 @@ binds {
     // ─── Modes ───
     MOD+T                               { toggle-window-floating; }
     MOD+F                               { fullscreen-window; }
-    MOD+W                               { toggle-column-tabbed-display; }
+    MOD+W                               { spawn-sh "wlogout"; }
 
     // ─── Screenshots ───
     CTRL+SHIFT+1                        { screenshot; }
@@ -178,7 +178,8 @@ gestures {
     spawn-sh-at-startup "ibus start"
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
     spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
-    spawn-sh-at-startup "waybar -c ~/.config/waybar/Top" // Launch waybar Top
+    spawn-sh-at-startup "waybar -c ~/.config/waybar/Top -s ~/.config/waybar/Top.css" // Launch waybar Top
+    spawn-sh-at-startup "waybar -c ~/.config/waybar/Bottom -s ~/.config/waybar/Bottom.css" // Launch waybar Top
 
     prefer-no-csd // Disable program decorations
     screenshot-path null // Disable screenshot saving

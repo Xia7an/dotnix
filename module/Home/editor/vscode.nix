@@ -51,6 +51,8 @@ in
         github.copilot
         github.copilot-chat
 
+        bbenoist.nix
+
         # Typst
         # nvarner.typst-lsp  # 利用可能な場合
       ];

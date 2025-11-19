@@ -28,7 +28,7 @@ Config(
   hide_plugin_info: false,
 
   // Close window when a click outside the main box is received
-  close_on_click: true,
+  close_on_click: false,
 
   // Show search results immediately when Anyrun starts
   show_results_immediately: true,
@@ -40,6 +40,8 @@ Config(
   // `<anyrun config dir>/plugins` directory or with an absolute path to just load the file the path points to.
   plugins: [
     "libapplications.so",
+    "libshell.so",
+    "libtranslate.so",
     "libwebsearch.so",
   ],
 )

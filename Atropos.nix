@@ -26,6 +26,11 @@
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.theme = ./misc/Vimix;
 
+  # Ensure NVIDIA kernel modules are loaded early so the GPU has a driver
+  # bound to it. This helps avoid "driver (null)" and EGL/DRI errors.
+  boot.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  # Explicitly set the DRM/KMS parameters so Wayland compositors can open the
+
   security.sudo = {
     enable = true;
     extraRules = [
@@ -41,9 +46,13 @@
     ];
   };
 
-  hardware.graphics.enable = true;
+  hardware.opengl.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.open = true;  # see the note above
+  # Enable modesetting which is required for Wayland compositors / EGL
+  hardware.nvidia.modesetting.enable = true;
+  # If you intentionally required the "open" nvidia kernel modules, set
+  # this to true. The default proprietary stack is used above.
+  hardware.nvidia.open = false;  # was true previously
 
   networking.hostName = "Atropos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

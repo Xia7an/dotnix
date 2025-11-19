@@ -1,12 +1,12 @@
 {
   "layer": "top", // Waybar at top layer
-  "position": "top", // Waybar position (top|bottom|left|right)
-  "height": 20,
+  "position": "bottom", // Waybar position (top|bottom|left|right)
+  "height": 40,
   "margin": "0 0 0 0",
   //"width": 1350, // Waybar width
   // Choose the order of the modules idle_inhibitor
  
-  "modules-center": ["clock"],
+  "modules-center": ["cffi/niri-taskbar"],
  
 
   // Modules configuration
@@ -307,8 +307,8 @@
   	}
   },
   "cffi/niri-taskbar": {
-    "module_path": "/usr/lib/waybar/libniri_taskbar.so",
-  },
+    "module_path": "/home/inoyu/.nix-profile/lib/libniri_taskbar.so"
+  }
 
 
 }

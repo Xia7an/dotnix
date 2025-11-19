@@ -7,7 +7,7 @@
   // Choose the order of the modules idle_inhibitor
   "modules-left": [
     "custom/launcher",
-    "cffi/niri-taskbar",
+    "niri/workspaces",
     "mpris",
     "mpris#2",
     "mpris#3",
@@ -306,27 +306,9 @@
     "on-click-right": "swaync-client -d -sw",
     "escape": true
   },
-  "custom/mouse_mode": {
-    "exec": "~/.config/waybar/modules/mouse_mode.sh",
-    "interval": 1
-  },
-  "custom/workspaces_with_icons": {
-    "exec": "nix-shell -p python3 python3Packages.pygobject3 gobject-introspection gtk3 --run '/home/inoyu/.config/waybar/scripts/workspaces_with_icons.py'",
-    "return-type": "json",
-    "on-click": "hyprctl dispatch workspace {id}"
-  },
-
-  "niri/window": {
-  	"format": "{}",
-    "icon" : true,
-  	"rewrite": {
-  		"(.*) - Mozilla Firefox": "🌎 $1",
-  		"(.*) - zsh": "> [$1]"
-  	}
-  },
   "cffi/niri-taskbar": {
-    "module_path": "/usr/lib/waybar/libniri_taskbar.so",
-  },
+    "module_path": "/home/inoyu/.nix-profile/lib/libniri_taskbar.so"
+  }
 
 
 }

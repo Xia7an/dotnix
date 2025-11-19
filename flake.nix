@@ -11,21 +11,38 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    anyrun = {
-      url = "github:anyrun-org/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, anyrun, winapps, ... } : {
+  outputs = inputs@{ self, nixpkgs, home-manager, winapps, ... } : let
+    systems = [ "x86_64-linux" ];
+    forEachSystem = nixpkgs.lib.genAttrs systems;
+    niriTaskbarOverlay = import ./overlays;
+    overlays = [
+      (import inputs.rust-overlay)
+      niriTaskbarOverlay
+    ];
+  in {
+    overlays.default = niriTaskbarOverlay;
+
+    packages = forEachSystem (system: let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = overlays;
+      };
+    in {
+      niri-taskbar = pkgs.niri-taskbar;
+      default = pkgs.niri-taskbar;
+    });
+
     nixosConfigurations = {
       Nyx = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          ({ ... }: { nixpkgs.overlays = overlays; })
           ./Nyx.nix
         ];
       };
@@ -35,6 +52,7 @@
           inherit inputs;
         };
         modules = [
+          ({ ... }: { nixpkgs.overlays = overlays; })
           ./Atropos.nix
           (
             {
@@ -57,7 +75,7 @@
         pkgs = import inputs.nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true; # プロプライエタリなパッケージを許可
-          overlays = [(import inputs.rust-overlay)];
+          overlays = overlays;
         };
         extraSpecialArgs = {
           inherit inputs;
@@ -70,7 +88,7 @@
         pkgs = import inputs.nixpkgs {
           system = "x86_64-linux";
           config.allowUnfree = true; # プロプライエタリなパッケージを許可
-          overlays = [(import inputs.rust-overlay)];
+          overlays = overlays;
         };
         extraSpecialArgs = {
           inherit inputs;

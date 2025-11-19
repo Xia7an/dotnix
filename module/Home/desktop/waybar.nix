@@ -8,5 +8,6 @@
   # Waybar パッケージを home.packages に追加
   home.packages = with pkgs; [
     waybar
+    niri-taskbar
   ];
 }

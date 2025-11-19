@@ -7,7 +7,7 @@
     ./waybar.nix
     ./wofi.nix
     ./wlogout.nix
-    ./anyrun.nix
+    ./anyrun
     ./walker.nix
     ./swww.nix
   ];
