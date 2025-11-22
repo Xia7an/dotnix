@@ -46,13 +46,18 @@
     ];
   };
 
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  # Enable modesetting which is required for Wayland compositors / EGL
-  hardware.nvidia.modesetting.enable = true;
-  # If you intentionally required the "open" nvidia kernel modules, set
-  # this to true. The default proprietary stack is used above.
-  hardware.nvidia.open = false;  # was true previously
+  
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 
   networking.hostName = "Atropos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -106,9 +111,10 @@
 
   fonts = {
     packages = with pkgs; [
+      noto-fonts
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
-      #noto-fonts-emoji
+      noto-fonts-color-emoji
       hackgen-nf-font
       rounded-mgenplus
     ];
@@ -129,7 +135,7 @@
     variant = "";
   };
   services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
+  services.displayManager.sddm.enable = true;
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "inoyu";
   programs.fish.enable = true;

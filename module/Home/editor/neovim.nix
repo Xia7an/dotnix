@@ -15,44 +15,87 @@ in
     vimAlias = true;
     vimdiffAlias = true;
     extraPackages = with pkgs; [
+      # LSP servers
+      lua-language-server
+      nil
+      # Formatters
+      stylua
+      nixpkgs-fmt
+      # Linters
+      statix
+      # Other tools
+      ripgrep
+      fd
+      lazygit
     ];
     plugins = with pkgs.vimPlugins; [ 
-    lazy-nvim 
-    # UI
-    lualine-nvim
-    tokyonight-nvim
+      # UI
+      lualine-nvim
+      tokyonight-nvim
+      catppuccin-nvim
+      nvim-web-devicons
+      dressing-nvim
+      bufferline-nvim
+      indent-blankline-nvim
+      mini-nvim
 
-    # File explorer
-    neo-tree-nvim
+      # File explorer
+      neo-tree-nvim
+      nui-nvim
+      plenary-nvim
 
-    # Git
-    gitsigns-nvim
-    vim-fugitive
+      # Editor
+      telescope-nvim
+      telescope-fzf-native-nvim
+      flash-nvim
+      which-key-nvim
+      gitsigns-nvim
+      trouble-nvim
+      todo-comments-nvim
+      vim-illuminate
 
-    # LSP
-    nvim-lspconfig
-    mason-nvim
+      # Git
+      vim-fugitive
 
-    # Completion
-    nvim-cmp
-    #LuaSnip
-    cmp_luasnip
-    cmp-nvim-lsp
+      # LSP
+      nvim-lspconfig
+      mason-nvim
+      mason-lspconfig-nvim
+      neodev-nvim
 
-    # Treesitter
-    nvim-treesitter.withAllGrammars
+      # Completion
+      nvim-cmp
+      luasnip
+      friendly-snippets
+      cmp_luasnip
+      cmp-nvim-lsp
+      cmp-buffer
+      cmp-path
 
-    # Finder
-    telescope-nvim
+      # Treesitter
+      nvim-treesitter.withAllGrammars
+      nvim-treesitter-textobjects
 
-    # Utilities
-    trouble-nvim
-    noice-nvim
-    which-key-nvim
+      # Formatting
+      conform-nvim
+
+      # Linting
+      nvim-lint
+
+      # Coding
+      nvim-autopairs
+      comment-nvim
+      nvim-ts-context-commentstring
+      mini-nvim
+
+      # Utilities
+      noice-nvim
+      nvim-notify
+      toggleterm-nvim
     ];
   };
 
   xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/home/inoyu/dotnix/config/nvim";
+    source = config.lib.file.mkOutOfStoreSymlink "${pwd}/config/nvim";
   };
 }

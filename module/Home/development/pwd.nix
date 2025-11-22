@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  pwd = "${config.home.homeDirectory}/dotfiles-nix/home-manager/console/neovim";
+  pwd = "${config.home.homeDirectory}/dotnix";
 in
 {
   inherit pwd;

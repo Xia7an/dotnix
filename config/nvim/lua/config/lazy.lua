@@ -1,53 +1,62 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
+-- Nixでプラグイン管理を行うための設定
+-- 基本設定
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+-- 基本オプション
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+
+-- カラースキームを設定
+vim.cmd([[colorscheme tokyonight]])
+
+-- プラグイン設定の読み込み
+local function load_plugin_config(module_name)
+  local ok, err = pcall(require, module_name)
+  if not ok then
+    vim.notify("Failed to load " .. module_name .. ": " .. tostring(err), vim.log.levels.WARN)
   end
 end
-vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  spec = {
-    -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
-    { import = "plugins" },
-  },
-  defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
-    -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
-    lazy = false,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install.
-    version = false, -- always use the latest git commit
-    -- version = "*", -- try installing the latest stable version for plugins that support semver
-  },
-  install = { colorscheme = { "tokyonight", "habamax" } },
-  checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  }, -- automatically check for plugin updates
-  performance = {
-    rtp = {
-      -- disable some rtp plugins
-      disabled_plugins = {
-        "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
-    },
-  },
-})
+-- プラグイン設定
+local plugin_configs = {
+  -- UI
+  "plugins.bufferline",
+  "plugins.lualine",
+  "plugins.indent-blankline",
+  "plugins.noice",
+  "plugins.dressing",
+  
+  -- Editor
+  "plugins.neo-tree",
+  "plugins.which-key",
+  "plugins.telescope",
+  "plugins.flash",
+  "plugins.gitsigns",
+  "plugins.trouble",
+  "plugins.todo-comments",
+  "plugins.illuminate",
+  
+  -- LSP & Completion
+  "plugins.neodev",
+  "plugins.lsp",
+  "plugins.cmp",
+  
+  -- Treesitter
+  "plugins.treesitter",
+  
+  -- Coding
+  "plugins.autopairs",
+  "plugins.comment",
+  "plugins.mini",
+  
+  -- Terminal
+  "plugins.toggleterm",
+}
+
+for _, module in ipairs(plugin_configs) do
+  load_plugin_config(module)
+end
+
+
