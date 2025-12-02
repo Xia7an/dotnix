@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -15,6 +15,7 @@
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    xremap-flake.url = "github:xremap/nix-flake";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, winapps, ... } : let
@@ -47,12 +48,13 @@
         ];
       };
       Atropos = inputs.nixpkgs.lib.nixosSystem rec {
-        system = "x86-64-linux";
+        system = "x86_64-linux";
         specialArgs = {
           inherit inputs;
         };
         modules = [
           ({ ... }: { nixpkgs.overlays = overlays; })
+          inputs.xremap-flake.nixosModules.default
           ./Atropos.nix
           (
             {

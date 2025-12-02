@@ -1,25 +1,27 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
-  # DiscordにWayland用の引数を付けてラップする
-  discord-wayland = pkgs.symlinkJoin {
-    name = "discord-wayland";
-    paths = [ pkgs.discord ]; # 元になるパッケージは `pkgs.discord`
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/discord \
-        --add-flags "--enable-features=UseOzonePlatform,WaylandWindowDecorations" \
-        --add-flags "--ozone-platform=wayland" \
-        --add-flags "--enable-wayland-ime" \
-        --add-flags "--wayland-text-input-version=3"
-    '';
-  };
-
+  discordWrapped = pkgs.writeShellScriptBin "discord" ''
+    exec ${pkgs.discord}/bin/discord --ozone-platform=x11 "$@"
+  '';
 in
 {
-  # home.packages に追加してインストールする
-  home.packages = [
-    discord-wayland
-    # ... 他のパッケージ
-  ];
+  programs.discord = {
+    enable = true;
+    package = discordWrapped;
+  };
+    # desktop entry を Discord の公式ものを置き換えて作成
+  xdg.desktopEntries.discord = {
+    name = "Discord";
+    genericName = "Internet Messenger";
+    comment = "Discord (forced X11 mode)";
+    exec = "${discordWrapped}/bin/discord %U";
+    terminal = false;
+    type = "Application";
+    categories = [ "Network" "InstantMessaging" "Chat" ];
+    mimeType = [ "x-scheme-handler/discord" ];
+    icon = "discord";
+    startupNotify = true;
+  };
 }
+

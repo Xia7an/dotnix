@@ -25,7 +25,6 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.theme = ./misc/Vimix;
-
   # Ensure NVIDIA kernel modules are loaded early so the GPU has a driver
   # bound to it. This helps avoid "driver (null)" and EGL/DRI errors.
   boot.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
@@ -46,17 +45,18 @@
     ];
   };
 
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
   
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    open = true;  # Turing世代なので通常は proprietary driver
+    forceFullCompositionPipeline = true;
   };
 
   networking.hostName = "Atropos"; # Define your hostname.
@@ -88,7 +88,6 @@
     };
   };
 
-  nixpkgs.config.allowBroken = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -111,20 +110,34 @@
 
   fonts = {
     packages = with pkgs; [
-      noto-fonts
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
+      twitter-color-emoji
+      source-han-sans
+      source-han-serif
+      jetbrains-mono
       hackgen-nf-font
+      nerd-fonts._0xproto
+      orbitron
       rounded-mgenplus
     ];
     fontDir.enable = true;
     fontconfig = {
       defaultFonts = {
-        serif = ["Noto Serif CJK JP" "Noto Color Emoji"];
-        sansSerif = ["Noto Sans CJK JP" "Noto Color Emoji"];
-        monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
-        emoji = ["Noto Color Emoji"];
+        serif = [
+          "Noto Serif CJK JP"
+          "Noto Color Emoji"
+        ];
+        sansSerif = [
+          "Noto Sans CJK JP"
+          "Noto Color Emoji"
+        ];
+        monospace = [
+          "HackGen Console NF"
+          "Noto Color Emoji"
+        ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };
@@ -135,7 +148,7 @@
     variant = "";
   };
   services.xserver.enable = true;
-  services.displayManager.sddm.enable = true;
+  services.displayManager.gdm.enable = true;
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "inoyu";
   programs.fish.enable = true;
@@ -161,6 +174,7 @@
   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   wget
   eza
+  vulkan-tools
   bat
   ripgrep
   zsh-powerlevel10k

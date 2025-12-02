@@ -8,6 +8,7 @@
     ./kdeconnect.nix
     ./niri.nix
     ./apps.nix
+    ./xremap.nix
   ];
   
   programs.ydotool.enable = true;

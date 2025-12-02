@@ -253,6 +253,7 @@ window#waybar {
   color: @sky;
   border-radius: 10px;
   margin: 8px 10px;
+  font-weight: 600;
 }
 
 #backlight {

@@ -1,6 +1,7 @@
 # System-level services and utilities
 {
   imports = [
+    ./bluetooth.nix
     ./utils.nix
     ./docker.nix
     # ./qemu.nix

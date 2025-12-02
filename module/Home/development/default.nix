@@ -7,5 +7,6 @@
     ./rust.nix
     ./dev-tools.nix
     ./dev-apps.nix
+    ./biome.nix
   ];
 }

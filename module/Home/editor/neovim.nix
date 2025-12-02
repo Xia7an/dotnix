@@ -30,7 +30,6 @@ in
     ];
     plugins = with pkgs.vimPlugins; [ 
       # UI
-      lualine-nvim
       tokyonight-nvim
       catppuccin-nvim
       nvim-web-devicons
