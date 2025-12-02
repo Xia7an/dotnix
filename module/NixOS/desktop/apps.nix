@@ -12,6 +12,7 @@
 
     # ファイルマネージャー
     nautilus
+    gnome-text-editor
     sushi # Nautilus のプレビュー機能
 
     # Notion と Obsidian (AppImage または公式パッケージ)

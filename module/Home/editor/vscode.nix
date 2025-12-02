@@ -53,6 +53,7 @@ in
       # 便利拡張
       usernamehw.errorlens
       ms-vscode.hexeditor
+      davidanson.vscode-markdownlint
     ];
 
     userSettings = {
