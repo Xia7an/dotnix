@@ -1,82 +1,112 @@
+/* Launchpad-style Grid Layout for Wofi */
+/* Catppuccin Mocha inspired color scheme */
+
+* {
+    font-family: "SF Pro Display", "Cantarell", sans-serif;
+    font-size: 13px;
+}
+
 window {
     margin: 0px;
-    border: 10px solid #1e1e2e;
-    background-color: #cdd6f4;
-    border-radius: 20px;
+    border: none;
+    background-color: rgba(30, 30, 46, 0.92);
+    border-radius: 24px;
 }
 
+/* Search input field - macOS style */
 #input {
-    padding: 4px;
-    margin: 4px;
-    padding-left: 20px;
+    padding: 12px 20px;
+    margin: 30px 350px 20px 350px;
     border: none;
     color: #cdd6f4;
-    font-weight: bold;
-    background-color: #1e1e2e;
-    /* background: ; */
-   	outline: none;
-    border-radius: 20px;
-    margin: 10px 13px;
-    margin-bottom: 2px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: rgba(49, 50, 68, 0.9);
+    outline: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
+
 #input:focus {
-    border: 0px solid #1e1e2e;
-    margin-bottom: 0px;
+    border: 2px solid rgba(137, 180, 250, 0.5);
+    background-color: rgba(49, 50, 68, 1);
 }
 
-#inner-box {
-    margin: 4px;
-    border: 20px solid #1e1e2e;
-    color: #cdd6f4;
-    font-weight: bold;
-    background-color: #242446;
-    /* background-color: red; */
-    border-radius: 20px;
-}
-
+/* Outer container */
 #outer-box {
     margin: 0px;
-    border: 3px solid #6cbdff;
+    padding: 20px;
+    border: none;
+    border-radius: 24px;
+    background-color: transparent;
+}
+
+/* Inner container for grid */
+#inner-box {
+    margin: 10px 40px;
+    padding: 20px;
+    border: none;
+    background-color: transparent;
     border-radius: 20px;
-    background-color: #1e1e2e;
 }
 
+/* Scrollable area */
 #scroll {
-    margin-top: 5px;
-    border: none;
-    border-radius: 15px;
-    margin-bottom: 5px;
-}
-
-#img{
-    margin-right: 10px;
-}
-
-#img:selected {
-    background-color: #89b4fa;
-    margin-right: 10px;
-    border-radius: 10px;
-}
-
-#text:selected {
-    color: #cdd6f4;
-    color: black;
-    margin: 0px 0px;
-    border: none;
-    border-radius: 10px;
-    background-color: #89b4fa;
-}
-
-#entry {
-    margin: 0px 0px;
+    margin: 10px 0px;
     border: none;
     border-radius: 15px;
     background-color: transparent;
 }
 
-#entry:selected {
-    margin: 0px 0px;
+/* Individual app entry - grid cell */
+#entry {
+    margin: 8px;
+    padding: 12px 8px;
     border: none;
-    border-radius: 5px;
-    background-color: #89b4fa;
+    border-radius: 14px;
+    background-color: transparent;
+}
+
+#entry:selected {
+    margin: 8px;
+    padding: 12px 8px;
+    border: none;
+    border-radius: 14px;
+    background-color: rgba(137, 180, 250, 0.3);
+}
+
+#entry:hover {
+    background-color: rgba(137, 180, 250, 0.15);
+}
+
+/* App icon - display on top */
+#img {
+    margin-right: 8px;
+    margin-bottom: 0px;
+    padding: 0px;
+    background-color: transparent;
+    border-radius: 12px;
+}
+
+#img:selected {
+    background-color: transparent;
+    border-radius: 12px;
+}
+
+/* App name text - display below icon */
+#text {
+    margin: 0px;
+    padding: 0px 4px;
+    color: rgba(205, 214, 244, 0.95);
+    font-size: 12px;
+    font-weight: 400;
+    background-color: transparent;
+}
+
+#text:selected {
+    color: #ffffff;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    border-radius: 0px;
 }

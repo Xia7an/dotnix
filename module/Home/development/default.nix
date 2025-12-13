@@ -8,5 +8,6 @@
     ./dev-tools.nix
     ./dev-apps.nix
     ./biome.nix
+    ./unity.nix
   ];
 }

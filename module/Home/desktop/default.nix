@@ -7,6 +7,7 @@
     ./sway.nix
     ./waybar.nix
     ./wofi.nix
+    ./rofi.nix
     ./wlogout.nix
     ./anyrun
     ./walker.nix
