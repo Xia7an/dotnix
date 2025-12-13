@@ -1,6 +1,5 @@
-{pkgs, ...} : {
+{pkgs, pkgs-stable, ...} : {
   environment.systemPackages = with pkgs; [
-    unityhub
-    jetbrains.rider
+    pkgs-stable.unityhub
   ];
 }

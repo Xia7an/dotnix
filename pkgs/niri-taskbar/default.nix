@@ -13,13 +13,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "niri-taskbar";
-  version = "0.3.0+niri.25.08-unstable-2025-09-19";
+  version = "v0.4.0+niri.25.11";
 
   src = fetchFromGitHub {
     owner = "lawngnome";
     repo = "niri-taskbar";
-    rev = "874ed92a1711422bcaaf635c7c3316edfc6a9d31";
-    hash = "sha256-P1ZD1cxlU/0s73h7qHGCbV29fsAt6r4+9X4PEZ+mOiM=";
+    rev = version;
+    sha256 = "aE5v94AA6bC0CP8pv/SPBxGKpkH+GxR/p7hTKXlvk3E=";
   };
 
   cargoLock.lockFile = "${src}/Cargo.lock";

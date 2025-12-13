@@ -43,7 +43,7 @@ in
   ];
 
   home.file.".local/share/JetBrains/Toolbox/apps/rider" = {
-    source = "${pkgs.jetbrains.rider}/rider";
+    source = "${rider}/rider";
     recursive = true;
   };
 }

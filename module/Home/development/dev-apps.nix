@@ -1,11 +1,8 @@
 { pkgs, ... }: {
   # 開発用アプリケーション
   home.packages = with pkgs; [
-    # Unity Hub
-    unityhub
-
-    # JetBrains Rider
-    jetbrains.rider
+    # Unity Hub / JetBrains Rider は ./unity.nix で統合管理しています。
+    # 追加で常備したい開発系 GUI アプリがあればここに列挙してください。
 
     # GitHub Copilot CLI
     # Nixpkgs では github-copilot-cli として提供されている場合があります

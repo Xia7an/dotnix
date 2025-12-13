@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -18,7 +19,7 @@
     xremap-flake.url = "github:xremap/nix-flake";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, winapps, ... } : let
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, ... } : let
     systems = [ "x86_64-linux" ];
     forEachSystem = nixpkgs.lib.genAttrs systems;
     niriTaskbarOverlay = import ./overlays;
@@ -31,6 +32,10 @@
 
     packages = forEachSystem (system: let
       pkgs = import nixpkgs {
+        inherit system;
+        overlays = overlays;
+      };
+      pkgs-stable = import nixpkgs-stable{
         inherit system;
         overlays = overlays;
       };
@@ -59,6 +64,7 @@
           (
             {
               pkgs,
+              pkgs-stable,
               system ? pkgs.system,
               ...
             }:
@@ -94,6 +100,11 @@
         };
         extraSpecialArgs = {
           inherit inputs;
+          pkgs-stable = import inputs.nixpkgs-stable {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+            overlays = overlays;
+          };
         };
         modules = [
           ./home.nix
