@@ -21,7 +21,11 @@ let
       makeWrapper $out/bin/.rider-toolless $out/bin/rider \
         --argv0 rider \
         --prefix PATH : "${lib.makeBinPath extra-path}" \
-        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath extra-lib}"
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath extra-lib}" \
+        --set DISPLAY :0 \
+        --set GTK_IM_MODULE fcitx \
+        --set QT_IM_MODULE fcitx \
+        --set XMODIFIERS @im=fcitx
 
       # Making Unity Rider plugin work!
       # The plugin expects the binary to be at /rider/bin/rider,
@@ -34,11 +38,46 @@ let
     ''
     + attrs.postInstall or "";
   });
+  # Customized Unity Hub with extra dependencies for Unity Editors
+  unityhub = pkgs.unityhub.override {
+    extraLibs = pkgs: with pkgs; [
+      # Common dependencies for Unity Editors
+      openssl_1_1 # Often needed for older editors or hub login
+      nss
+      nspr
+      cups
+      libcap
+      alsa-lib
+      cairo
+      pango
+      gdk-pixbuf
+      gtk3
+      expat
+      zlib
+      libuuid
+      libxml2
+      libglvnd
+      mesa
+      xorg.libX11
+      xorg.libXcursor
+      xorg.libXrandr
+      xorg.libXinerama
+      xorg.libXi
+      xorg.libXcomposite
+      xorg.libXdamage
+      xorg.libXfixes
+      xorg.libXrender
+      xorg.libXtst
+      xorg.libXScrnSaver
+      wayland
+      icu
+    ];
+  };
 in
 {
   home.packages = [
     rider
-    pkgs-stable.unityhub
+    unityhub
     # (pkgs.callPackage ../packages/custom-unityhub.nix {})
   ];
 

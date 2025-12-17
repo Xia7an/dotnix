@@ -173,13 +173,13 @@ gestures {
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
+    spawn-at-startup "xwayland-satellite" // XWayland support
     spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
     spawn-sh-at-startup "ibus start"
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
     spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
     spawn-sh-at-startup "waybar -c ~/.config/waybar/Top -s ~/.config/waybar/Top.css" // Launch waybar Top
     spawn-sh-at-startup "waybar -c ~/.config/waybar/Bottom -s ~/.config/waybar/Bottom.css" // Launch waybar Top
-    spawn-sh-at-startup "setxkbmap -layout jp -model jp106" // XWaylandでJIS配列を使う
 
 
     prefer-no-csd // Disable program decorations
@@ -269,12 +269,14 @@ gestures {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#environment
 
     environment {
-        DISPLAY ":1"
         ELECTRON_OZONE_PLATFORM_HINT "auto"
         QT_QPA_PLATFORM "wayland"
         QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
         XDG_SESSION_TYPE "wayland"
         XDG_CURRENT_DESKTOP "niri"
+        GTK_IM_MODULE "fcitx"
+        QT_IM_MODULE "fcitx"
+        XMODIFIERS "@im=fcitx"
     }
 
     hotkey-overlay {

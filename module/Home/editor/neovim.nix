@@ -1,100 +1,45 @@
-{
-  pkgs,
-  config,
-  ...
-
-}:
+{pkgs, config, ...} : 
 let
   pwd = (import ../development/pwd.nix { inherit config; }).pwd;
 in
 {
   programs.neovim = {
     enable = true;
+    package = pkgs.neovim-unwrapped;
+
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+
+    # Neovim が必要とする外部ツールだけ
     extraPackages = with pkgs; [
-      # LSP servers
+      # LSP
       lua-language-server
       nil
-      # Formatters
+
+      # Formatter
       stylua
       nixpkgs-fmt
-      # Linters
+
+      # Linter
       statix
-      # Other tools
+
+      # Utilities
       ripgrep
       fd
       lazygit
+      git
     ];
-    plugins = with pkgs.vimPlugins; [ 
-      # UI
-      tokyonight-nvim
-      catppuccin-nvim
-      nvim-web-devicons
-      dressing-nvim
-      bufferline-nvim
-      indent-blankline-nvim
-      mini-nvim
 
-      # File explorer
-      neo-tree-nvim
-      nui-nvim
-      plenary-nvim
-
-      # Editor
-      telescope-nvim
-      telescope-fzf-native-nvim
-      flash-nvim
-      which-key-nvim
-      gitsigns-nvim
-      trouble-nvim
-      todo-comments-nvim
-      vim-illuminate
-
-      # Git
-      vim-fugitive
-
-      # LSP
-      nvim-lspconfig
-      mason-nvim
-      mason-lspconfig-nvim
-      neodev-nvim
-
-      # Completion
-      nvim-cmp
-      luasnip
-      friendly-snippets
-      cmp_luasnip
-      cmp-nvim-lsp
-      cmp-buffer
-      cmp-path
-
-      # Treesitter
-      nvim-treesitter.withAllGrammars
-      nvim-treesitter-textobjects
-
-      # Formatting
-      conform-nvim
-
-      # Linting
-      nvim-lint
-
-      # Coding
-      nvim-autopairs
-      comment-nvim
-      nvim-ts-context-commentstring
-      mini-nvim
-
-      # Utilities
-      noice-nvim
-      nvim-notify
-      toggleterm-nvim
+    # プラグインは lazy.nvim のみ
+    plugins = with pkgs.vimPlugins; [
+      lazy-nvim
     ];
   };
-
-  xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${pwd}/config/nvim";
+   xdg.configFile."nvim" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${pwd}/nvim";
+    recursive = true;
   };
 }

@@ -187,6 +187,8 @@
   nvtopPackages.nvidia
   pciutils
   nodejs
+  unityhub-shell
+  alcom
   ];
 
   services.openssh.enable = true;

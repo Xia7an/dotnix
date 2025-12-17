@@ -141,6 +141,7 @@ window#waybar {
 #backlight,
 #network,
 #pulseaudio,
+#bluetooth,
 #mode,
 #tray,
 #mpris,
@@ -329,6 +330,14 @@ window#waybar {
 }
 
 #pulseaudio {
+  color: @flamingo;
+  /* border-bottom: 2px solid @flamingo; */
+  border-radius: 10px 10px 10px 10px;
+  margin-right: 10px;
+}
+
+
+#bluetooth{
   color: @flamingo;
   /* border-bottom: 2px solid @flamingo; */
   border-radius: 10px 10px 10px 10px;
