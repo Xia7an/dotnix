@@ -17,9 +17,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     xremap-flake.url = "github:xremap/nix-flake";
+    antigravity-nix = {
+      url = "github:jacopone/antigravity-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, ... } : let
+  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, antigravity-nix, ... } : let
     systems = [ "x86_64-linux" ];
     forEachSystem = nixpkgs.lib.genAttrs systems;
     niriTaskbarOverlay = import ./overlays;

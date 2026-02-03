@@ -5,5 +5,6 @@
     ./blender.nix
     ./dolphin.nix
     ./gaming.nix
+    ./univ
   ];
 }

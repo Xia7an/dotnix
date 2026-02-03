@@ -30,11 +30,16 @@ input {
 
 output "DP-2" {
     mode "2560x1440@359.979" // Set resolution and refresh rate
-    position x=0 y=0
+    position x=1920 y=0
     scale 1.2 // No scaling (use 2 for HiDPI)
 }
 output "HDMI-A-1" {
     scale 1 // No scaling (use 2 for HiDPI)
+    position x=4480 y=0
+}
+output "DP-3" {
+    scale 1.2
+    position x=1920 y=0
 }
 
 // ────────────── Keybindings ──────────────

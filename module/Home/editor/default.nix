@@ -3,5 +3,6 @@
   imports = [
     ./neovim.nix
     ./vscode.nix
+    ./antigravity.nix
   ];
 }

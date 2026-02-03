@@ -9,10 +9,15 @@
       stylua
       # Telescope
       ripgrep
+      fd
+      imagemagick
+      lazygit
+      tectonic
+      statix
     ];
-
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
+      nvim-treesitter
     ];
 
     extraLuaConfig =
@@ -28,6 +33,7 @@
           conform-nvim
           dashboard-nvim
           dressing-nvim
+          { name = "dracula.nvim"; path = dracula-nvim; }
           flash-nvim
           friendly-snippets
           gitsigns-nvim
@@ -94,8 +100,8 @@
             -- force enable telescope-fzf-native.nvim
             { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
             -- disable mason.nvim, use programs.neovim.extraPackages
-            { "williamboman/mason-lspconfig.nvim", enabled = false },
-            { "williamboman/mason.nvim", enabled = false },
+            { "mason-org/mason-lspconfig.nvim", enabled = false },
+            { "mason-org/mason.nvim", enabled = false },
             -- import/override with your plugins
             { import = "plugins" },
             -- treesitter handled by xdg.configFile."nvim/parser", put this line at the end of spec to clear ensure_installed
@@ -118,6 +124,6 @@
     in
     "${parsers}/parser";
 
-  # # Normal LazyVim config here, see https://github.com/LazyVim/starter/tree/main/lua
-  # xdg.configFile."nvim/lua".source = ./lua;
+  # Normal LazyVim config here, see https://github.com/LazyVim/starter/tree/main/lua
+  xdg.configFile."nvim/lua".source = ./lua;
 }
