@@ -36,7 +36,7 @@
       #================================#
       "$terminal" = "kitty";
       "$fileManager" = "nautilus";
-      "$menu" = "anyrun --plugins ~/dotnix/config/anyrun/plugins/libapplications.so --plugins libwebsearch.so";
+      "$menu" = "wofi --show drun --style ~/.config/wofi/menu.css";
 
       #================================#
       # Autostart
