@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
   home.packages = [
-    pkgs.hyprswitch
+    pkgs.hyprshell
   ];
 
   wayland.windowManager.hyprland.settings.bind = lib.mkAfter [
