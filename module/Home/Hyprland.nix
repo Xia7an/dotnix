@@ -173,6 +173,7 @@
       # Window and Layer Rules
       #================================#
       windowrule = [
+        "float, class:.*"
         "opacity 0.85, class:kitty"
         "opacity 0.85, class:rofi"
         "suppressevent maximize, class:.*"
@@ -206,6 +207,7 @@
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, space, exec, $menu"
+        "$mainMod SHIFT, space, togglefloating,"
         "$mainMod, F, fullscreen"
         "$mainMod, W, exec, wlogout"
         "$mainMod CTRL, S, exec, rofi-screenshot"
