@@ -291,7 +291,7 @@
     #================================#
     # `submap`は特殊な構文のため、extraConfigで直接記述するのが最も安全です。
     extraConfig = ''
-      bind = LALT,SPACE,submap, mousekb
+      bind = LALT, M, submap, mousekb
       submap = mousekb
       binde = , h, exec, sudo ydotool mousemove -- -$STEP 0
       binde = , j, exec, sudo ydotool mousemove -- 0 $STEP
@@ -299,6 +299,7 @@
       binde = , l, exec, sudo ydotool mousemove -- $STEP 0
       binde = LALT, j, exec, sudo ydotool click 0x40
       binde = LALT, k, exec, sudo ydotool click 0x80
+      bind = LALT, M, submap, reset
       bind = , escape, submap, reset
       submap = reset
     '';
