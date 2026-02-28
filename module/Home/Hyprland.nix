@@ -2,6 +2,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./HyprSwitch.nix
+  ];
+
   # この設定で使われているプログラムをインストールします。
   # dolphin, walker, wlogout, rofi-screenshot(パッケージ名による), ydotool など、
   # 不足しているものがあればここに追加してください。
