@@ -5,7 +5,8 @@
   "margin": "0 0 0 0",
   //"width": 1350, // Waybar width
   // Choose the order of the modules idle_inhibitor
- 
+  
+  "modules-right" : ["tray", "network"]
   "modules-center": ["cffi/niri-taskbar"],
  
 

@@ -42,7 +42,6 @@
       # Autostart
       #================================#
       exec-once = [
-        "waybar"
         "hyprpaper"
         "sunshine"
         "ibus-daemon --xim --daemonize --replace"  # IBusデーモンを起動

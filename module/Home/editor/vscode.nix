@@ -50,8 +50,6 @@ in
       tomoki1207.pdf
       # nvarner.typst-lsp  # 利用可能な場合
 
-      # Unity
-      VisualStudioToolsForUnity.vstuc
 
       # 便利拡張
       usernamehw.errorlens
