@@ -2,6 +2,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./HyprSwitch.nix
+  ];
+
   # この設定で使われているプログラムをインストールします。
   # dolphin, walker, wlogout, rofi-screenshot(パッケージ名による), ydotool など、
   # 不足しているものがあればここに追加してください。
@@ -36,7 +40,7 @@
       #================================#
       "$terminal" = "kitty";
       "$fileManager" = "nautilus";
-      "$menu" = "anyrun --plugins ~/dotnix/config/anyrun/plugins/libapplications.so --plugins libwebsearch.so";
+      "$menu" = "wofi --show drun --style ~/.config/wofi/menu.css";
 
       #================================#
       # Autostart
@@ -172,6 +176,7 @@
       # Window and Layer Rules
       #================================#
       windowrule = [
+        "float, class:.*"
         "opacity 0.85, class:kitty"
         "opacity 0.85, class:rofi"
         "suppressevent maximize, class:.*"
@@ -194,11 +199,6 @@
         };
       };
 
-      gestures = {
-        workspace_swipe = false;
-      };
-
-
       #================================#
       # Keybindings
       #================================#
@@ -210,6 +210,7 @@
         "$mainMod, M, exit,"
         "$mainMod, E, exec, $fileManager"
         "$mainMod, space, exec, $menu"
+        "$mainMod SHIFT, space, togglefloating,"
         "$mainMod, F, fullscreen"
         "$mainMod, W, exec, wlogout"
         "$mainMod CTRL, S, exec, rofi-screenshot"
@@ -295,7 +296,7 @@
     #================================#
     # `submap`は特殊な構文のため、extraConfigで直接記述するのが最も安全です。
     extraConfig = ''
-      bind = LALT,SPACE,submap, mousekb
+      bind = LALT, M, submap, mousekb
       submap = mousekb
       binde = , h, exec, sudo ydotool mousemove -- -$STEP 0
       binde = , j, exec, sudo ydotool mousemove -- 0 $STEP
@@ -303,6 +304,7 @@
       binde = , l, exec, sudo ydotool mousemove -- $STEP 0
       binde = LALT, j, exec, sudo ydotool click 0x40
       binde = LALT, k, exec, sudo ydotool click 0x80
+      bind = LALT, M, submap, reset
       bind = , escape, submap, reset
       submap = reset
     '';
