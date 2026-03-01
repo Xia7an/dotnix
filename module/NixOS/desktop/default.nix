@@ -7,6 +7,8 @@
     ./thunderbird.nix
     ./kdeconnect.nix
     ./niri.nix
+    ./apps.nix
+    ./xremap.nix
   ];
   
   programs.ydotool.enable = true;
@@ -24,7 +26,7 @@
     waybar
     mpv
     playerctl
-    anyrun
+    # anyrun は Home Manager で管理
 #    rofi-power-menu
 #    rofi-wayland
     wl-clipboard
@@ -43,6 +45,7 @@
   services.dbus.enable = true;
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
   };
 }

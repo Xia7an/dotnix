@@ -8,20 +8,14 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Atropos-SSD-hardware.nix
+      
+      # カテゴリーごとに整理されたモジュール
       ./module/NixOS/desktop
       ./module/NixOS/develop
-      ./module/NixOS/utils.nix
-      ./module/NixOS/Sunshine.nix
-      ./module/NixOS/gaming.nix
-      ./module/NixOS/gemini.nix
-      ./module/NixOS/ollama.nix
-      ./module/NixOS/dolphin.nix
-      ./module/NixOS/QEMU.nix
-      ./module/NixOS/docker.nix
-      ./module/NixOS/parsec.nix
-      ./module/NixOS/blender.nix
-      ./module/NixOS/stock-ticker.nix
+      ./module/NixOS/system
+      ./module/NixOS/apps
       ./module/NixOS/windows
+      ./module/NixOS/input
     ];
 
   # Bootloader.
@@ -31,6 +25,10 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
   boot.loader.grub.theme = ./misc/Vimix;
+  # Ensure NVIDIA kernel modules are loaded early so the GPU has a driver
+  # bound to it. This helps avoid "driver (null)" and EGL/DRI errors.
+  boot.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  # Explicitly set the DRM/KMS parameters so Wayland compositors can open the
 
   security.sudo = {
     enable = true;
@@ -47,9 +45,19 @@
     ];
   };
 
-  hardware.graphics.enable = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.open = true;  # see the note above
+  
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = true;  # Turing世代なので通常は proprietary driver
+    forceFullCompositionPipeline = true;
+  };
 
   networking.hostName = "Atropos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -80,6 +88,7 @@
     };
   };
 
+
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
   time.hardwareClockInLocalTime = true;
@@ -100,33 +109,48 @@
   };
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
-      #noto-fonts-emoji
+      noto-fonts-color-emoji
+      twitter-color-emoji
+      source-han-sans
+      source-han-serif
+      jetbrains-mono
       hackgen-nf-font
+      nerd-fonts._0xproto
+      orbitron
       rounded-mgenplus
     ];
     fontDir.enable = true;
     fontconfig = {
       defaultFonts = {
-        serif = ["Noto Serif CJK JP" "Noto Color Emoji"];
-        sansSerif = ["Noto Sans CJK JP" "Noto Color Emoji"];
-        monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
-        emoji = ["Noto Color Emoji"];
+        serif = [
+          "Noto Serif CJK JP"
+          "Noto Color Emoji"
+        ];
+        sansSerif = [
+          "Noto Sans CJK JP"
+          "Noto Color Emoji"
+        ];
+        monospace = [
+          "HackGen Console NF"
+          "Noto Color Emoji"
+        ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };
 
   # Configure keymap in X11
-  #services.xserver.xkb = {
-  #  layout = "jp";
-  #  variant = "";
-  #};
+  services.xserver.xkb = {
+    layout = "jp";
+    variant = "";
+  };
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "inoyu";
+  services.displayManager.gdm.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "inoyu";
   programs.fish.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -150,6 +174,7 @@
   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   wget
   eza
+  vulkan-tools
   bat
   ripgrep
   zsh-powerlevel10k
@@ -161,6 +186,9 @@
   extra-cmake-modules
   nvtopPackages.nvidia
   pciutils
+  nodejs
+  unityhub-shell
+  alcom
   ];
 
   services.openssh.enable = true;
@@ -192,12 +220,13 @@
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [22 47984 47989 47990 48010 ];
+    allowedTCPPorts = [22 3389 47984 47989 47990 48010 ];
+
     allowedUDPPortRanges = [
       { from = 47998; to = 48000; }
       { from = 8000; to = 8010; }
     ];
-    allowedUDPPorts = [config.services.tailscale.port];
+    allowedUDPPorts = [config.services.tailscale.port 3389];
     trustedInterfaces = ["tailscale0"];
   };
   # networking.firewall.allowedUDPPorts = [ ... ];

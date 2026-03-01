@@ -7,8 +7,8 @@
 input {
     keyboard {
         xkb {
-            layout "jp" // Use the German keyboard layout
-            options "ctrl:nocaps"
+            layout "jp" // 日本語キーボードレイアウト
+            model "jp106" // 日本語106/109キーボードモデル
         }
         numlock // Enable numlock on startup
     }
@@ -18,9 +18,9 @@ input {
         natural-scroll // Enable natural (macOS-style) scrolling
     }
 
-    focus-follows-mouse // Automatically focus windows under the mouse pointer
+    // focus-follows-mouse // Automatically focus windows under the mouse pointer
     workspace-auto-back-and-forth // Enable workspace back & forth switching
-    mod-key "Alt"
+    mod-key "Super"
 }
 
 // ────────────── Output Configuration ──────────────
@@ -28,9 +28,17 @@ input {
 // You will have to remove "/-" and edit it before it takes effect.
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Outputs
 
-/- output "DP-1" {
+output "DP-2" {
     mode "2560x1440@359.979" // Set resolution and refresh rate
+    position x=1920 y=0
+    scale 1.2 // No scaling (use 2 for HiDPI)
+}
+output "HDMI-A-1" {
     scale 1 // No scaling (use 2 for HiDPI)
+    position x=4480 y=0
+}
+output "DP-3" {
+    position x=0 y=0
 }
 
 // ────────────── Keybindings ──────────────
@@ -41,7 +49,7 @@ binds {
 
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: alacritty" { spawn-sh "alacritty"; }
-    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: wofi" { spawn-sh "wofi --show drun --style ~/.config/wofi/menu.css"; }
+    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: wofi" { spawn-sh "rofi -show drun -theme ~/.config/rofi/themes/shiroha_icons.rasi"; }
     MOD+B                               hotkey-overlay-title="Open Browser: firefox" { spawn-sh "firefox"; }
     // MOD+ALT+L                           hotkey-overlay-title="Lock Screen: swaylock" { spawn-sh "swaylock"; }
     
@@ -51,8 +59,8 @@ binds {
     // ─── Audio Controls ───
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume                allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
-    XF86AudioLowerVolume                allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    XF86AudioRaiseVolume                allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+"; }
+    XF86AudioLowerVolume                allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-"; }
     XF86AudioMute                       allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
     XF86AudioMicMute                    allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
     XF86AudioNext                       allow-when-locked=true { spawn-sh "playerctl next"; }
@@ -62,7 +70,7 @@ binds {
 
     // ─── Window Movement and Focus ───
     MOD+Q                               { close-window; }
-    Mod+R                               { switch-preset-column-width; }
+    MOD+R                             { switch-preset-column-width; }
 
     MOD+LEFT                            { focus-column-left; }
     MOD+H                               { focus-column-left; }
@@ -73,13 +81,9 @@ binds {
     MOD+DOWN                            { focus-window-down; }
     MOD+J                               { focus-window-down; }
 
-    MOD+CTRL+LEFT                       { move-column-left; }
     MOD+CTRL+H                          { move-column-left; }
-    MOD+CTRL+RIGHT                      { move-column-right; }
     MOD+CTRL+L                          { move-column-right; }
-    MOD+CTRL+UP                         { move-window-up; }
     MOD+CTRL+K                          { move-window-up; }
-    MOD+CTRL+DOWN                       { move-window-down; }
     MOD+CTRL+J                          { move-window-down; }
 
     MOD+HOME                            { focus-column-first; }
@@ -87,15 +91,15 @@ binds {
     MOD+CTRL+HOME                       { move-column-to-first; }
     MOD+CTRL+END                        { move-column-to-last; }
 
-    MOD+SHIFT+LEFT                      { focus-monitor-left; }
-    MOD+SHIFT+RIGHT                     { focus-monitor-right; }
-    MOD+SHIFT+UP                        { focus-monitor-up; }
-    MOD+SHIFT+DOWN                      { focus-monitor-down; }
+    MOD+SHIFT+H                      { focus-monitor-left; }
+    MOD+SHIFT+L                     { focus-monitor-right; }
+    MOD+SHIFT+K                        { focus-monitor-up; }
+    MOD+SHIFT+J                      { focus-monitor-down; }
 
-    MOD+SHIFT+CTRL+LEFT                 { move-column-to-monitor-left; }
-    MOD+SHIFT+CTRL+RIGHT                { move-column-to-monitor-right; }
-    MOD+SHIFT+CTRL+UP                   { move-column-to-monitor-up; }
-    MOD+SHIFT+CTRL+DOWN                 { move-column-to-monitor-down; }
+    MOD+SHIFT+CTRL+H{ move-column-to-monitor-left; }
+    MOD+SHIFT+CTRL+L{ move-column-to-monitor-right; }
+    MOD+SHIFT+CTRL+K{ move-column-to-monitor-up; }
+    MOD+SHIFT+CTRL+J{ move-column-to-monitor-down; }
 
     // ─── Workspace Switching ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
@@ -133,7 +137,6 @@ binds {
     MOD+CTRL+8                          { move-column-to-workspace 8; }
     MOD+CTRL+9                          { move-column-to-workspace 9; }
 
-    MOD+TAB                             { focus-workspace-previous; }
 
     // ─── Layout Controls ───
     MOD+CTRL+F                          { expand-column-to-available-width; }
@@ -147,7 +150,7 @@ binds {
     // ─── Modes ───
     MOD+T                               { toggle-window-floating; }
     MOD+F                               { fullscreen-window; }
-    MOD+W                               { toggle-column-tabbed-display; }
+    MOD+W                               { spawn-sh "wlogout"; }
 
     // ─── Screenshots ───
     CTRL+SHIFT+1                        { screenshot; }
@@ -162,7 +165,7 @@ binds {
     // ─── Exit / Power ───
     CTRL+ALT+DELETE                     { quit; } // Also quits Niri
     MOD+SHIFT+P                         { power-off-monitors; } // Turn off screens (useful for OLED or privacy)
-    MOD+O                               repeat=false { toggle-overview; }
+    MOD+TAB                             repeat=false { toggle-overview; }
 }
 
 gestures {
@@ -174,10 +177,14 @@ gestures {
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
+    spawn-at-startup "xwayland-satellite" // XWayland support
     spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
+    spawn-sh-at-startup "ibus start"
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
-    spawn-sh-at-startup "swww img /usr/share/wallpapers/cachyos-wallpapers/Skyscraper.png" // Set wallpaper
-    spawn-sh-at-startup "waybar" // Launch waybar
+    spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
+    spawn-sh-at-startup "waybar -c ~/.config/waybar/Top -s ~/.config/waybar/Top.css" // Launch waybar Top
+    spawn-sh-at-startup "waybar -c ~/.config/waybar/Bottom -s ~/.config/waybar/Bottom.css" // Launch waybar Top
+
 
     prefer-no-csd // Disable program decorations
     screenshot-path null // Disable screenshot saving
@@ -186,7 +193,7 @@ gestures {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 
     layout {
-        gaps 16 // Gap between windows
+        gaps 4 // Gap between windows
         center-focused-column "never" // Don’t auto-center focused column
 
         preset-column-widths {
@@ -254,21 +261,17 @@ gestures {
     }
 
     window-rule {
-        geometry-corner-radius 20 // Set every window radius to 20
+        geometry-corner-radius 0 // Set every window radius to 20
         clip-to-geometry true
+    }
+
+    overview {
+        zoom 0.4
     }
 
 // ────────────── Environment Variables ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#environment
 
-    environment {
-        DISPLAY ":1"
-        ELECTRON_OZONE_PLATFORM_HINT "auto"
-        QT_QPA_PLATFORM "wayland"
-        QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
-        XDG_SESSION_TYPE "wayland"
-        XDG_CURRENT_DESKTOP "niri"
-    }
 
     hotkey-overlay {
         skip-at-startup

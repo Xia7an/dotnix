@@ -1,0 +1,22 @@
+style = ~/.config/wofi/menu.css
+
+width=800
+height=600
+location=center
+show=drun
+prompt=Search Apps...
+filter_rate=100
+allow_markup=true
+no_actions=true
+halign=fill
+orientation=vertical
+content_halign=fill
+insensitive=true
+allow_images=true
+image_size=48
+gtk_dark=true
+columns=1
+lines=10
+matching=fuzzy
+hide_scroll=false
+mode=drun

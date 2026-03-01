@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware/Nyx-hardware.nix
-      ./module/NixOS/desktop.nix
+      ./module/NixOS/desktop
     ];
 
   # Bootloader.
@@ -48,7 +48,7 @@
     fcitx5.addons = [pkgs.fcitx5-mozc];
   };
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts-cjk-serif
       noto-fonts-cjk-sans
       noto-fonts-emoji
@@ -71,9 +71,9 @@
     variant = "";
   };
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
+  services.displayManager.gdm.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.inoyu = {
     isNormalUser = true;
     description = "Inoyu";
