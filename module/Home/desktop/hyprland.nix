@@ -111,7 +111,7 @@
       };
 
       decoration = {
-        rounding = 10;
+        rounding = 0;
         rounding_power = 2;
         active_opacity = 1.0;
         inactive_opacity = 1.0;
@@ -175,15 +175,16 @@
       #================================#
       # Window and Layer Rules
       #================================#
-      windowrule = [
+      windowrulev2 = [
         "float, class:.*"
-        "opacity 0.85, class:kitty"
-        "opacity 0.85, class:rofi"
+        "opacity 0.85, class:(kitty)"
+        "opacity 0.85, class:(rofi)"
         "suppressevent maximize, class:.*"
         "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
       ];
       layerrule = [
         "blur, swaync-control-center"
+        "blur, swaync-notification-window"
       ];
 
       #================================#

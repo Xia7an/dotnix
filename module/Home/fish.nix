@@ -1,0 +1,18 @@
+{pkgs, ...}: {
+  programs.fish = {
+    enable = true;
+    shellAliases = {
+      cat = "bat";
+      grep = "rg";
+      ls = "eza --icons always --classify always";
+      la = "eza --icons always --classify always --all ";
+      ll = "eza --icons always --long --all --git ";
+      tree = "eza --icons always --classify always --tree";
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+}
