@@ -121,12 +121,10 @@
           render_power = 3;
           color = "rgba(1a1a1aee)";
         };
-        blur = {
-          enabled = true;
-          size = 3;
-          passes = 1;
-          vibrancy = 0.1696;
-        };
+        "blur:enabled" = true;
+        "blur:size" = 3;
+        "blur:passes" = 1;
+        "blur:vibrancy" = 0.1696;
       };
 
       animations = {
@@ -175,7 +173,7 @@
       #================================#
       # Window and Layer Rules
       #================================#
-      windowrulev2 = [
+      windowrule = [
         "float, class:.*"
         "opacity 0.85, class:(kitty)"
         "opacity 0.85, class:(rofi)"
