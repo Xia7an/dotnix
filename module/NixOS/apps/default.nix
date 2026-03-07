@@ -1,7 +1,7 @@
-# Application modules for NixOS
+# NixOS レベルのアプリケーション設定
+# Discord は Wayland ラッパーが必要なため Home Manager 側 (module/Home/apps/discord.nix) で管理する
 {
   imports = [
-    ./discord.nix
     ./blender.nix
     ./dolphin.nix
     ./gaming.nix

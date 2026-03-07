@@ -2,7 +2,7 @@
 {pkgs, lib, ...}:{
   imports = [
     ./niri.nix
-    ./hyprland.nix
+    # ./hyprland.nix
     ./hyprlock.nix
     ./sway.nix
     ./waybar.nix

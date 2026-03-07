@@ -38,46 +38,14 @@ let
     ''
     + attrs.postInstall or "";
   });
-  # Customized Unity Hub with extra dependencies for Unity Editors
-  unityhub = pkgs.unityhub.override {
-    extraLibs = pkgs: with pkgs; [
-      # Common dependencies for Unity Editors
-      openssl_1_1 # Often needed for older editors or hub login
-      nss
-      nspr
-      cups
-      libcap
-      alsa-lib
-      cairo
-      pango
-      gdk-pixbuf
-      gtk3
-      expat
-      zlib
-      libuuid
-      libxml2
-      libglvnd
-      mesa
-      xorg.libX11
-      xorg.libXcursor
-      xorg.libXrandr
-      xorg.libXinerama
-      xorg.libXi
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXfixes
-      xorg.libXrender
-      xorg.libXtst
-      xorg.libXScrnSaver
-      wayland
-      icu
-    ];
-  };
 in
 {
   home.packages = [
     rider
-    unityhub
+    # unityhub は NixOS モジュール (module/NixOS/develop/unity.nix) がシステム全体に
+    # overlay パッチ済み (libxml2 shim 含む) のものをインストールするため、
+    # ここで再定義すると overlay の修正が失われて PATH で先に見つかる壊れた版が使われてしまう。
+    # unityhub と unityhub-shell は NixOS 側に任せる。
     # (pkgs.callPackage ../packages/custom-unityhub.nix {})
   ];
 

@@ -63,6 +63,7 @@ final: prev: {
       nspr
       nss
       openssl
+      openssl_1_1  # Unity Editor の内蔵 .NET ランタイムが libssl.so.1.1 を要求するため必要
       pango
       udev
       vulkan-loader

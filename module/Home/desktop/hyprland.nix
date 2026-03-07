@@ -1,5 +1,5 @@
 # hyprland.nix
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -22,7 +22,8 @@
     # Hyprlandのプラグインを使用している場合、ここに追加します
     # 例: plugins = [ pkgs.hyprland-plugins.hyprexpo ];
     plugins = [
-      pkgs.hyprlandPlugins.hyprbars
+      # hyprbars は Hyprland HEAD との API 非互換のため一時的に無効化
+      # inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
     ];
 
     settings = {
@@ -78,23 +79,19 @@
           gesture_distance = 300;
           gesture_positive = true;
         };
-        hyprbars = {
-          bar_height = 24;
-          bar_color = "rgba(333333ff)";
-          bar_blur = true;
-          bar_precedence_over_border = false;
-          bar_buttons_alignment = "left";
-          bar_button_padding = 4;
-          bar_text_font = "Rounded Mgen+ 2m";
-          bar_text_size = 14;
-          title_color = "rgb(94abcc)";
-          bar_part_of_window = false;
-          #"hyprbars-button" = [
-          #  "rgb(ff4040), 16, 󰖭, hyprctl dispatch killactive, rgb(ffffff)"
-          #  "rgb(11ee33), 16, , hyprctl dispatch fullscreen, rgb(ffffff)"
-          #  "rgb(eeee11), 16, , hyprctl dispatch fullscreen 1, rgb(ffffff)"
-          #];
-        };
+        # hyprbars は無効化中のためコメントアウト
+        # hyprbars = {
+        #   bar_height = 24;
+        #   bar_color = "rgba(333333ff)";
+        #   bar_blur = true;
+        #   bar_precedence_over_border = false;
+        #   bar_buttons_alignment = "left";
+        #   bar_button_padding = 4;
+        #   bar_text_font = "Rounded Mgen+ 2m";
+        #   bar_text_size = 14;
+        #   title_color = "rgb(94abcc)";
+        #   bar_part_of_window = false;
+        # };
       };
 
       #================================#

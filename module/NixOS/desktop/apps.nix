@@ -1,26 +1,21 @@
+# NixOS レベルで管理するデスクトップアプリケーション
+# ブラウザ・Discord などユーザー設定が必要なものは module/Home/apps/ で管理する
 { config, pkgs, ... }:
-
 {
-  # デスクトップアプリケーション群
   environment.systemPackages = with pkgs; [
-    # メール/チャット
+    # メール
     thunderbird
-    discord
 
-    # ドキュメント/ビューワ
-    kdePackages.okular # Qt6 版 Okular
+    # ドキュメント・ビューア
+    kdePackages.okular
 
     # ファイルマネージャー
     nautilus
     gnome-text-editor
-    sushi # Nautilus のプレビュー機能
+    sushi       # Nautilus のプレビュー機能
 
-    # Notion と Obsidian (AppImage または公式パッケージ)
-    # Notion は公式 Electron アプリ、Obsidian は Nix で利用可能
+    # ノート・知識管理
     obsidian
-    notion-app-enhanced# 必要に応じて追加
-
-    # ネットワーク管理
-    networkmanagerapplet # nm-applet
+    notion-app-enhanced
   ];
 }

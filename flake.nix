@@ -53,6 +53,16 @@
       (import inputs.rust-overlay)
       niriTaskbarOverlay
     ];
+
+    # pkgs インスタンスの共通設定
+    mkPkgs = system: import nixpkgs {
+      inherit system;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [ "openssl-1.1.1w" ];
+      };
+      overlays = overlays;
+    };
   in {
     overlays.default = niriTaskbarOverlay;
 
@@ -61,79 +71,49 @@
         inherit system;
         overlays = overlays;
       };
-      pkgs-stable = import nixpkgs-stable{
-        inherit system;
-        overlays = overlays;
-      };
     in {
       niri-taskbar = pkgs.niri-taskbar;
-      default = pkgs.niri-taskbar;
+      default      = pkgs.niri-taskbar;
     });
 
+    # ─────────────────────────────────────────
+    # NixOS ホスト設定
+    # 各ホストの詳細は hosts/<HostName>/default.nix を参照
+    # ─────────────────────────────────────────
     nixosConfigurations = {
       Nyx = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
           ({ ... }: { nixpkgs.overlays = overlays; })
-          ./Nyx.nix
+          ./hosts/Nyx
         ];
       };
-      Atropos = inputs.nixpkgs.lib.nixosSystem rec {
+
+      Atropos = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
+        specialArgs = { inherit inputs; };
         modules = [
           ({ ... }: { nixpkgs.overlays = overlays; })
           inputs.xremap-flake.nixosModules.default
-          ./Atropos.nix
-          (
-            {
-              pkgs,
-              pkgs-stable,
-              system ? pkgs.system,
-              ...
-            }:
-            {
-              environment.systemPackages = [
-                winapps.packages."x86_64-linux".winapps
-                winapps.packages."x86_64-linux".winapps-launcher # optional
-              ];
-            }
-          )
+          ./hosts/Atropos
         ];
       };
     };
+
+    # ─────────────────────────────────────────
+    # Home Manager 設定
+    # 共通設定: home.nix → module/Home/ 以下の各モジュール
+    # ─────────────────────────────────────────
     homeConfigurations = {
       NyxHome = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config = {
-            allowUnfree = true; # プロプライエタリなパッケージを許可
-            permittedInsecurePackages = [
-              "openssl-1.1.1w"
-            ];
-          };
-          overlays = overlays;
-        };
-        extraSpecialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          ./home.nix
-        ];
+        pkgs = mkPkgs "x86_64-linux";
+        extraSpecialArgs = { inherit inputs; };
+        modules = [ ./home.nix ];
       };
+
       AtroposHome = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = import inputs.nixpkgs {
-          system = "x86_64-linux";
-          config = {
-            allowUnfree = true; # プロプライエタリなパッケージを許可
-            permittedInsecurePackages = [
-              "openssl-1.1.1w"
-            ];
-          };
-          overlays = overlays;
-        };
+        pkgs = mkPkgs "x86_64-linux";
         extraSpecialArgs = {
           inherit inputs;
           pkgs-stable = import inputs.nixpkgs-stable {
@@ -142,9 +122,7 @@
             overlays = overlays;
           };
         };
-        modules = [
-          ./home.nix
-        ];
+        modules = [ ./home.nix ];
       };
     };
   };
