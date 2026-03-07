@@ -6,5 +6,6 @@
     ./fish.nix
     ./starship.nix
     ./zsh.nix
+    ./tmux.nix
   ];
 }

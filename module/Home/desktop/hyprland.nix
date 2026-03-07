@@ -49,6 +49,7 @@
         "hyprpaper"
         "sunshine"
         "ibus-daemon --xim --daemonize --replace"  # IBusデーモンを起動
+        "waybar -c ~/.config/waybar/Top -s ~/.config/waybar/Top.css"
         "swaync"
         "hyprpm reload -n"
         "discord"
@@ -174,16 +175,16 @@
       # Window and Layer Rules
       #================================#
       windowrule = [
-        "float, class:.*"
-        "opacity 0.85, class:(kitty)"
-        "opacity 0.85, class:(rofi)"
-        "suppressevent maximize, class:.*"
-        "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+        # "float, class:.*"
+        # "opacity 0.85, class:(kitty)"
+        # "opacity 0.85, class:(rofi)"
+        #"suppressevent maximize, class:.*"
+        #"nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
       ];
-      layerrule = [
-        "blur, swaync-control-center"
-        "blur, swaync-notification-window"
-      ];
+      # layerrule = [
+      #   "blur, swaync-control-center"
+      #   "blur, swaync-notification-window"
+      # ];
 
       #================================#
       # Input

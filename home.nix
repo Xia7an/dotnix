@@ -1,5 +1,6 @@
 { inputs, pkgs, ... } : {
   imports = [
+    inputs.tmux-nix.homeModules.tmux-nix
     # カテゴリーごとに整理されたモジュール
     ./module/Home/terminal
     ./module/Home/editor

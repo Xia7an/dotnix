@@ -12,5 +12,6 @@
     ./anyrun
     ./walker.nix
     ./swww.nix
+    ./noctalia.nix
   ];
 }
