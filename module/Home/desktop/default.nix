@@ -10,6 +10,7 @@
     ./rofi.nix
     ./wlogout.nix
     ./anyrun
+    ./logi.nix
     ./walker.nix
     ./swww.nix
     ./noctalia.nix

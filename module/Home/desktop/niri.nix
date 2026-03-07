@@ -3,6 +3,11 @@
     source = ../../../config/niri;
     recursive = true;
   };
+
+  home.packages = with pkgs; [
+    niriswitcher
+  ];
+
   # 1. dconf/GSettings を有効にする
   # これにより、GSettingsスキーマがコンパイルされ、
   # 関連する環境変数 (GSETTINGS_SCHEMA_DIR) が設定されます。

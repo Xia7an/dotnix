@@ -30,6 +30,9 @@
   boot.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   # Explicitly set the DRM/KMS parameters so Wayland compositors can open the
 
+  # NTFS support
+  boot.supportedFilesystems = [ "ntfs" ];
+
   security.sudo = {
     enable = true;
     extraRules = [
