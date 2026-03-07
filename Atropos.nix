@@ -190,7 +190,6 @@
   nvtopPackages.nvidia
   pciutils
   nodejs
-  unityhub-shell
   alcom
   ];
 

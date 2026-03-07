@@ -93,5 +93,17 @@ final: prev: {
       export XMODIFIERS=@im=fcitx
       export QT_PLUGIN_PATH="${prev.libsForQt5.fcitx5-qt}/lib/qt-5.15/plugins:$QT_PLUGIN_PATH"
     '';
+    # With the default runScript = "bash", calling `unityhub-shell /path/to/binary arg`
+    # would run `bash /path/to/binary arg` — treating the Unity ELF binary as a shell
+    # script, which fails immediately. This runScript forwards all arguments to exec
+    # directly so that launcher wrappers can call:
+    #   exec unityhub-shell "$editor_path" "$@"
+    runScript = prev.writeShellScript "unity-shell-run" ''
+      if [ "$#" -gt 0 ]; then
+        exec "$@"
+      else
+        exec ${prev.bash}/bin/bash
+      fi
+    '';
   };
 }
