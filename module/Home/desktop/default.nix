@@ -4,14 +4,14 @@
     ./niri.nix
     # ./hyprland.nix
     ./hyprlock.nix
-    ./sway.nix
+    # ./sway.nix
     ./waybar.nix
-    ./wofi.nix
+    # ./wofi.nix
     ./rofi.nix
     ./wlogout.nix
-    ./anyrun
+    # ./anyrun
     ./logi.nix
-    ./walker.nix
+    # ./walker.nix
     ./swww.nix
     ./noctalia.nix
   ];

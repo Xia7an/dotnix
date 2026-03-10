@@ -37,4 +37,14 @@
     theme.name = "Adwaita"; # 例: 好きなテーマ名
     iconTheme.name = "Adwaita"; # 例: 好きなアイコンテーマ名
   };
+  home.file.".config/hypr/hyprpaper.conf" = {
+    source = ../../../config/hypr/hyprpaper.conf;
+  };
+  home.file.".config/hypr/shiroha.png" = {
+    source = ../../../config/hypr/shiroha.png;
+  };
+  home.file.".config/rofi" = {
+    source = ../../../config/rofi;
+    recursive = true;
+  };
 }

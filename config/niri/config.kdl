@@ -51,8 +51,8 @@ binds {
 
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: alacritty" { spawn-sh "alacritty"; }
-    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: wofi" { spawn-sh "rofi -show drun -theme ~/.config/rofi/themes/shiroha_icons.rasi"; }
-    MOD+B                               hotkey-overlay-title="Open Browser: firefox" { spawn-sh "firefox"; }
+    // MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "rofi -show drun -theme ~/.config/rofi/themes/shiroha_icons.rasi"; }
+    MOD+SPACE                           hotkey-overlay-title="Open Noctalia App launcher" { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     // MOD+ALT+L                           hotkey-overlay-title="Lock Screen: swaylock" { spawn-sh "swaylock"; }
     
     // Please choose your own file manager
@@ -98,10 +98,10 @@ binds {
     MOD+SHIFT+K                        { focus-monitor-up; }
     MOD+SHIFT+J                      { focus-monitor-down; }
 
-    MOD+SHIFT+CTRL+H{ move-column-to-monitor-left; }
-    MOD+SHIFT+CTRL+L{ move-column-to-monitor-right; }
-    MOD+SHIFT+CTRL+K{ move-column-to-monitor-up; }
-    MOD+SHIFT+CTRL+J{ move-column-to-monitor-down; }
+    MOD+ALT+H{ move-column-to-monitor-left; }
+    MOD+ALT+L{ move-column-to-monitor-right; }
+    MOD+ALT+K{ move-column-to-monitor-up; }
+    MOD+ALT+J{ move-column-to-monitor-down; }
 
     // ─── Workspace Switching ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
