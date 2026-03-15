@@ -9,7 +9,7 @@
 
     # ハードウェア設定
     ../../hardware/anemoi.nix
-
+    inputs.nixos-hardware.nixosModules.microsoft-surface-common
     # 機能モジュール (module/NixOS/ 以下)
     ../../module/NixOS/desktop
     ../../module/NixOS/development
@@ -34,39 +34,49 @@
   # Windows とのデュアルブートのためハードウェアクロックをローカル時刻に
   time.hardwareClockInLocalTime = true;
 
-  services.upower.enable = true;
-  microsoft-surface.kernel.enable = true;
-  microsoft-surface.ipts.enable = true; # タッチスクリーンを使う場合
+  # ───────────────────────────────────────────
+  # 1. Surface 固有設定 (nixos-hardware を利用)
+  # ───────────────────────────────────────────
+  # microsoft-surface-common モジュールが提供するオプション:
+  #   hardware.microsoft-surface.kernelVersion: "longterm"(デフォルト) or "stable"
+  hardware.microsoft-surface.kernelVersion = "stable";
 
-  # 2. ファームウェアの許可
-  hardware.enableRedistributableFirmware = true;
+  # タッチスクリーン / Surface ペン (IPTSD) を有効化
+  services.iptsd.enable = true;
 
-  # 3. Noctalia が必要とするバックエンドサービス
-  # バッテリー情報の取得に必須
-  services.upower.enable = true; 
-  
-  # ネットワーク管理 (Noctalia の WiFi 表示に必要)
+  # ───────────────────────────────────────────
+  # 3. ネットワーク設定 (NetworkManager)
+  # ───────────────────────────────────────────
+  networking.hostName = "Anemoi";
   networking.networkmanager.enable = true;
+  networking.networkmanager.ensureProfiles.profiles = {
+    # 接続プロファイル名（SSIDと同じにすると分かりやすいです）
+    "aterm-b43571-a" = {
+      connection = {
+        id = "aterm-b43571-a";
+        type = "wifi";
+        autoconnect = true;
+      };
+      wifi = {
+        ssid = "aterm-b43571-a";
+        mode = "infrastructure";
+      };
+      wifi-security = {
+        key-mgmt = "wpa-psk";
+        # ※ psk をここに書かなければ、初回接続時にパスワードを要求します
+      };
+    };
+  };
 
   # ───────────────────────────────────────────
-  # ネットワーク設定 (Atropos 固有 — 静的 IP + wpa_supplicant)
+  # 4. バッテリー・電源管理 (Noctalia/UPower)
   # ───────────────────────────────────────────
-  networking.hostName           = "Anemoi";
-  networking.networkmanager.enable = false;
-  networking.useNetworkd        = true;
-  networking.interfaces."wlp0s20f3".ipv4.addresses = [{
-    address      = "192.168.0.120";
-    prefixLength = 24;
-  }];
-  networking.defaultGateway = {
-    interface = "wlp0s20f3";
-    address   = "192.168.0.1";
-  };
-  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
-  networking.wireless = {
-    enable      = true;
-    networks."aterm-b43571-a".psk = "hogehoge";
-  };
+  # これを有効にすることで Noctalia がバッテリー情報を取得できるようになります
+  services.upower.enable = true;
+  
+  # Surface の電源ボタン等の挙動を最適化
+  services.logind.settings.Login.HandlePowerKey = "suspend";
+
 
   # ───────────────────────────────────────────
   # ファイアウォール

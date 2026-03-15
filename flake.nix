@@ -107,7 +107,6 @@
           ({ ... }: { nixpkgs.overlays = overlays; })
           inputs.xremap-flake.nixosModules.default
           ./hosts/Anemoi
-          inputs.nixos-hardware.nixosModules.microsoft-surface-common
         ];
       };
     };
