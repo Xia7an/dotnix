@@ -65,7 +65,7 @@
   networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
   networking.wireless = {
     enable      = true;
-    networks."aterm-b43571-a".psk = "10270001e178a";
+    networks."aterm-b43571-a".psk = "hogehoge";
   };
 
   # ───────────────────────────────────────────
