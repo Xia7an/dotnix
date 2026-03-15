@@ -132,7 +132,7 @@
             overlays = overlays;
           };
         };
-        modules = [ ./home.nix ];
+        modules = [ ./hosts/Atropos/home.nix ];
       };
       AnemoiHome= inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "x86_64-linux";

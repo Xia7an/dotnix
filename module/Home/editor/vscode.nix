@@ -76,11 +76,6 @@ in
         };
       };
       "chat.tools.global.autoApprove" = true;
-      "editor.acceptSuggestionOnCommitCharacter" = false;
-      "editor.fontFamily" = "'HackGen Console NF'";
-      "editor.inlineSuggest.enabled" = false;
-      "keyboard.dispatch" = "keyCode";
-      "locale" = "ja";
 
       # 今後勝手に書き換わらないようにするための追加設定
       "extensions.autoCheckUpdates" = false;

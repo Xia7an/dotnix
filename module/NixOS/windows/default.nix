@@ -7,6 +7,7 @@
 #   ./hardware-configuration.nix
 #   /path/to/dotnix/module/NixOS/windows/default.nix
 # ];
+# winboat.nix は Atropos 固有のため hosts/Atropos/default.nix でインポートする
 
 { ... }:
 
@@ -16,7 +17,6 @@
       # Bottlesの基本設定を読み込みます。
       ./bottles.nix
       # ./winapps.nix
-      ./winboat.nix 
       # --- アプリケーションごとの設定を追加 --- #
       # `apps`ディレクトリ内に特定のアプリケーション用の設定ファイルを作成し、
       # ここでインポートすることで、設定をモジュール化できます。

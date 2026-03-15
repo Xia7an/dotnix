@@ -17,6 +17,13 @@
     ../../module/NixOS/apps
     ../../module/NixOS/windows
     ../../module/NixOS/input
+
+    # Atropos 固有モジュール (Anemoi にはインストールしない)
+    ../../module/NixOS/development/unity.nix
+    ../../module/NixOS/apps/gaming.nix
+    ../../module/NixOS/windows/winboat.nix
+    ../../module/NixOS/system/docker.nix
+    ../../module/NixOS/system/wine.nix
   ];
 
   # ───────────────────────────────────────────
