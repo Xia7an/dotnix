@@ -3,7 +3,7 @@
   imports = [
     ./bluetooth.nix
     ./utils.nix
-    ./docker.nix
+    # ./docker.nix
     # ./qemu.nix
     ./sunshine.nix
     ./parsec.nix
@@ -11,6 +11,6 @@
     ./gemini.nix
     ./copilotcli.nix
     # ./stock-ticker.nix
-    ./wine.nix
+    #./wine.nix
   ];
 }

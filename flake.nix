@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
@@ -99,6 +100,16 @@
           ./hosts/Atropos
         ];
       };
+      Anemoi = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ({ ... }: { nixpkgs.overlays = overlays; })
+          inputs.xremap-flake.nixosModules.default
+          ./hosts/Anemoi
+          inputs.nixos-hardware.nixosModules.microsoft-surface-common
+        ];
+      };
     };
 
     # ─────────────────────────────────────────
@@ -113,6 +124,18 @@
       };
 
       AtroposHome = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = mkPkgs "x86_64-linux";
+        extraSpecialArgs = {
+          inherit inputs;
+          pkgs-stable = import inputs.nixpkgs-stable {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+            overlays = overlays;
+          };
+        };
+        modules = [ ./home.nix ];
+      };
+      AnemoiHome= inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "x86_64-linux";
         extraSpecialArgs = {
           inherit inputs;
