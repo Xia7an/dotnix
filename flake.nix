@@ -144,7 +144,7 @@
             overlays = overlays;
           };
         };
-        modules = [ ./home.nix ];
+        modules = [ ./hosts/Anemoi/home.nix ];
       };
     };
   };

@@ -1,0 +1,2 @@
+// Host-specific mouse override file.
+// Default: keep niri defaults unless a host module overrides this file.

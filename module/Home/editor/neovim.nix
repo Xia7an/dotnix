@@ -20,7 +20,7 @@
       nvim-treesitter.withAllGrammars
     ];
 
-    extraLuaConfig =
+    initLua =
       let
         plugins = with pkgs.vimPlugins; [
           # LazyVim

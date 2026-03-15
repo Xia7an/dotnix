@@ -1,6 +1,8 @@
 // Niri configuration for CachyOS
 // For documentation and full reference, see: https://github.com/YaLTeR/niri/wiki
 
+include "mouse.kdl"
+
 // ────────────── Input Configuration ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Input
 
@@ -18,6 +20,8 @@ input {
     touchpad {
         tap // Enable tap-to-click
         natural-scroll // Enable natural (macOS-style) scrolling
+        scroll-factor 0.5
+        accel-speed 0.2
     }
 
     // focus-follows-mouse // Automatically focus windows under the mouse pointer
@@ -50,13 +54,17 @@ binds {
     MOD+SHIFT+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    MOD+RETURN                          hotkey-overlay-title="Open Terminal: alacritty" { spawn-sh "alacritty"; }
+    MOD+RETURN                          hotkey-overlay-title="Open Terminal: ghostty" { spawn-sh "ghostty"; }
     // MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "rofi -show drun -theme ~/.config/rofi/themes/shiroha_icons.rasi"; }
     MOD+SPACE                           hotkey-overlay-title="Open Noctalia App launcher" { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     // MOD+ALT+L                           hotkey-overlay-title="Lock Screen: swaylock" { spawn-sh "swaylock"; }
     
     // Please choose your own file manager
     MOD+E                             hotkey-overlay-title="File Manager: Nautilus" { spawn-sh "nautilus"; }
+
+    // ─── Brightness Controls ───
+    XF86MonBrightnessUp                 allow-when-locked=true { spawn-sh "brightnessctl set 5%+"; }
+    XF86MonBrightnessDown               allow-when-locked=true { spawn-sh "brightnessctl set 5%-"; }
 
     // ─── Audio Controls ───
     // Example volume keys mappings for PipeWire & WirePlumber.
@@ -185,6 +193,7 @@ gestures {
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
     spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
     spawn-at-startup "niriswitcher"
+    spawn-at-startup "libinput-gestures" // 2本指スワイプでブラウザ戻る/進む
 
 
     prefer-no-csd // Disable program decorations

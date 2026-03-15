@@ -63,18 +63,6 @@ in
       "editor.acceptSuggestionOnCommitCharacter" = false;
       "editor.inlineSuggest.enabled" = false;
       "keyboard.dispatch" = "keyCode";
-      "mcp" = {
-      "servers" = {
-        "notionMCP" = {
-          "command" = "npx";
-            "args" = [
-              "-y"
-              "mcp-remote"
-              "https://mcp.notion.com/sse"
-            ];
-          };
-        };
-      };
       "chat.tools.global.autoApprove" = true;
 
       # 今後勝手に書き換わらないようにするための追加設定
@@ -146,6 +134,21 @@ in
 --disable-features=WaylandTextInputV3
 --ime-mode=async
 '';
+  };
+
+  xdg.configFile."Code/User/mcp.json".text = builtins.toJSON {
+    servers = {
+      notionMCP = {
+        command = "npx";
+        args = [
+          "-y"
+          "mcp-remote"
+          "https://mcp.notion.com/sse"
+        ];
+        type = "stdio";
+      };
+    };
+    inputs = [ ];
   };
   
   # VSCode argv.json でIME設定を追加

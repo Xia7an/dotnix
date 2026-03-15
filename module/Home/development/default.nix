@@ -9,5 +9,6 @@
     ./dev-tools.nix
     ./dev-apps.nix
     ./biome.nix
+    ./lazygit.nix
   ];
 }

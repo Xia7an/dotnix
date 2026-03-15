@@ -96,7 +96,7 @@
   # ユーザー追加設定 (Atropos 固有グループ)
   # ───────────────────────────────────────────
   users.users.inoyu.extraGroups =
-    [ "networkmanager" "wheel" "docker" "storage" ];
+    [ "networkmanager" "wheel" "docker" "storage" "input" ];
 
   # パスワード不要の sudo (開発用途)
   security.sudo = {

@@ -6,7 +6,9 @@
 
   home.packages = with pkgs; [
     niriswitcher
+    brightnessctl
   ];
+
 
   # 1. dconf/GSettings を有効にする
   # これにより、GSettingsスキーマがコンパイルされ、
@@ -18,6 +20,7 @@
   # と設定（GTKテーマ、アイコンなど）を正しく読み込むために必要です。
   xdg.portal = {
     enable = true;
+    config.common.default = "*";
     
     # Hyprlandを使っているので、バックエンドを指定します
     # (もし systemPackages で gtk, gnome, kde などを

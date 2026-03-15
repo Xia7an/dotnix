@@ -1,8 +1,12 @@
 {pkgs, ...}: {
   programs.git = {
     enable = true;
-    userName = "Inoyu";
-    userEmail = "inoyu0329@gmail.com";
+    settings = {
+      user = {
+        name = "Inoyu";
+        email = "inoyu0329@gmail.com";
+      };
+    };
   };
 
   # GitHub CLI
