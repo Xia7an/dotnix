@@ -6,6 +6,7 @@
 
     # コンパイラ・ビルドツール (gcc/g++ は gcc パッケージに含まれる)
     gcc
+    gnumake
 
     # mise (開発環境マネージャー、node/cargo などをインストール可能)
     mise

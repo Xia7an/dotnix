@@ -22,7 +22,7 @@
     ../../module/NixOS/development/unity.nix
     ../../module/NixOS/apps/gaming.nix
     ../../module/NixOS/windows/winboat.nix
-    ../../module/NixOS/system/docker.nix
+    ../../module/NixOS/system/docker-nvidia.nix
     ../../module/NixOS/system/wine.nix
   ];
 

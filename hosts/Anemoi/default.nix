@@ -17,6 +17,9 @@
     ../../module/NixOS/apps
     ../../module/NixOS/windows
     ../../module/NixOS/input
+
+    ../../module/NixOS/windows/winboat.nix
+    ../../module/NixOS/system/docker.nix
   ];
 
   # ───────────────────────────────────────────
@@ -43,6 +46,17 @@
 
   # タッチスクリーン / Surface ペン (IPTSD) を有効化
   services.iptsd.enable = true;
+
+  # Iris Xe Graphic driver
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true; # 32bitアプリ（Steamなど）を利用する場合
+    extraPackages = with pkgs; [
+      intel-media-driver      # Broadwell以降（Iris Xe含む）向けのVA-APIドライバ
+      intel-compute-runtime   # OpenCLサポート用
+      vpl-gpu-rt              # Quick Sync Video (QSV) サポート（11世代以降向け）
+    ];
+  };
 
   # ───────────────────────────────────────────
   # 3. ネットワーク設定 (NetworkManager)
