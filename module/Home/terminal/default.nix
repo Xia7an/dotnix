@@ -4,6 +4,7 @@
     ./alacritty.nix
     ./kitty.nix
     ./ghostty.nix
+    ./wezterm.nix
     ./fish.nix
     ./starship.nix
     ./zsh.nix
