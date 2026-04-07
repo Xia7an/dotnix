@@ -1,12 +1,20 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+local target = wezterm.target_triple
+local is_macos = target:find("darwin") ~= nil
+local is_linux = target:find("linux") ~= nil
 
 -- カラースキーム
 config.color_scheme = "Dracula"
 
 config.window_decorations = "RESIZE"
+config.enable_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = false
+config.show_tabs_in_tab_bar = true
 config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
+
+config.window_background_opacity = 0.85
 
 -- ■ フォント設定の修正 ■
 -- サイズを少し大きくし、行の高さを1.0〜1.1に固定して「潰れ」を防ぎます
@@ -69,7 +77,14 @@ config.colors = {
 
 -- 背景透過の設定
 config.window_background_opacity = 0.95
-config.macos_window_background_blur = 20
+
+if is_macos then
+	config.macos_window_background_blur = 20
+end
+
+if is_linux then
+	config.enable_wayland = true
+end
 
 local act = wezterm.action
 config.key_tables = {
