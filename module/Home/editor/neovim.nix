@@ -14,6 +14,8 @@
       lazygit
       tectonic
       statix
+      # macOS: im-select.nvim IME switching
+      macism
     ];
     plugins = with pkgs.vimPlugins; [
       lazy-nvim
@@ -93,6 +95,24 @@
             patterns = { "" },
             -- fallback to download
             fallback = true,
+          },
+          install = {
+            colorscheme = { "tokyonight", "habamax" },
+          },
+          checker = {
+            enabled = true,
+            notify = false,
+          },
+          performance = {
+            rtp = {
+              disabled_plugins = {
+                "gzip",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
+              },
+            },
           },
           spec = {
             { "LazyVim/LazyVim", import = "lazyvim.plugins" },

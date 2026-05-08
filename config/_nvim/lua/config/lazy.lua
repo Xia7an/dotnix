@@ -1,7 +1,7 @@
 -- Nixでプラグイン管理を行うための設定
 -- 基本設定
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\"
+vim.g.maplocalleader = "\\"
 
 -- 基本オプション
 require("config.options")

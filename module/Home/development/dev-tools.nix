@@ -4,9 +4,20 @@
     # ファイルマネージャー
     yazi
 
-    # コンパイラ・ビルドツール (gcc/g++ は gcc パッケージに含まれる)
+    # C/C++ コンパイラ・ビルドツール
+    gcc14
     gcc
+    gdb
     gnumake
+    cmake
+    pkg-config
+    autogen
+    binutils
+    time
+
+    # エディタ (CLI版)
+    helix
+    vim
 
     # mise (開発環境マネージャー、node/cargo などをインストール可能)
     mise

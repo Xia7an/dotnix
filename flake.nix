@@ -44,33 +44,52 @@
       url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, antigravity-nix, tmux-nix, quickshell, ... } : let
-    systems = [ "x86_64-linux" ];
-    forEachSystem = nixpkgs.lib.genAttrs systems;
+    linuxSystems = [ "x86_64-linux" ];
+    darwinSystems = [ "aarch64-darwin" ];
+    allSystems = linuxSystems ++ darwinSystems;
+    forEachSystem = nixpkgs.lib.genAttrs allSystems;
+    forLinuxSystem = nixpkgs.lib.genAttrs linuxSystems;
+
     niriTaskbarOverlay = import ./overlays;
-    overlays = [
+
+    # Linux 向けオーバーレイ (niri-taskbar は Wayland/niri 依存)
+    linuxOverlays = [
       (import inputs.rust-overlay)
       niriTaskbarOverlay
     ];
 
-    # pkgs インスタンスの共通設定
+    # macOS 向けオーバーレイ (rust-overlay のみ)
+    darwinOverlays = [
+      (import inputs.rust-overlay)
+    ];
+
+    # pkgs インスタンスの共通設定 (システムごとに適切なオーバーレイを選択)
     mkPkgs = system: import nixpkgs {
       inherit system;
       config = {
         allowUnfree = true;
         permittedInsecurePackages = [ "openssl-1.1.1w" ];
       };
-      overlays = overlays;
+      overlays = if builtins.elem system darwinSystems then darwinOverlays else linuxOverlays;
     };
+
+    # darwin ホストが参照する overlays (nix-darwin モジュール向け)
+    # rust-overlay のみ (niri-taskbar は Wayland 依存のため除外)
+    darwinNixpkgsOverlays = darwinOverlays;
   in {
     overlays.default = niriTaskbarOverlay;
 
-    packages = forEachSystem (system: let
+    packages = forLinuxSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
-        overlays = overlays;
+        overlays = linuxOverlays;
       };
     in {
       niri-taskbar = pkgs.niri-taskbar;
@@ -86,7 +105,7 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
+          ({ ... }: { nixpkgs.overlays = linuxOverlays; })
           ./hosts/Nyx
         ];
       };
@@ -95,7 +114,7 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
+          ({ ... }: { nixpkgs.overlays = linuxOverlays; })
           inputs.xremap-flake.nixosModules.default
           ./hosts/Atropos
         ];
@@ -104,9 +123,24 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
+          ({ ... }: { nixpkgs.overlays = linuxOverlays; })
           inputs.xremap-flake.nixosModules.default
           ./hosts/Anemoi
+        ];
+      };
+    };
+
+    # ─────────────────────────────────────────
+    # macOS (nix-darwin) ホスト設定
+    # 各ホストの詳細は hosts/<HostName>/default.nix を参照
+    # ─────────────────────────────────────────
+    darwinConfigurations = {
+      Lachesis = inputs.darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ({ ... }: { nixpkgs.overlays = darwinNixpkgsOverlays; })
+          ./hosts/Lachesis
         ];
       };
     };
@@ -119,7 +153,7 @@
       NyxHome = inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = mkPkgs "x86_64-linux";
         extraSpecialArgs = { inherit inputs; };
-        modules = [ ./home.nix ];
+        modules = [ ./hosts/Nyx/home.nix ];
       };
 
       AtroposHome = inputs.home-manager.lib.homeManagerConfiguration {
@@ -129,7 +163,7 @@
           pkgs-stable = import inputs.nixpkgs-stable {
             system = "x86_64-linux";
             config.allowUnfree = true;
-            overlays = overlays;
+            overlays = linuxOverlays;
           };
         };
         modules = [ ./hosts/Atropos/home.nix ];
@@ -141,10 +175,22 @@
           pkgs-stable = import inputs.nixpkgs-stable {
             system = "x86_64-linux";
             config.allowUnfree = true;
-            overlays = overlays;
+            overlays = linuxOverlays;
           };
         };
         modules = [ ./hosts/Anemoi/home.nix ];
+      };
+      LachesisHome = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = mkPkgs "aarch64-darwin";
+        extraSpecialArgs = {
+          inherit inputs;
+          pkgs-stable = import inputs.nixpkgs-stable {
+            system = "aarch64-darwin";
+            config.allowUnfree = true;
+            overlays = darwinOverlays;
+          };
+        };
+        modules = [ ./hosts/Lachesis/home.nix ];
       };
     };
   };

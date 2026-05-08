@@ -7,26 +7,21 @@
 
   # Everything inside of these brackets are Zed options
   userSettings = {
-    assistant = {
+    agent = {
       enabled = true;
       version = "2";
       default_open_ai_model = null;
+      default_profile = "write";
 
       # Provider options:
       # - zed.dev models (claude-3-5-sonnet-latest) requires GitHub connected
       # - anthropic models (claude-3-5-sonnet-latest, claude-3-haiku-latest, claude-3-opus-latest) requires API_KEY
-      # - copilot_chat models (gpt-4o, gpt-4, gpt-3.5-turbo, o1-preview) requires GitHub connected
+      # - copilot_chat models (gpt-4o, gpt-4, gpt-3.5-turbo, o1-preview, gpt-5-mini) requires GitHub connected
       default_model = {
         provider = "copilot_chat";
-        model = "claude-3-5-sonnet-latest";
+        model = "gpt-5-mini";
       };
-
-      # inline_alternatives = [
-      #   {
-      #     provider = "copilot_chat";
-      #     model = "gpt-3.5-turbo";
-      #   }
-      # ];
+      model_parameters = [];
     };
 
     node = {
@@ -51,7 +46,8 @@
       env = {
         TERM = "alacritty";
       };
-      font_family = "HackGen Console NF";
+      font_family = "HackGen35 Console NF";
+      font_fallbacks = [ "monospace" ];
       font_features = null;
       font_size = null;
       line_height = "comfortable";
@@ -114,17 +110,25 @@
     };
 
     vim_mode = true;
+    hard_tabs = true;
 
     # Tell Zed to use direnv and direnv can use a flake.nix environment
     load_direnv = "shell_hook";
     base_keymap = "VSCode";
 
-    theme = "One Dark";
+    theme = {
+      mode = "dark";
+      light = "One Light";
+      dark = "One Dark";
+    };
+    icon_theme = "Zed (Default)";
 
 
     show_whitespaces = "all";
     ui_font_size = 16;
-    buffer_font_size = 16;
+    buffer_font_size = 15;
+    buffer_font_family = "HackGen35 Console NF";
+    buffer_font_fallbacks = [ "Monaco" "Courier New" "monospace" ];
   };
 };
 }
