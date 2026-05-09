@@ -5,7 +5,6 @@
     yazi
 
     # C/C++ コンパイラ・ビルドツール
-    gcc14
     gcc
     gdb
     gnumake

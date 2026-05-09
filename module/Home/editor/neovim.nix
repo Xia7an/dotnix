@@ -14,6 +14,7 @@
       lazygit
       tectonic
       statix
+    ] ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       # macOS: im-select.nvim IME switching
       macism
     ];

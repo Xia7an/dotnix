@@ -1,3 +1,4 @@
-{pkgs, ...} : {
-    services.swww.enable = true;
+{ pkgs, lib, ... }:
+lib.mkIf pkgs.stdenv.isLinux {
+  services.swww.enable = true;
 }

@@ -1,5 +1,5 @@
 { pkgs, lib, ... }:
-{
+lib.mkIf pkgs.stdenv.isLinux {
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";

@@ -1,4 +1,5 @@
-{pkgs, ...} : {
+{ pkgs, lib, ... }:
+lib.mkIf pkgs.stdenv.isLinux {
   home.file.".config/niri" = {
     source = ../../../config/niri;
     recursive = true;

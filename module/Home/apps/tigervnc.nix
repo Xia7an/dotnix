@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [ tigervnc tigervnc-viewer ];
+  home.packages = with pkgs; [ tigervnc ];
 }

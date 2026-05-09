@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }:
+lib.mkIf pkgs.stdenv.isLinux {
   # config/waybar をシンボリックリンクで配置
   home.file.".config/waybar" = {
     source = ../../../config/waybar;

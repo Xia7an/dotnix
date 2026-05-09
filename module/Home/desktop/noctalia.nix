@@ -1,12 +1,12 @@
-{ config, pkgs, inputs, ... }:
-{
+{ config, pkgs, lib, inputs, ... }: {
   # Noctalia Home Manager module
   imports = [
     inputs.noctalia.homeModules.default
   ];
 
-  programs.noctalia-shell = {
-    enable = true;
+  config = lib.mkIf pkgs.stdenv.isLinux {
+    programs.noctalia-shell = {
+      enable = true;
 
     # Use the package from the Noctalia flake input (recommended in upstream docs)
     package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -94,6 +94,7 @@
         name = "Marseille, France";
       };
     };
-    # settings can also be a JSON string/path in Noctalia module.
+      # settings can also be a JSON string/path in Noctalia module.
+    };
   };
 }

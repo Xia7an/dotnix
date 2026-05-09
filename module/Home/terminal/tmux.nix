@@ -15,7 +15,6 @@ in
   programs.tmux = {
     enable = true;
     baseIndex = 1;
-    paneBaseIndex = 1;
     keyMode = "vi";
     mouse = true;
     escapeTime = 0;
@@ -71,6 +70,7 @@ in
 
       # ── Renumber windows on close ──
       set -g renumber-windows on
+      set -g pane-base-index 1
 
       # ── Message styling ──
       set -g message-style fg=colour68,reverse,bg=brightwhite

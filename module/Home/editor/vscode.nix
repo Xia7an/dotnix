@@ -35,7 +35,8 @@ in
   programs.vscode = {
     enable = true;
 
-    extensions =
+    profiles.default = {
+      extensions =
       (with pkgs.vscode-extensions; [
         # General
         vscodevim.vim
@@ -100,7 +101,7 @@ in
       ++ marketplaceExtensions
       ++ darwinMarketplaceExtensions;
 
-    userSettings = {
+      userSettings = {
       "locale" = "ja";
       "editor.fontFamily" = "'HackGen Console NF'";
       "editor.acceptSuggestionOnCommitCharacter" = false;
@@ -114,7 +115,7 @@ in
       "update.mode" = "none";
     };
 
-    keybindings = [
+      keybindings = [
       # エディター(Vimノーマルモード)からエクスプローラーへ
       {
         key = "ctrl+shift+h";
@@ -166,7 +167,8 @@ in
         command =  "-extension.vim_ctrl+w";
         when = "editorTextFocus && vim.active && vim.use<C-w> && !inDebugRepl";
       }
-    ];
+      ];
+    };
   };
   xdg.configFile."code-flags.conf" = {
     text = ''
