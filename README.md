@@ -194,6 +194,17 @@ nix build .#niri-taskbar
 1. `config/` ディレクトリ内のファイルを直接編集
 2. Home Manager をリビルド（変更は即座に反映されます）
 
+### macOS 移行前バックアップ
+
+`Lachesis` を Nix 管理へ移行する前に、移行前状態の退避ポイントを作る場合:
+
+```bash
+chmod +x scripts/darwin-pre-nix-backup.sh scripts/darwin-pre-nix-restore.sh
+./scripts/darwin-pre-nix-backup.sh
+```
+
+詳細は `docs/darwin-pre-nix-backup.md` を参照してください。
+
 ### ディスクをマウント
 
 詳細は `docs/disk-mount.md` を参照してください。

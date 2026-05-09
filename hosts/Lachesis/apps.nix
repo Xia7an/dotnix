@@ -39,7 +39,9 @@
     ../../module/Home/apps/bitwarden.nix
 
     # ─── macOS 自動化 / ウィンドウ管理 ───
+    ../../module/Home/darwin/aquaskk.nix
     ../../module/Home/darwin/hammerspoon.nix
+    ../../module/Home/darwin/ice.nix
     ../../module/Home/darwin/raycast.nix
     ../../module/Home/darwin/alt-tab.nix
 

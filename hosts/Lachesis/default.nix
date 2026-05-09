@@ -8,6 +8,8 @@
   # ホスト基本情報
   # ───────────────────────────────────────────
   networking.hostName = "Lachesis";
+  networking.localHostName = "INOYU-MacBookPro";
+  networking.computerName = "混沌を超えし我らが神聖なる調律主のMacBook Pro";
   time.timeZone = "Asia/Tokyo";
 
   # nix-darwin が system.defaults や homebrew を root として適用するために必要
@@ -60,6 +62,7 @@
       "aerospace"                # タイル型WM (yabaiの代替, nixpkgs未対応)
       "aquaskk"                  # 日本語入力 (SKK)
       "azookey"                  # キー設定
+      "google-japanese-ime"      # 実ホストで選択中の IME
       "boring-notch"             # ノッチ管理
       "jordanbaird-ice"          # メニューバー管理
 
@@ -140,29 +143,169 @@
     defaults = {
       dock = {
         autohide = true;
+        expose-group-apps = false;
+        largesize = 102;
+        magnification = true;
+        minimize-to-application = false;
+        mineffect = "genie";
+        mru-spaces = false;
         orientation = "bottom";
         show-recents = false;
+        showAppExposeGestureEnabled = false;
+        showMissionControlGestureEnabled = true;
       };
       finder = {
-        AppleShowAllExtensions = true;
-        FXPreferredViewStyle = "Nlsv";
-        ShowPathbar = true;
-        ShowStatusBar = true;
+        AppleShowAllExtensions = false;
+        FXPreferredViewStyle = "icnv";
+        ShowExternalHardDrivesOnDesktop = true;
+        ShowHardDrivesOnDesktop = false;
+        ShowRemovableMediaOnDesktop = true;
       };
-      trackpad = {
-        Clicking = true;
-        TrackpadThreeFingerDrag = true;
-      };
+      magicmouse.MouseButtonMode = "OneButton";
       NSGlobalDomain = {
-        AppleKeyboardUIMode = 3;
+        AppleEnableSwipeNavigateWithScrolls = true;
+        AppleMenuBarVisibleInFullscreen = true;
+        AppleMiniaturizeOnDoubleClick = false;
+        ApplePressAndHoldEnabled = false;
+        AppleSpacesSwitchOnActivate = false;
+        AppleWindowTabbingMode = "always";
         KeyRepeat = 2;
         InitialKeyRepeat = 15;
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticDashSubstitutionEnabled = false;
+        NSAutomaticPeriodSubstitutionEnabled = false;
+        NSAutomaticQuoteSubstitutionEnabled = false;
+        NSAutomaticSpellingCorrectionEnabled = false;
+      };
+      menuExtraClock = {
+        FlashDateSeparators = true;
+        IsAnalog = false;
+        ShowAMPM = true;
+        ShowDate = 0;
+        ShowDayOfWeek = true;
+        ShowSeconds = true;
+      };
+      screencapture = {
+        target = "clipboard";
+      };
+      trackpad = {
+        ActuateDetents = true;
+        Clicking = false;
+        DragLock = false;
+        Dragging = false;
+        FirstClickThreshold = 1;
+        ForceSuppressed = false;
+        SecondClickThreshold = 1;
+        TrackpadCornerSecondaryClick = 0;
+        TrackpadFourFingerHorizSwipeGesture = 2;
+        TrackpadFourFingerPinchGesture = 2;
+        TrackpadFourFingerVertSwipeGesture = 2;
+        TrackpadMomentumScroll = true;
+        TrackpadPinch = true;
+        TrackpadRightClick = true;
+        TrackpadRotate = true;
+        TrackpadThreeFingerDrag = false;
+        TrackpadThreeFingerHorizSwipeGesture = 2;
+        TrackpadThreeFingerTapGesture = 0;
+        TrackpadThreeFingerVertSwipeGesture = 2;
+        TrackpadTwoFingerDoubleTapGesture = true;
+        TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
+      };
+      CustomUserPreferences = {
+        NSGlobalDomain = {
+          NSQuitAlwaysKeepsWindows = true;
+          "_HIHideMenuBar" = false;
+        };
+
+        "com.apple.HIToolbox" = {
+          AppleCurrentKeyboardLayoutInputSourceID = "com.apple.keylayout.ABC";
+          AppleDictationAutoEnable = true;
+          AppleEnabledInputSources = [
+            {
+              "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping";
+              "Input Mode" = "com.apple.inputmethod.Japanese";
+              InputSourceKind = "Input Mode";
+            }
+            {
+              "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping";
+              InputSourceKind = "Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.apple.CharacterPaletteIM";
+              InputSourceKind = "Non Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.apple.50onPaletteIM";
+              InputSourceKind = "Non Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.apple.PressAndHold";
+              InputSourceKind = "Non Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.apple.inputmethod.ironwood";
+              InputSourceKind = "Non Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping";
+              "Input Mode" = "com.apple.inputmethod.Roman";
+              InputSourceKind = "Input Mode";
+            }
+          ];
+          AppleFnUsageType = 1;
+          AppleSelectedInputSources = [
+            {
+              "Bundle ID" = "com.apple.PressAndHold";
+              InputSourceKind = "Non Keyboard Input Method";
+            }
+            {
+              "Bundle ID" = "com.google.inputmethod.Japanese";
+              "Input Mode" = "com.apple.inputmethod.Roman";
+              InputSourceKind = "Input Mode";
+            }
+          ];
+        };
+
+        "com.apple.WindowManager" = {
+          AppWindowGroupingBehavior = 1;
+          AutoHide = false;
+          EnableStandardClickToShowDesktop = true;
+          EnableTiledWindowMargins = false;
+          GloballyEnabled = false;
+          HideDesktop = true;
+          StageManagerHideWidgets = false;
+          StandardHideWidgets = false;
+        };
+
+        "com.apple.controlcenter" = {
+          AutoHideMenuBarOption = 3;
+        };
+
+        "com.apple.screencapture" = {
+          style = "selection";
+        };
       };
     };
     keyboard = {
       enableKeyMapping = true;
     };
   };
+
+  system.activationScripts.postUserPreferences.text = ''
+    # 電源まわりは defaults では表現できないため root で揃える
+    /usr/bin/pmset -a \
+      displaysleep 10 \
+      disksleep 10 \
+      sleep 1 \
+      lowpowermode 0 \
+      standby 1 \
+      ttyskeepawake 1 \
+      hibernatemode 3 \
+      powernap 1 \
+      tcpkeepalive 1 \
+      womp 1 \
+      networkoversleep 0
+  '';
 
   # ───────────────────────────────────────────
   # セキュリティ
