@@ -5,17 +5,15 @@
 {
   imports = [
     ../../home.nix
-    ./apps.nix
-    ./develop.nix
-    ./terminal.nix
+    ./profile.nix
 
     # macOS 固有設定
-    ../../module/Home/desktop/darwin.nix
+    ../../modules/Home/desktop/darwin.nix
 
     # macOS 固有パッケージ
-    ../../module/Home/darwin/fonts.nix
-    ../../module/Home/darwin/pinentry-mac.nix
-    ../../module/Home/darwin/m-cli.nix
+    ../../modules/Home/darwin/fonts.nix
+    ../../modules/Home/darwin/pinentry-mac.nix
+    ../../modules/Home/darwin/m-cli.nix
   ];
 
   # ───────────────────────────────────────────

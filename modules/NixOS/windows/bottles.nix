@@ -1,4 +1,4 @@
-# /home/inoyu/dotnix/module/NixOS/windows/bottles.nix
+# /home/inoyu/dotnix/modules/NixOS/windows/bottles.nix
 { pkgs, ... }:
 
 {

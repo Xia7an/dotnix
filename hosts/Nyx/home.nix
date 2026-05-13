@@ -2,12 +2,9 @@
 {
   imports = [
     ../../home.nix
-    ./apps.nix
-    ./desktop.nix
-    ./develop.nix
-    ./terminal.nix
-    ../../module/Home/input
-    ../../module/Home/windows
+    ./profile.nix
+    ../../modules/Home/input
+    ../../modules/Home/windows
   ];
 
   home = {

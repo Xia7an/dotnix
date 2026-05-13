@@ -42,7 +42,7 @@ in
 {
   home.packages = [
     rider
-    # unityhub は NixOS モジュール (module/NixOS/develop/unity.nix) がシステム全体に
+    # unityhub は NixOS モジュール (modules/NixOS/develop/unity.nix) がシステム全体に
     # overlay パッチ済み (libxml2 shim 含む) のものをインストールするため、
     # ここで再定義すると overlay の修正が失われて PATH で先に見つかる壊れた版が使われてしまう。
     # unityhub と unityhub-shell は NixOS 側に任せる。

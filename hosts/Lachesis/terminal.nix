@@ -1,13 +1,13 @@
 {
   imports = [
-    ../../module/Home/terminal/ghostty.nix
-    ../../module/Home/terminal/wezterm.nix
-    ../../module/Home/terminal/fish.nix
-    ../../module/Home/terminal/starship.nix
-    ../../module/Home/terminal/zsh.nix
-    ../../module/Home/terminal/tmux.nix
-    ../../module/Home/terminal/bash.nix
-    ../../module/Home/terminal/sheldon.nix
-    ../../module/Home/terminal/zellij.nix
+    ../../modules/Home/terminal/ghostty.nix
+    ../../modules/Home/terminal/wezterm.nix
+    ../../modules/Home/terminal/fish.nix
+    ../../modules/Home/terminal/starship.nix
+    ../../modules/Home/terminal/zsh.nix
+    ../../modules/Home/terminal/tmux.nix
+    ../../modules/Home/terminal/bash.nix
+    ../../modules/Home/terminal/sheldon.nix
+    ../../modules/Home/terminal/zellij.nix
   ];
 }

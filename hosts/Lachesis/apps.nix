@@ -2,51 +2,51 @@
 # 通常のデスクトップアプリケーション + macOS 固有アプリ
 #
 # 共通アプリ (全プラットフォーム)
-#   - chrome, vivaldi, discord       → module/Home/apps/
-#   - blender, slack, obsidian, etc. → module/Home/apps/
+#   - chrome, vivaldi, discord       → modules/Home/apps/
+#   - blender, slack, obsidian, etc. → modules/Home/apps/
 #
 # macOS 固有アプリ
-#   - hammerspoon, raycast, alt-tab, iterm2, macvim → module/Home/darwin/
+#   - hammerspoon, raycast, alt-tab, iterm2, macvim → modules/Home/darwin/
 {
   imports = [
     # ─── ブラウザ ───
-    ../../module/Home/apps/chrome.nix
-    ../../module/Home/apps/vivaldi.nix
+    ../../modules/Home/apps/chrome.nix
+    ../../modules/Home/apps/vivaldi.nix
 
     # ─── コミュニケーション ───
-    ../../module/Home/apps/discord.nix
-    ../../module/Home/apps/slack.nix
+    ../../modules/Home/apps/discord.nix
+    ../../modules/Home/apps/slack.nix
 
     # ─── クリエイティブ ───
-    ../../module/Home/apps/blender.nix
-    ../../module/Home/apps/musescore.nix
-    ../../module/Home/apps/spotify.nix
+    ../../modules/Home/apps/blender.nix
+    ../../modules/Home/apps/musescore.nix
+    ../../modules/Home/apps/spotify.nix
 
     # ─── ノート / ドキュメント ───
-    ../../module/Home/apps/obsidian.nix
-    ../../module/Home/darwin/skimpdf.nix
+    ../../modules/Home/apps/obsidian.nix
+    ../../modules/Home/darwin/skimpdf.nix
 
     # ─── 開発 / IDE ───
-    ../../module/Home/apps/rstudio.nix
-    ../../module/Home/darwin/iterm2.nix
-    ../../module/Home/darwin/macvim.nix
+    ../../modules/Home/apps/rstudio.nix
+    ../../modules/Home/darwin/iterm2.nix
+    ../../modules/Home/darwin/macvim.nix
 
     # ─── VNC ───
-    ../../module/Home/apps/tigervnc.nix
+    ../../modules/Home/apps/tigervnc.nix
 
     # ─── 同期 / セキュリティ ───
-    ../../module/Home/apps/nextcloud.nix
-    ../../module/Home/apps/bitwarden.nix
+    ../../modules/Home/apps/nextcloud.nix
+    ../../modules/Home/apps/bitwarden.nix
 
     # ─── macOS 自動化 / ウィンドウ管理 ───
-    ../../module/Home/darwin/aquaskk.nix
-    ../../module/Home/darwin/hammerspoon.nix
-    ../../module/Home/darwin/ice.nix
-    ../../module/Home/darwin/raycast.nix
-    ../../module/Home/darwin/alt-tab.nix
+    ../../modules/Home/darwin/aquaskk.nix
+    ../../modules/Home/darwin/hammerspoon.nix
+    ../../modules/Home/darwin/ice.nix
+    ../../modules/Home/darwin/raycast.nix
+    ../../modules/Home/darwin/alt-tab.nix
 
     # ─── マルチメディア / PDF ───
-    ../../module/Home/apps/multimedia.nix
-    ../../module/Home/apps/pdf.nix
+    ../../modules/Home/apps/multimedia.nix
+    ../../modules/Home/apps/pdf.nix
   ];
 }

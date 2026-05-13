@@ -1,5 +1,5 @@
 # NixOS レベルで管理するデスクトップアプリケーション
-# ブラウザ・Discord などユーザー設定が必要なものは module/Home/apps/ で管理する
+# ブラウザ・Discord などユーザー設定が必要なものは modules/Home/apps/ で管理する
 { config, pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [

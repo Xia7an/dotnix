@@ -4,7 +4,6 @@
     ../../hardware/anemoi.nix
     inputs.nixos-hardware.nixosModules.microsoft-surface-common
     ../../modules/NixOS/desktop
-    ../../modules/NixOS/development
     ../../modules/NixOS/system
     ../../modules/NixOS/apps
     ../../modules/NixOS/windows

@@ -86,9 +86,7 @@
   # Nix 設定
   # ───────────────────────────────────────────
   nixpkgs.config.allowUnfree = true;
-  # openssl_1_1 は EOL だが Unity Editor の内蔵 .NET ランタイムが
-  # libssl.so.1.1 を要求するため unityhub-shell の FHS env で必要。
-  nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters          = [ "https://hyprland.cachix.org" ];
