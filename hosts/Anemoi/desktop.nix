@@ -1,12 +1,12 @@
 {
   imports = [
-    ../../module/Home/desktop/niri.nix
-    ../../module/Home/desktop/hyprlock.nix
-    ../../module/Home/desktop/waybar.nix
-    ../../module/Home/desktop/rofi.nix
-    ../../module/Home/desktop/wlogout.nix
-    ../../module/Home/desktop/logi.nix
-    ../../module/Home/desktop/swww.nix
-    ../../module/Home/desktop/noctalia.nix
+    ../../modules/Home/desktop/niri.nix
+    ../../modules/Home/desktop/hyprlock.nix
+    ../../modules/Home/desktop/waybar.nix
+    ../../modules/Home/desktop/rofi.nix
+    ../../modules/Home/desktop/wlogout.nix
+    ../../modules/Home/desktop/logi.nix
+    ../../modules/Home/desktop/swww.nix
+    ../../modules/Home/desktop/noctalia.nix
   ];
 }
