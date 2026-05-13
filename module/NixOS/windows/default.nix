@@ -15,7 +15,7 @@
   imports =
     [
       # Bottlesの基本設定を読み込みます。
-      ./bottles.nix
+      #./bottles.nix
       # ./winapps.nix
       # --- アプリケーションごとの設定を追加 --- #
       # `apps`ディレクトリ内に特定のアプリケーション用の設定ファイルを作成し、

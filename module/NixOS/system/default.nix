@@ -8,9 +8,6 @@
     ./sunshine.nix
     ./parsec.nix
     # ./ollama.nix cudaが壊れてるらしいから一時的にコメントアウト
-    ./gemini.nix
-    ./copilotcli.nix
     # ./stock-ticker.nix
-    #./wine.nix
   ];
 }

@@ -9,21 +9,6 @@
 
     # ハードウェア設定
     ../../hardware/Atropos-SSD-hardware.nix
-
-    # 機能モジュール (module/NixOS/ 以下)
-    ../../module/NixOS/desktop
-    ../../module/NixOS/development
-    ../../module/NixOS/system
-    ../../module/NixOS/apps
-    ../../module/NixOS/windows
-    ../../module/NixOS/input
-
-    # Atropos 固有モジュール (Anemoi にはインストールしない)
-    ../../module/NixOS/development/unity.nix
-    ../../module/NixOS/apps/gaming.nix
-    ../../module/NixOS/windows/winboat.nix
-    ../../module/NixOS/system/docker-nvidia.nix
-    ../../module/NixOS/system/wine.nix
   ];
 
   # ───────────────────────────────────────────
@@ -133,24 +118,6 @@
     emoji     = [ "Noto Color Emoji" ];
   };
 
-  # ───────────────────────────────────────────
-  # Atropos 固有パッケージ
-  # ───────────────────────────────────────────
-  environment.systemPackages = with pkgs; [
-    vulkan-tools         # GPU 診断
-    nvtopPackages.nvidia # GPU モニター
-    pciutils             # PCI デバイス確認
-    alcom                # AlterLinux Community Manager
-    zsh-powerlevel10k
-  ];
-
-  programs.zsh = {
-    enable     = true;
-    promptInit = ''
-      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      source $HOME/.p10k.zsh
-    '';
-  };
 
   system.stateVersion = "25.05";
 }
