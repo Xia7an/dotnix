@@ -4,7 +4,7 @@
     ../../home.nix
     ./profile.nix
     ../../modules/Home/input
-    ../../modules/Home/windows
+    ../../modules/Home/virtualization
   ];
 
   home = {

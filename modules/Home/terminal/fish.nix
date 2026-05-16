@@ -21,18 +21,6 @@
 
       # zoxide integration
       zoxide init fish | source
-
-      # ghq + fzf repository selector
-      function peco_src
-          set -l query (commandline)
-          set -l selected_dir (ghq list -p | fzf --prompt="repositories >" --query "$query")
-          if test -n "$selected_dir"
-              commandline "cd $selected_dir"
-              commandline -f execute
-          end
-          commandline -f repaint
-      end
-      bind \\c] peco_src
     '';
     shellAbbrs = {
       cduniv = "cd ~/Documents/大学/授業/3年前期/";

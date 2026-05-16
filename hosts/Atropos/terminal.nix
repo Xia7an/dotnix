@@ -8,5 +8,7 @@
     ../../modules/Home/terminal/starship.nix
     ../../modules/Home/terminal/zsh.nix
     ../../modules/Home/terminal/tmux.nix
+    ../../modules/Home/terminal/git.nix
+    ../../modules/Home/terminal/utils.nix
   ];
 }

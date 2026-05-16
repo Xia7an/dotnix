@@ -1,0 +1,39 @@
+{ pkgs, ... }: {
+  home.packages = with pkgs; [
+    # ファイルマネージャー
+    yazi
+
+    # エディタ (CLI版)
+    helix
+    vim
+
+    # 開発環境マネージャー
+    mise
+
+    # 基本 CLI ユーティリティ
+    bat
+    eza
+    fd
+    ripgrep
+    jq
+    zoxide
+    bottom
+    wget
+    curl
+    p7zip
+    lhasa
+    fastfetch
+    nyancat
+    sl
+    yt-dlp
+    rtmpdump
+    winetricks
+
+    # ネットワークツール
+    wireguard-tools
+    wireshark
+    inetutils
+    nmap
+    dnsutils
+  ];
+}

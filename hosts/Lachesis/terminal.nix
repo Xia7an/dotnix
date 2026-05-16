@@ -9,5 +9,7 @@
     ../../modules/Home/terminal/bash.nix
     ../../modules/Home/terminal/sheldon.nix
     ../../modules/Home/terminal/zellij.nix
+    ../../modules/Home/terminal/git.nix
+    ../../modules/Home/terminal/utils.nix
   ];
 }
