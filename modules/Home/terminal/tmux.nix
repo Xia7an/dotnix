@@ -41,18 +41,6 @@ in
     ];
 
     extraConfig = ''
-      # ── Vim-style pane navigation (no prefix) ──
-      bind -n C-h select-pane -L
-      bind -n C-j select-pane -D
-      bind -n C-k select-pane -U
-      bind -n C-l select-pane -R
-
-      # ── Alt-arrow pane navigation (no prefix) ──
-      bind -n M-Left select-pane -L
-      bind -n M-Right select-pane -R
-      bind -n M-Up select-pane -U
-      bind -n M-Down select-pane -D
-
       # ── Resize panes with prefix + H/J/K/L ──
       bind -r H resize-pane -L 5
       bind -r J resize-pane -D 5
