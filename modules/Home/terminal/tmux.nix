@@ -41,11 +41,23 @@ in
     ];
 
     extraConfig = ''
-      # ── Resize panes with prefix + H/J/K/L ──
+      # ── Prefix + vim keys to navigate panes ──
+      bind -r h select-pane -L
+      bind -r j select-pane -D
+      bind -r k select-pane -U
+      bind -r l select-pane -R
+
+      # ── Prefix + vim keys (capital) to resize panes ──
       bind -r H resize-pane -L 5
-      bind -r J resize-pane -D 5
-      bind -r K resize-pane -U 5
+      bind -r J resize-pane -D
+      bind -r K resize-pane -U
       bind -r L resize-pane -R 5
+
+      # ── Copy-mode vi ──
+      setw -g mode-keys vi
+      bind -T copy-mode-vi v send -X begin-selection
+      bind -T copy-mode-vi C-v send -X rectangle-toggle
+      bind -T copy-mode-vi y send -X copy-selection
 
       # ── Window switching ──
       bind -r C-h select-window -t :-
@@ -55,9 +67,21 @@ in
       bind | split-window -h -c '#{pane_current_path}'
       bind - split-window -v -c '#{pane_current_path}'
 
+      # ── Popup ──
+      bind -n C-q run-shell "tmux display-popup; true"
+
+      # ── Switch panes using Alt-arrow without prefix ──
+      bind -n M-Left select-pane -L
+      bind -n M-Right select-pane -R
+      bind -n M-Up select-pane -U
+      bind -n M-Down select-pane -D
+
+      # ── Reload ──
+      bind-key -T prefix r source-file ~/.config/tmux/tmux.conf \; display-message 'Reloaded.'
+
       # ── Renumber windows on close ──
       set -g renumber-windows on
-      set -g pane-base-index 1
+      setw -g pane-base-index 1
 
       # ── Message styling ──
       set -g message-style fg=colour68,reverse,bg=brightwhite
@@ -81,17 +105,6 @@ in
       set -g status-right '${statusRightScript}'
       setw -g window-status-separator ""
       set -g status-justify left
-
-      # ── Copy-mode VI ──
-      bind -T copy-mode-vi v send -X begin-selection
-      bind -T copy-mode-vi C-v send -X rectangle-toggle
-      bind -T copy-mode-vi y send -X copy-selection
-
-      # ── Popup ──
-      bind -n C-q run-shell "fish -c 'tmux popup'"
-
-      # ── Reload ──
-      bind r source-file ~/.config/tmux/tmux.conf \; display-message 'Reloaded.'
     '';
   };
 }
