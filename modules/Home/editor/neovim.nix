@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
+  home.packages = with pkgs; [lua51Packages.luarocks];
   programs.neovim = {
     enable = true;
     extraPackages = with pkgs; [

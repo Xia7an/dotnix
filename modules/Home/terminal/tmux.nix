@@ -8,7 +8,6 @@ let
     #[fg=brightwhite, bg=colour111, bold]#(curl -s ifconfig.me)\
     #[fg=colour238, bg=colour111] \
     #[fg=colour111, bg=colour238]\
-    #[fg=brightwhite, bg=colour111]#(ifconfig en0 | grep "inet " | awk '{print $2}')
   '';
 in
 {

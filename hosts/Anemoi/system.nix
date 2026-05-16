@@ -2,7 +2,7 @@
   imports = [
     ../common/nixos.nix
     ../../hardware/anemoi.nix
-    inputs.nixos-hardware.nixosModules.microsoft-surface-common
+    # inputs.nixos-hardware.nixosModules.microsoft-surface-common
     ../../modules/NixOS/desktop
     ../../modules/NixOS/system
     ../../modules/NixOS/apps
@@ -23,7 +23,7 @@
 
   time.hardwareClockInLocalTime = true;
 
-  hardware.microsoft-surface.kernelVersion = "stable";
+  # hardware.microsoft-surface.kernelVersion = "stable";
 
   services.iptsd.enable = true;
 
