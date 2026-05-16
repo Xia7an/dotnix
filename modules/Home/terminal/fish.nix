@@ -18,9 +18,6 @@
       fish_add_path /Users/inoyu/.local/bin
       fish_add_path /Users/inoyu/.lmstudio/bin
       fish_add_path /Users/inoyu/.antigravity/antigravity/bin
-
-      # zoxide integration
-      zoxide init fish | source
     '';
     shellAbbrs = {
       cduniv = "cd ~/Documents/大学/授業/3年前期/";

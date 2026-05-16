@@ -41,5 +41,16 @@
         commandline -f repaint
     end
     bind \c] peco_src
+
+    function peco_remote
+        set -l query (commandline)
+        set -l selected_dir (ghq get (gh api --paginate /user/repos --jq '.[].clone_url' | fzf))
+        if test -n "$selected_dir"
+            commandline "cd $selected_dir"
+            commandline -f execute
+        end
+        commandline -f repaint
+    end
+    bind \e peco_remote
   '';
 }

@@ -1,7 +1,14 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [lua51Packages.luarocks];
+  home.packages = with pkgs; [
+    lua51Packages.luarocks
+    lua51Packages.lua
+    ghostscript
+    mermaid-cli
+  ];
+
+
   programs.neovim = {
     enable = true;
     extraPackages = with pkgs; [
@@ -15,6 +22,7 @@
       lazygit
       tectonic
       statix
+      tree-sitter
     ] ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       # macOS: im-select.nvim IME switching
       macism
@@ -23,6 +31,8 @@
       lazy-nvim
       nvim-treesitter.withAllGrammars
     ];
+
+
 
     initLua =
       let
