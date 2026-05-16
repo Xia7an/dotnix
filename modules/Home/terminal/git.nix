@@ -1,4 +1,14 @@
 {pkgs, ...}: {
+  programs.git = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Inoyu";
+        email = "inoyu0329@gmail.com";
+      };
+    };
+  };
+
   programs.gh = {
     enable = true;
     extensions = with pkgs; [gh-markdown-preview];
@@ -15,6 +25,7 @@
   home.packages = with pkgs; [
     ghq
     fzf
+    peco
   ];
 
   programs.git.settings.ghq.root = "~/Gits";
