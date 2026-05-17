@@ -31,7 +31,6 @@
     sl
     yt-dlp
     rtmpdump
-    winetricks
 
     # ネットワークツール
     wireguard-tools

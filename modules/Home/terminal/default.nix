@@ -1,15 +1,9 @@
-# Terminal-related modules
+# Terminal emulator modules
 {
   imports = [
     ./alacritty.nix
-    ./kitty.nix
     ./ghostty.nix
+    ./kitty.nix
     ./wezterm.nix
-    ./fish.nix
-    ./starship.nix
-    ./zsh.nix
-    ./tmux.nix
-    ./git.nix
-    ./utils.nix
   ];
 }

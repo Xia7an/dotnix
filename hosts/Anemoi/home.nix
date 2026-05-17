@@ -5,7 +5,6 @@
     ../../home.nix
     ./profile.nix
     ../../modules/Home/input
-    ../../modules/Home/virtualization
   ];
 
   home = {
