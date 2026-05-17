@@ -4,7 +4,8 @@
     ../../hardware/anemoi.nix
     # inputs.nixos-hardware.nixosModules.microsoft-surface-common
     ../../modules/NixOS/desktop
-    ../../modules/NixOS/system
+    ../../modules/NixOS/system/bluetooth.nix
+    ../../modules/NixOS/system/sunshine.nix
     ../../modules/NixOS/apps
     ../../modules/NixOS/input
   ];
