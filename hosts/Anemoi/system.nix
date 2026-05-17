@@ -17,6 +17,7 @@
     efiInstallAsRemovable = true;
     theme               = ../../misc/Vimix;
   };
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   time.hardwareClockInLocalTime = true;
 
