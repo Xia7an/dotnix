@@ -10,6 +10,7 @@
     # ./wofi.nix
     ./rofi.nix
     ./wlogout.nix
+    ./swaync.nix
     # ./anyrun
     ./logi.nix
     # ./walker.nix

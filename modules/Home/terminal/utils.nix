@@ -3,6 +3,10 @@
     # ファイルマネージャー
     yazi
 
+    # 圧縮・解凍
+    unzip
+    zip
+
     # エディタ (CLI版)
     helix
     vim

@@ -11,7 +11,7 @@
     };
     rust-overlay.url = "github:oxalica/rust-overlay";
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     winapps = {
@@ -29,12 +29,12 @@
     };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.noctalia-qs.follows = "noctalia-qs";
     };
     noctalia-qs = {
       url = "github:noctalia-dev/noctalia-qs";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -48,7 +48,6 @@
     allSystems = linuxSystems ++ darwinSystems;
     forLinuxSystem = nixpkgs.lib.genAttrs linuxSystems;
 
-    niriTaskbarOverlay = import ./modules/overlays;
 
     unstablePackageOverlay = final: prev: let
       unstable = import nixpkgs-unstable {
@@ -67,13 +66,14 @@
       slack = unstable.slack;
       vivaldi = unstable.vivaldi;
       nextcloud-client = unstable.nextcloud-client;
+      neovim = unstable.neovim;
       blender = unstable.blender;
       rstudio = unstable.rstudio;
+      noctalia = unstable.noctalia;
     };
 
     linuxOverlays = [
       (import inputs.rust-overlay)
-      niriTaskbarOverlay
       unstablePackageOverlay
     ];
 
@@ -100,15 +100,6 @@
       config.allowUnfree = true;
     };
   in {
-    overlays.default = niriTaskbarOverlay;
-
-    packages = forLinuxSystem (system: let
-      pkgs = pkgsFor system;
-    in {
-      niri-taskbar = pkgs.niri-taskbar;
-      default = pkgs.niri-taskbar;
-    });
-
     nixosConfigurations = {
       Nyx = mkNixos {
         inherit inputs;

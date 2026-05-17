@@ -6,10 +6,7 @@
     ../../modules/NixOS/desktop
     ../../modules/NixOS/system
     ../../modules/NixOS/apps
-    ../../modules/NixOS/windows
     ../../modules/NixOS/input
-    ../../modules/NixOS/windows/winboat.nix
-    ../../modules/NixOS/system/docker.nix
   ];
 
   boot.loader.grub = {

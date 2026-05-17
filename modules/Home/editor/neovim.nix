@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs-unstable, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -11,7 +11,7 @@
 
   programs.neovim = {
     enable = true;
-    extraPackages = with pkgs; [
+    extraPackages = with pkgs-unstable; [
       # LazyVim
       lua-language-server
       stylua
@@ -23,21 +23,20 @@
       tectonic
       statix
       tree-sitter
-    ] ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+    ] ++ lib.optionals pkgs-unstable.stdenv.hostPlatform.isDarwin [
       # macOS: im-select.nvim IME switching
       macism
     ];
-    plugins = with pkgs.vimPlugins; [
+    plugins = with pkgs-unstable.vimPlugins; [
       lazy-nvim
       nvim-treesitter.withAllGrammars
     ];
 
 
 
-    initLua =
+    extraLuaConfig =
       let
-        plugins = with pkgs.vimPlugins; [
-          # LazyVim
+        plugins = with pkgs-unstable.vimPlugins; [
           LazyVim
           bufferline-nvim
           cmp-buffer
@@ -94,7 +93,7 @@
             { name = "${lib.getName drv}"; path = drv; }
           else
             drv;
-        lazyPath = pkgs.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
+        lazyPath = pkgs-unstable.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
       in
       ''
         require("lazy").setup({

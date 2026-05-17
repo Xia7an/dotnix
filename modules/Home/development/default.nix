@@ -11,5 +11,6 @@
     ./python.nix
     ./java-dotnet.nix
     ./database.nix
+    ./rstudio.nix
   ];
 }

@@ -2,19 +2,12 @@
 {
   imports = [
     # ─── ブラウザ ───
-    ../../modules/Home/apps/chrome.nix
+    ../../modules/Home/apps/browser/chrome.nix
 
     # ─── コミュニケーション ───
-    ../../modules/Home/apps/discord.nix
-
-    # ─── クリエイティブ ───
+    ../../modules/Home/apps/communication/discord.nix
 
     # ─── ノート / ドキュメント ───
-    ../../modules/Home/apps/obsidian.nix
-
-    # ─── VNC ───
-
-    # ─── 同期 / セキュリティ ───
-    ../../modules/Home/apps/nextcloud.nix
+    ../../modules/Home/apps/document/obsidian.nix
   ];
 }

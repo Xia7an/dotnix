@@ -2,26 +2,26 @@
 {
   imports = [
     # ─── ブラウザ ───
-    ../../modules/Home/apps/chrome.nix
-    ../../modules/Home/apps/vivaldi.nix
+    ../../modules/Home/apps/browser/chrome.nix
+    ../../modules/Home/apps/browser/vivaldi.nix
 
     # ─── コミュニケーション ───
-    ../../modules/Home/apps/discord.nix
-    ../../modules/Home/apps/slack.nix
+    ../../modules/Home/apps/communication/discord.nix
+    ../../modules/Home/apps/communication/slack.nix
 
     # ─── クリエイティブ ───
-    ../../modules/Home/apps/blender.nix
-    ../../modules/Home/apps/musescore.nix
-    ../../modules/Home/apps/spotify.nix
+    ../../modules/Home/apps/creative/blender.nix
+    ../../modules/Home/apps/creative/musescore.nix
+    ../../modules/Home/apps/media/spotify.nix
 
     # ─── ノート / ドキュメント ───
-    ../../modules/Home/apps/obsidian.nix
+    ../../modules/Home/apps/document/obsidian.nix
 
-    # ─── VNC ───
-    ../../modules/Home/apps/tigervnc.nix
+    # ─── リモートデスクトップ ───
+    ../../modules/Home/apps/vdesktop/tigervnc.nix
 
     # ─── 同期 / セキュリティ ───
-    ../../modules/Home/apps/nextcloud.nix
-    ../../modules/Home/apps/bitwarden.nix
+    ../../modules/Home/apps/communication/nextcloud.nix
+    ../../modules/Home/apps/utility/bitwarden.nix
   ];
 }

@@ -190,8 +190,8 @@ gestures {
     spawn-at-startup "xwayland-satellite" // XWayland support
     spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
     spawn-sh-at-startup "ibus start"
-    spawn-sh-at-startup "awww-daemon" // Wallpaper daemon
-    spawn-sh-at-startup "awww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
+    spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
+    spawn-sh-at-startup "swww img /home/inoyu/dotnix/misc/shiroha.png" // Set wallpaper
     spawn-at-startup "niriswitcher"
     spawn-at-startup "libinput-gestures" // 2本指スワイプでブラウザ戻る/進む
 
