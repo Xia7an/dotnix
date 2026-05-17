@@ -1,10 +1,8 @@
 # NixOS レベルのアプリケーション設定
-# Discord は Wayland ラッパーが必要なため Home Manager 側 (modules/Home/apps/discord.nix) で管理する
-# gaming.nix (Steam) は Atropos 固有のため hosts/Atropos/default.nix でインポートする
+# blender, dolphin, univ は Home Manager 側 (modules/Home/apps/) で管理する
+# gaming.nix (Steam) は OS レベルのハードウェア設定が必要なため NixOS 側に残す
 {
   imports = [
-    ./blender.nix
-    ./dolphin.nix
-    ./univ
+    ./gaming.nix
   ];
 }
