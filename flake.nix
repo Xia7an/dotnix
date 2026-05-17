@@ -1,9 +1,9 @@
 {
   inputs.self.submodules = true;
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -42,7 +42,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, antigravity-nix, tmux-nix, ... }: let
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, winapps, antigravity-nix, tmux-nix, ... }: let
     linuxSystems = [ "x86_64-linux" ];
     darwinSystems = [ "aarch64-darwin" ];
     allSystems = linuxSystems ++ darwinSystems;
@@ -50,13 +50,36 @@
 
     niriTaskbarOverlay = import ./modules/overlays;
 
+    unstablePackageOverlay = final: prev: let
+      unstable = import nixpkgs-unstable {
+        system = final.system;
+        config.allowUnfree = true;
+      };
+    in {
+      google-chrome = unstable.google-chrome;
+      discord = unstable.discord;
+      opencode = unstable.opencode;
+      vscode = unstable.vscode;
+      vscode-utils = unstable.vscode-utils;
+      vscode-extensions = unstable.vscode-extensions;
+      zed-editor = unstable.zed-editor;
+      obsidian = unstable.obsidian;
+      slack = unstable.slack;
+      vivaldi = unstable.vivaldi;
+      nextcloud-client = unstable.nextcloud-client;
+      blender = unstable.blender;
+      rstudio = unstable.rstudio;
+    };
+
     linuxOverlays = [
       (import inputs.rust-overlay)
       niriTaskbarOverlay
+      unstablePackageOverlay
     ];
 
     darwinOverlays = [
       (import inputs.rust-overlay)
+      unstablePackageOverlay
     ];
 
     overlaysFor = system:
@@ -72,10 +95,9 @@
       overlays = overlaysFor system;
     };
 
-    pkgs-stable-for = system: import nixpkgs-stable {
+    pkgs-unstable-for = system: import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
-      overlays = overlaysFor system;
     };
   in {
     overlays.default = niriTaskbarOverlay;
@@ -126,6 +148,9 @@
         inherit inputs;
         hostPath = ./hosts/Nyx/home.nix;
         pkgs = pkgsFor "x86_64-linux";
+        extraSpecialArgs = {
+          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
+        };
       };
 
       AtroposHome = mkHome {
@@ -133,7 +158,7 @@
         hostPath = ./hosts/Atropos/home.nix;
         pkgs = pkgsFor "x86_64-linux";
         extraSpecialArgs = {
-          pkgs-stable = pkgs-stable-for "x86_64-linux";
+          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
         };
       };
 
@@ -142,7 +167,7 @@
         hostPath = ./hosts/Anemoi/home.nix;
         pkgs = pkgsFor "x86_64-linux";
         extraSpecialArgs = {
-          pkgs-stable = pkgs-stable-for "x86_64-linux";
+          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
         };
       };
 
@@ -151,7 +176,7 @@
         hostPath = ./hosts/Lachesis/home.nix;
         pkgs = pkgsFor "aarch64-darwin";
         extraSpecialArgs = {
-          pkgs-stable = pkgs-stable-for "aarch64-darwin";
+          pkgs-unstable = pkgs-unstable-for "aarch64-darwin";
         };
       };
     };
