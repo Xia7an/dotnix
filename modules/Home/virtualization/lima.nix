@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [ lima ];
+  home.packages = with pkgs; [  ];
 }
