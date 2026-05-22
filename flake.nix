@@ -108,6 +108,12 @@
         system = "x86_64-linux";
         overlays = linuxOverlays;
       };
+      Clotho = mkNixos {
+        inherit inputs;
+        hostPath = ./hosts/Clotho/system.nix;
+        system = "x86_64-linux";
+        overlays = linuxOverlays;
+      };
 
       Atropos = mkNixos {
         inherit inputs;
