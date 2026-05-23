@@ -1,6 +1,15 @@
 { config, pkgs, inputs, ... }: {
   imports = [
-    ../common/nixos.nix
+    ../../modules/NixOS/locale.nix
+    ../../modules/NixOS/fonts.nix
+    ../../modules/NixOS/users.nix
+    ../../modules/NixOS/packages.nix
+    ../../modules/NixOS/nix.nix
+    ../../modules/NixOS/xserver.nix
+    ../../modules/NixOS/git.nix
+    ../../modules/NixOS/desktop/gdm.nix
+    ../../modules/NixOS/services/openssh.nix
+    ../../modules/NixOS/services/tailscale.nix
     ../../hardware/Atropos-SSD-hardware.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/security.nix

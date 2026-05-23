@@ -1,7 +1,15 @@
 { config, pkgs, inputs, ... }: {
   imports = [
-    ../common/nixos.nix
     ../../hardware/anemoi.nix
+    ../../modules/NixOS/locale.nix
+    ../../modules/NixOS/fonts.nix
+    ../../modules/NixOS/users.nix
+    ../../modules/NixOS/packages.nix
+    ../../modules/NixOS/nix.nix
+    ../../modules/NixOS/git.nix
+    ../../modules/NixOS/desktop/gdm.nix
+    ../../modules/NixOS/services/openssh.nix
+    ../../modules/NixOS/services/tailscale.nix
     ../../modules/NixOS/networkmanager.nix
     ../../modules/NixOS/desktop
     ../../modules/NixOS/desktop/sunshine.nix
