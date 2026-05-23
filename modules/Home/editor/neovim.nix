@@ -78,7 +78,7 @@
           vim-illuminate
           vim-startuptime
           vim-surround
-          which-key-nvim
+          { name = "which-key.nvim"; path = which-key-nvim; }
           { name = "LuaSnip"; path = luasnip; }
           { name = "catppuccin"; path = catppuccin-nvim; }
           { name = "mini.ai"; path = mini-nvim; }
