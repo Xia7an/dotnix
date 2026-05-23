@@ -1,6 +1,5 @@
 { config, pkgs, lib, inputs, ... }: {
   imports = [
-    <nixos-wsl/modules>
     ../../modules/NixOS/locale.nix
     ../../modules/NixOS/fonts.nix
     ../../modules/NixOS/users.nix

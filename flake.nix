@@ -1,6 +1,4 @@
 {
-  inputs.self.submodules = true;
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -42,6 +40,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, winapps, antigravity-nix, tmux-nix, nixos-wsl, ... }: let
@@ -132,6 +131,7 @@
         hostPath = ./hosts/Clotho/system.nix;
         system = "x86_64-linux";
         overlays = linuxOverlays;
+        extraModules = [ nixos-wsl.nixosModules.default ];
       };
     };
 
