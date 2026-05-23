@@ -1,7 +1,19 @@
 { config, pkgs, inputs, ... }: {
   imports = [
-    ../common/nixos.nix
+    ../../modules/NixOS/locale.nix
+    ../../modules/NixOS/fonts.nix
+    ../../modules/NixOS/users.nix
+    ../../modules/NixOS/packages.nix
+    ../../modules/NixOS/nix.nix
+    ../../modules/NixOS/xserver.nix
+    ../../modules/NixOS/git.nix
+    ../../modules/NixOS/desktop/gdm.nix
+    ../../modules/NixOS/services/openssh.nix
+    ../../modules/NixOS/services/tailscale.nix
     ../../hardware/Atropos-SSD-hardware.nix
+    ../../modules/NixOS/desktop/nvidia.nix
+    ../../modules/NixOS/security.nix
+    ../../modules/NixOS/apps/ollama.nix
   ];
 
   boot.loader.grub = {
@@ -14,21 +26,6 @@
   };
   boot.kernelModules      = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.supportedFilesystems = [ "ntfs" ];
-
-  time.hardwareClockInLocalTime = true;
-
-  hardware.opengl = {
-    enable         = true;
-    driSupport32Bit = true;
-  };
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    modesetting.enable             = true;
-    powerManagement.enable         = false;
-    powerManagement.finegrained    = false;
-    open                           = true;
-    forceFullCompositionPipeline   = true;
-  };
 
   networking.hostName           = "Atropos";
   networking.networkmanager.enable = false;
@@ -50,25 +47,13 @@
 
   networking.firewall = {
     enable           = true;
-    allowedTCPPorts  = [ 22 3389 47984 47989 47990 48010 ];
-    allowedUDPPortRanges = [
-      { from = 47998; to = 48000; }
-      { from = 8000;  to = 8010;  }
-    ];
+    allowedTCPPorts  = [ 22 3389 ];
     allowedUDPPorts  = [ config.services.tailscale.port ];
     trustedInterfaces = [ "tailscale0" ];
   };
 
   users.users.inoyu.extraGroups =
     [ "networkmanager" "wheel" "docker" "storage" ];
-
-  security.sudo = {
-    enable = true;
-    extraRules = [{
-      users    = [ "inoyu" ];
-      commands = [{ command = "ALL"; options = [ "NOPASSWD" ]; }];
-    }];
-  };
 
   services.displayManager.autoLogin = { enable = true; user = "inoyu"; };
 

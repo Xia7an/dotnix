@@ -1,11 +1,9 @@
 { config, pkgs, lib, ... }: {
-  # Sunshineを有効化
   services.sunshine = {
     enable = true;
     autoStart = true;
     capSysAdmin = true;
     openFirewall = true;
-    
   };
   networking.firewall = {
     enable = true;
@@ -16,15 +14,12 @@
     ];
   };
 
-  # グラフィックス有効化（NVENCなど使う場合も含む）
   hardware.graphics = {
     enable = true;
   };
 
-  # XDG Desktop Portal（Waylandサポート用）
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 }
-
