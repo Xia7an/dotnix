@@ -2,12 +2,11 @@
   imports = [
     ../common/nixos.nix
     ../../hardware/anemoi.nix
-    # inputs.nixos-hardware.nixosModules.microsoft-surface-common
+    ../../modules/NixOS/networkmanager.nix
     ../../modules/NixOS/desktop
+    ../../modules/NixOS/desktop/sunshine.nix
     ../../modules/NixOS/system/bluetooth.nix
-    ../../modules/NixOS/system/sunshine.nix
     ../../modules/NixOS/apps
-    ../../modules/NixOS/input
   ];
 
   boot.loader.grub = {
@@ -19,10 +18,6 @@
     theme               = ../../misc/Vimix;
   };
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-
-  time.hardwareClockInLocalTime = true;
-
-  # hardware.microsoft-surface.kernelVersion = "stable";
 
   services.iptsd.enable = true;
 
@@ -37,7 +32,6 @@
   };
 
   networking.hostName = "Anemoi";
-  networking.networkmanager.enable = true;
   networking.networkmanager.ensureProfiles.profiles = {
     "aterm-b43571-a" = {
       connection = {

@@ -41,9 +41,10 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, winapps, antigravity-nix, tmux-nix, ... }: let
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, winapps, antigravity-nix, tmux-nix, nixos-wsl, ... }: let
     linuxSystems = [ "x86_64-linux" ];
     darwinSystems = [ "aarch64-darwin" ];
     allSystems = linuxSystems ++ darwinSystems;
@@ -88,6 +89,7 @@
 
     mkPkgs = import ./lib/mk-pkgs.nix;
     mkNixos = import ./lib/mk-nixos.nix;
+    mkNixosWsl = import ./lib/mk-nixos-wsl.nix;
     mkDarwin = import ./lib/mk-darwin.nix;
     mkHome = import ./lib/mk-home.nix;
 
@@ -124,6 +126,13 @@
         overlays = linuxOverlays;
         extraModules = [ inputs.xremap-flake.nixosModules.default ];
       };
+
+      Clotho = mkNixosWsl {
+        inherit inputs;
+        hostPath = ./hosts/Clotho/system.nix;
+        system = "x86_64-linux";
+        overlays = linuxOverlays;
+      };
     };
 
     darwinConfigurations = {
@@ -157,6 +166,15 @@
       AnemoiHome = mkHome {
         inherit inputs;
         hostPath = ./hosts/Anemoi/home.nix;
+        pkgs = pkgsFor "x86_64-linux";
+        extraSpecialArgs = {
+          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
+        };
+      };
+
+      ClothoHome = mkHome {
+        inherit inputs;
+        hostPath = ./hosts/Clotho/home.nix;
         pkgs = pkgsFor "x86_64-linux";
         extraSpecialArgs = {
           pkgs-unstable = pkgs-unstable-for "x86_64-linux";

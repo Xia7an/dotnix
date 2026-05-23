@@ -1,6 +1,6 @@
 {
   imports = [
-    ./base.nix
+    ./default.nix
     ./kdeconnect.nix
     ./niri.nix
     ./udiskie.nix
