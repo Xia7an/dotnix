@@ -14,6 +14,7 @@
     ../../modules/NixOS/desktop
     ../../modules/NixOS/desktop/sunshine.nix
     ../../modules/NixOS/system/bluetooth.nix
+    ../../modules/NixOS/nix-ld.nix
     ../../modules/NixOS/apps
   ];
 

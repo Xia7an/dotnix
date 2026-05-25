@@ -13,6 +13,7 @@
     ../../hardware/Atropos-SSD-hardware.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/security.nix
+    ../../modules/NixOS/nix-ld.nix
     ../../modules/NixOS/apps/ollama.nix
   ];
 

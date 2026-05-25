@@ -9,6 +9,7 @@
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/services/openssh.nix
     ../../modules/NixOS/services/tailscale.nix
+    ../../modules/NixOS/nix-ld.nix
   ];
 
   boot.loader.grub = {

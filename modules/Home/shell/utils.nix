@@ -11,9 +11,6 @@
     helix
     vim
 
-    # 開発環境マネージャー
-    mise
-
     # 基本 CLI ユーティリティ
     bat
     eza
