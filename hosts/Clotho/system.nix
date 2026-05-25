@@ -7,6 +7,7 @@
     ../../modules/NixOS/nix.nix
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/services/openssh.nix
+    ../../modules/NixOS/nix-ld.nix
   ];
 
   wsl.enable = true;
