@@ -7,5 +7,6 @@
     ../../modules/Home/desktop/logi.nix
     ../../modules/Home/desktop/swww.nix
     ../../modules/Home/desktop/noctalia.nix
+    ../../modules/Home/desktop/wdisplays.nix
   ];
 }
