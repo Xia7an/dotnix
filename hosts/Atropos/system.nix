@@ -5,7 +5,9 @@
     ../../modules/NixOS/users.nix
     ../../modules/NixOS/packages.nix
     ../../modules/NixOS/nix.nix
-    ../../modules/NixOS/xserver.nix
+    ../../modules/NixOS/desktop/gdm.nix
+    ../../modules/NixOS/desktop/niri.nix
+    ../../modules/NixOS/desktop/xremap.nix
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/services/openssh.nix
@@ -15,6 +17,7 @@
     ../../modules/NixOS/security.nix
     ../../modules/NixOS/nix-ld.nix
     ../../modules/NixOS/apps/ollama.nix
+    ../../modules/NixOS/system/bluetooth.nix
   ];
 
   boot.loader.grub = {

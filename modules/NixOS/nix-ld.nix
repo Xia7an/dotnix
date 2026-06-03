@@ -33,7 +33,7 @@
     xorg.libXrandr
     xorg.libXrender
     xorg.libXtst
-    xorg.libXxi
+    xorg.libXi
     xorg.libXScrnSaver
     xorg.libxcb
     libxkbcommon
