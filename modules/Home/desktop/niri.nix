@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
-lib.mkIf pkgs.stdenv.isLinux {
+{ pkgs, lib, ... }: {
+  imports = [
+    ../apps/explorer/nautilus.nix
+  ];
+
   home.file.".config/niri" = {
     source = ../../../config/niri;
     recursive = true;

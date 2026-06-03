@@ -11,14 +11,15 @@
 
     # ─── クリエイティブ ───
     ../../modules/Home/apps/creative/blender.nix
-    ../../modules/Home/apps/creative/musescore.nix
     ../../modules/Home/apps/media/spotify.nix
 
     # ─── ノート / ドキュメント ───
     ../../modules/Home/apps/document/obsidian.nix
 
+
+
     # ─── 開発 / IDE ───
-    ../../modules/Home/development/rstudio.nix
+    ../../modules/Home/development/rider.nix
 
     # ─── リモートデスクトップ ───
     ../../modules/Home/apps/vdesktop/tigervnc.nix
