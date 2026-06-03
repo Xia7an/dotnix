@@ -17,6 +17,9 @@
     ../../modules/Home/apps/document/obsidian.nix
 
 
+    # ─── AI ───
+    ../../modules/Home/apps/ai/opencode.nix
+    ../../modules/Home/apps/ai/codex.nix
 
     # ─── 開発 / IDE ───
     ../../modules/Home/development/rider.nix
