@@ -51,6 +51,6 @@
         end
         commandline -f repaint
     end
-    bind ctrl-// peco_remote
+    bind ctrl-shift-\\ peco_remote
   '';
 }

@@ -20,7 +20,7 @@
       };
       bar = {
         density = "default";
-        position = "top";
+        position = "bottom";
         showCapsule = false;
         widgets = {
           left = [
@@ -82,7 +82,15 @@
         };
       };
 
-      colorSchemes.predefinedScheme = "Dracula";
+      colorSchemes = {
+        useWallpaparColors = true;
+        predefinedSchemes = "Dracula";
+        darkMode = false;
+        schedulingMode = "off";
+        generationMethod = "tonal-spot";
+        monitorForColors = "";
+        syncGsettings = true;
+      };
 
       general = {
         avatarImage = "${config.home.homeDirectory}/.face";
@@ -91,7 +99,7 @@
 
       location = {
         monthBeforeDay = true;
-        name = "Marseille, France";
+        name = "Tokyo, Japan";
       };
     };
       # settings can also be a JSON string/path in Noctalia module.

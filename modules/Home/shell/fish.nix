@@ -18,6 +18,14 @@
       fish_add_path /Users/inoyu/.local/bin
       fish_add_path /Users/inoyu/.lmstudio/bin
       fish_add_path /Users/inoyu/.antigravity/antigravity/bin
+
+      # 予測候補の色を薄くして実際の入力と区別しやすくする
+      # Ghostty + Dracula テーマだと濃すぎるので明るめのグレーに
+      set fish_color_autosuggestion 6b6b80
+
+      # Tab補完の選択中候補を白地に黒でハイライト
+      set fish_pager_color_selected_background white
+      set fish_pager_color_selected_completion black
     '';
     shellAbbrs = {
       cduniv = "cd ~/Documents/大学/授業/3年前期/";
