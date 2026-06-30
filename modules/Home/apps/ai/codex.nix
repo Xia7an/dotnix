@@ -20,6 +20,6 @@ in
 
   home.file.".codex/config.toml".text = ''
     # 既定モデル
-    model = "gpt-5.4"
+    model = "gpt-5.5"
   '';
 }

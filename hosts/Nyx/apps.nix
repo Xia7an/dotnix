@@ -20,6 +20,9 @@
     # ─── リモートデスクトップ ───
     ../../modules/Home/apps/vdesktop/tigervnc.nix
 
+    # ─── AI ───
+    ../../modules/Home/apps/ai/claude.nix
+
     # ─── 同期 / セキュリティ ───
     ../../modules/Home/apps/communication/nextcloud.nix
     ../../modules/Home/apps/utility/bitwarden.nix

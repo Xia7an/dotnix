@@ -58,6 +58,7 @@
     in {
       google-chrome = unstable.google-chrome;
       discord = unstable.discord;
+      claude-code = unstable.claude-code;
       opencode = unstable.opencode;
       vscode = unstable.vscode;
       vscode-utils = unstable.vscode-utils;
