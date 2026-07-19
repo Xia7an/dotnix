@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   system.defaults = {
     dock = {
       autohide = true;
@@ -23,8 +24,6 @@
     magicmouse.MouseButtonMode = "OneButton";
     NSGlobalDomain = {
       AppleEnableSwipeNavigateWithScrolls = true;
-      AppleMenuBarVisibleInFullscreen = true;
-      AppleMiniaturizeOnDoubleClick = false;
       ApplePressAndHoldEnabled = false;
       AppleSpacesSwitchOnActivate = false;
       AppleWindowTabbingMode = "always";
@@ -70,6 +69,8 @@
     };
     CustomUserPreferences = {
       NSGlobalDomain = {
+        AppleMenuBarVisibleInFullscreen = true;
+        AppleMiniaturizeOnDoubleClick = false;
         NSQuitAlwaysKeepsWindows = true;
         "_HIHideMenuBar" = false;
       };
@@ -77,17 +78,35 @@
         AppleCurrentKeyboardLayoutInputSourceID = "com.apple.keylayout.ABC";
         AppleDictationAutoEnable = true;
         AppleEnabledInputSources = [
-          { "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping"; "Input Mode" = "com.apple.inputmethod.Japanese"; InputSourceKind = "Input Mode"; }
-          { "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping"; InputSourceKind = "Keyboard Input Method"; }
-          { "Bundle ID" = "com.apple.CharacterPaletteIM"; InputSourceKind = "Palette"; }
+          {
+            "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping";
+            "Input Mode" = "com.apple.inputmethod.Japanese";
+            InputSourceKind = "Input Mode";
+          }
+          {
+            "Bundle ID" = "com.apple.inputmethod.Kotoeri.RomajiTyping";
+            InputSourceKind = "Keyboard Input Method";
+          }
+          {
+            "Bundle ID" = "com.apple.CharacterPaletteIM";
+            InputSourceKind = "Palette";
+          }
         ];
       };
       "com.apple.symbolichotkeys" = {
         AppleSymbolicHotKeys = {
-          10 = { enabled = false; };  # 日本語入力ソースを選択
-          11 = { enabled = false; };
-          50 = { enabled = false; };  # 入力メニューの Spotlight を無効化
-          64 = { enabled = true;  };  #  Spotlight 検索を表示
+          "10" = {
+            enabled = false;
+          }; # 日本語入力ソースを選択
+          "11" = {
+            enabled = false;
+          };
+          "50" = {
+            enabled = false;
+          }; # 入力メニューの Spotlight を無効化
+          "64" = {
+            enabled = true;
+          }; # Spotlight 検索を表示
         };
       };
     };

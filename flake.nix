@@ -1,4 +1,6 @@
 {
+  description = "Reproducible NixOS, nix-darwin, and Home Manager configurations";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -36,159 +38,72 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
-  };
-
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, winapps, antigravity-nix, tmux-nix, nixos-wsl, ... }: let
-    linuxSystems = [ "x86_64-linux" ];
-    darwinSystems = [ "aarch64-darwin" ];
-    allSystems = linuxSystems ++ darwinSystems;
-    forLinuxSystem = nixpkgs.lib.genAttrs linuxSystems;
-
-
-    unstablePackageOverlay = final: prev: let
-      unstable = import nixpkgs-unstable {
-        system = final.system;
-        config.allowUnfree = true;
-      };
-    in {
-      google-chrome = unstable.google-chrome;
-      discord = unstable.discord;
-      opencode = unstable.opencode;
-      vscode = unstable.vscode;
-      vscode-utils = unstable.vscode-utils;
-      vscode-extensions = unstable.vscode-extensions;
-      zed-editor = unstable.zed-editor;
-      obsidian = unstable.obsidian;
-      slack = unstable.slack;
-      vivaldi = unstable.vivaldi;
-      nextcloud-client = unstable.nextcloud-client;
-      neovim = unstable.neovim;
-      blender = unstable.blender;
-      rstudio = unstable.rstudio;
-      noctalia = unstable.noctalia;
-    };
-
-    linuxOverlays = [
-      (import inputs.rust-overlay)
-      unstablePackageOverlay
-    ];
-
-    darwinOverlays = [
-      (import inputs.rust-overlay)
-      unstablePackageOverlay
-    ];
-
-    overlaysFor = system:
-      if builtins.elem system darwinSystems then darwinOverlays else linuxOverlays;
-
-    mkPkgs = import ./lib/mk-pkgs.nix;
-    mkNixos = import ./lib/mk-nixos.nix;
-    mkNixosWsl = import ./lib/mk-nixos-wsl.nix;
-    mkDarwin = import ./lib/mk-darwin.nix;
-    mkHome = import ./lib/mk-home.nix;
-
-    pkgsFor = system: mkPkgs {
-      inherit nixpkgs system;
-      overlays = overlaysFor system;
-    };
-
-    pkgs-unstable-for = system: import nixpkgs-unstable {
-      inherit system;
-      config.allowUnfree = true;
-    };
-  in {
-    nixosConfigurations = {
-      Nyx = mkNixos {
-        inherit inputs;
-        hostPath = ./hosts/Nyx/system.nix;
-        system = "x86_64-linux";
-        overlays = linuxOverlays;
-      };
-
-      Atropos = mkNixos {
-        inherit inputs;
-        hostPath = ./hosts/Atropos/system.nix;
-        system = "x86_64-linux";
-        overlays = linuxOverlays;
-        extraModules = [ inputs.xremap-flake.nixosModules.default ];
-      };
-
-      Anemoi = mkNixos {
-        inherit inputs;
-        hostPath = ./hosts/Anemoi/system.nix;
-        system = "x86_64-linux";
-        overlays = linuxOverlays;
-        extraModules = [ inputs.xremap-flake.nixosModules.default ];
-      };
-
-      Clotho = mkNixosWsl {
-        inherit inputs;
-        hostPath = ./hosts/Clotho/system.nix;
-        system = "x86_64-linux";
-        overlays = linuxOverlays;
-        extraModules = [ nixos-wsl.nixosModules.default ];
-      };
-    };
-
-    darwinConfigurations = {
-      Lachesis = mkDarwin {
-        inherit inputs;
-        hostPath = ./hosts/Lachesis/system.nix;
-        system = "aarch64-darwin";
-        overlays = darwinOverlays;
-      };
-    };
-
-    homeConfigurations = {
-      NyxHome = mkHome {
-        inherit inputs;
-        hostPath = ./hosts/Nyx/home.nix;
-        pkgs = pkgsFor "x86_64-linux";
-        extraSpecialArgs = {
-          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
-        };
-      };
-
-      AtroposHome = mkHome {
-        inherit inputs;
-        hostPath = ./hosts/Atropos/home.nix;
-        pkgs = pkgsFor "x86_64-linux";
-        extraSpecialArgs = {
-          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
-        };
-      };
-
-      AnemoiHome = mkHome {
-        inherit inputs;
-        hostPath = ./hosts/Anemoi/home.nix;
-        pkgs = pkgsFor "x86_64-linux";
-        extraSpecialArgs = {
-          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
-        };
-      };
-
-      ClothoHome = mkHome {
-        inherit inputs;
-        hostPath = ./hosts/Clotho/home.nix;
-        pkgs = pkgsFor "x86_64-linux";
-        extraSpecialArgs = {
-          pkgs-unstable = pkgs-unstable-for "x86_64-linux";
-        };
-      };
-
-      LachesisHome = mkHome {
-        inherit inputs;
-        hostPath = ./hosts/Lachesis/home.nix;
-        pkgs = pkgsFor "aarch64-darwin";
-        extraSpecialArgs = {
-          pkgs-unstable = pkgs-unstable-for "aarch64-darwin";
-        };
-      };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
+  outputs =
+    inputs:
+    let
+      inherit (inputs.nixpkgs) lib;
+      hosts = import ./hosts { inherit inputs; };
+      overlayList = import ./modules/overlays { inherit inputs; };
+      configurations = import ./lib/mk-configurations.nix {
+        inherit inputs hosts;
+        overlays = overlayList;
+      };
+
+      inherit (configurations)
+        darwinConfigurations
+        homeConfigurations
+        nixosConfigurations
+        pkgsFor
+        supportedSystems
+        ;
+
+      hostsFor = system: lib.filterAttrs (_: host: host.system == system) hosts;
+    in
+    {
+      inherit darwinConfigurations homeConfigurations nixosConfigurations;
+
+      overlays.default = lib.composeManyExtensions overlayList;
+
+      packages = lib.genAttrs supportedSystems (
+        system:
+        let
+          pkgs = pkgsFor system;
+        in
+        lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          inherit (pkgs) niri-taskbar;
+          default = pkgs.niri-taskbar;
+        }
+      );
+
+      formatter = lib.genAttrs supportedSystems (system: (pkgsFor system).nixfmt-rfc-style);
+
+      checks = lib.genAttrs supportedSystems (
+        system:
+        let
+          systemChecks = lib.mapAttrs' (
+            name: host:
+            lib.nameValuePair "${name}-system" (
+              if host.kind == "darwin" then
+                darwinConfigurations.${name}.system
+              else
+                nixosConfigurations.${name}.config.system.build.toplevel
+            )
+          ) (hostsFor system);
+
+          homeChecks = lib.mapAttrs' (
+            name: _: lib.nameValuePair "${name}-home" homeConfigurations."${name}Home".activationPackage
+          ) (hostsFor system);
+        in
+        systemChecks // homeChecks
+      );
+    };
 }

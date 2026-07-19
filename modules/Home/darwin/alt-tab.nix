@@ -1,6 +1,4 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ alt-tab-macos ];
-
+{
   targets.darwin.defaults."com.lwouis.alt-tab-macos" = {
     appsToShow = "0";
     appearanceSize = "1";

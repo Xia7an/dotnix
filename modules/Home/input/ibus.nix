@@ -4,9 +4,9 @@
   # 1. XKB カスタムマッピング（変換 / 無変換 を正しく割り当て）
   xsession.enable = true;
   xsession.xkb = {
-    layout = "jp";
+    layout = "jp_custom";
     model = "pc105";
-    options = [];
+    options = [ ];
 
     # 変換キー(Henkan) → Henkan_Mode
     # 無変換キー(Muhenkan) → Muhenkan
@@ -24,8 +24,6 @@
         '';
       };
     };
-
-    layout = "jp_custom";
   };
 
   # 2. evdev レベルで補正したい場合は keyd を使用
@@ -36,7 +34,7 @@
     config = ''
       [ids]
       *
-      
+
       [main]
       henkan = henkan
       muhenkan = muhenkan

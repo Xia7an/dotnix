@@ -1,34 +1,53 @@
-{ ... }:
-
+{
+  lib,
+  pkgs,
+  ...
+}:
+let
+  configFormat = pkgs.formats.libconfig { };
+  configFile = configFormat.generate "logid.cfg" {
+    devices = [
+      {
+        name = "MX Master 4";
+        buttons = [
+          {
+            cid = 195;
+            action = {
+              type = "Keypress";
+              keys = [
+                "KEY_LEFTMETA"
+                "KEY_TAB"
+              ];
+            };
+          }
+          {
+            cid = 416;
+            action = {
+              type = "Keypress";
+              keys = [
+                "KEY_LEFTMETA"
+                "KEY_SPACE"
+              ];
+            };
+          }
+        ];
+      }
+    ];
+  };
+in
 {
   hardware.logitech.wireless.enable = true;
 
-  services.logiops = {
-    enable = true;
+  environment.systemPackages = [ pkgs.logiops ];
+  services.dbus.packages = [ pkgs.logiops ];
 
-    config = {
-      devices = [
-        {
-          name = "MX Master 4";
-
-          buttons = [
-            {
-              cid = 0xc3;
-              action = {
-                type = "Keypress";
-                keys = [ "KEY_LEFTMETA" "KEY_TAB" ];
-              };
-            }
-
-            {
-              cid = 0x1a0;
-              action = {
-                type = "Keypress";
-                keys = [ "KEY_LEFTMETA" "KEY_SPACE" ];
-              };
-            }
-          ];
-        }
+  systemd = {
+    packages = [ pkgs.logiops ];
+    services.logid = {
+      wantedBy = [ "graphical.target" ];
+      serviceConfig.ExecStart = [
+        ""
+        "${lib.getExe pkgs.logiops} -c ${configFile}"
       ];
     };
   };

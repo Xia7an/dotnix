@@ -1,7 +1,5 @@
-# Hammerspoon — macOS 自動化フレームワーク
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ hammerspoon ];
-
+# Hammerspoon 本体は nix-darwin の Homebrew cask で管理する。
+{
   home.file.".hammerspoon/init.lua".text = ''
     -- Hammerspoon 設定
     hs.autoLaunch(true)

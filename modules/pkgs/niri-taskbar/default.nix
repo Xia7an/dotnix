@@ -1,14 +1,15 @@
-{ lib
-, rustPlatform
-, fetchFromGitHub
-, pkg-config
-, gtk3
-, glib
-, pango
-, cairo
-, gdk-pixbuf
-, atk
-, gobject-introspection
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  pkg-config,
+  gtk3,
+  glib,
+  pango,
+  cairo,
+  gdk-pixbuf,
+  atk,
+  gobject-introspection,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -42,7 +43,7 @@ rustPlatform.buildRustPackage rec {
     description = "Waybar taskbar module tailored for the Niri Wayland compositor";
     homepage = "https://github.com/lawngnome/niri-taskbar";
     license = licenses.mit;
-    maintainers = [];
+    maintainers = [ ];
     platforms = platforms.linux;
   };
 }

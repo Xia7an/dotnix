@@ -12,7 +12,7 @@
     ../../modules/Home/development/database.nix
     ../../modules/Home/virtualization/docker.nix
     ../../modules/Home/virtualization/lima.nix
-    ../../modules/Home/darwin/cocoapods.nix
+    # ../../modules/Home/darwin/cocoapods.nix
     ../../modules/Home/darwin/xcode-install.nix
   ];
 }
