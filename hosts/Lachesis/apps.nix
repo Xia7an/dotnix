@@ -12,5 +12,9 @@
     # ─── マルチメディア / PDF ───
     ../../modules/Home/apps/media/multimedia.nix
     ../../modules/Home/apps/document/pdf.nix
+
+    # ─── Nixpkgs で管理する GUI アプリ ───
+    ../../modules/Home/apps/utility/univ.nix
+    ../../modules/Home/apps/vdesktop/immersed.nix
   ];
 }

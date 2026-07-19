@@ -1,0 +1,25 @@
+{
+  homebrew.casks = [
+    "antigravity"
+    "arduino-ide"
+    "autodesk-fusion"
+    "bambu-studio"
+    # "chromedriver"
+    "fork"
+    "ghostty"
+    "iterm2"
+    "lm-studio"
+    "logisim"
+    "ltspice"
+    "macvim"
+    "mactex"
+    "meta-quest-developer-hub"
+    "ollama-app"
+    "openclaw"
+    # "r-app"
+    "raspberry-pi-imager"
+    "rider"
+    "rstudio"
+    "unity-hub"
+  ];
+}

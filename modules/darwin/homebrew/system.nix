@@ -1,0 +1,27 @@
+{
+  homebrew.casks = [
+    "aerospace"
+    "alt-tab"
+    "aquaskk"
+    "azookey"
+    "boring-notch"
+    "crossover"
+    "docker-desktop"
+    "google-japanese-ime"
+    "hammerspoon"
+    "jordanbaird-ice"
+    "karabiner-elements"
+    "kde-connect"
+    "kegworks"
+    "logi-options+"
+    "macfuse"
+    "mounty"
+    "raycast"
+    "sdformatter"
+    "tailscale-app"
+    "utm"
+    "whisky"
+    "wine-crossover"
+    "xquartz"
+  ];
+}

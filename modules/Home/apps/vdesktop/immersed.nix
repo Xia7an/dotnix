@@ -1,3 +1,4 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ immersed-vr ];
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [ immersed ];
 }
