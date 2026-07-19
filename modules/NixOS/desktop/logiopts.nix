@@ -9,6 +9,16 @@ let
     devices = [
       {
         name = "MX Master 4";
+        smartshift = {
+          on = true;
+          threshold = 30;
+          default_threshold = 30;
+        };
+        hiresscroll = {
+          hires = true;
+          invert = false;
+          target = false;
+        };
         buttons = [
           {
             cid = 195;
@@ -16,18 +26,22 @@ let
               type = "Keypress";
               keys = [
                 "KEY_LEFTMETA"
-                "KEY_TAB"
+                "KEY_SPACE"
               ];
             };
           }
           {
-            cid = 416;
+            cid = 196;
             action = {
               type = "Keypress";
-              keys = [
-                "KEY_LEFTMETA"
-                "KEY_SPACE"
-              ];
+              keys = [ "KEY_FORWARD" ];
+            };
+          }
+          {
+            cid = 197;
+            action = {
+              type = "Keypress";
+              keys = [ "KEY_ENTER" ];
             };
           }
         ];
@@ -44,11 +58,16 @@ in
   systemd = {
     packages = [ pkgs.logiops ];
     services.logid = {
-      wantedBy = [ "graphical.target" ];
-      serviceConfig.ExecStart = [
-        ""
-        "${lib.getExe pkgs.logiops} -c ${configFile}"
-      ];
+      description = "LogiOps daemon";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "systemd-udevd.service" ];
+      serviceConfig = {
+        ExecStart = [
+          ""
+          "${lib.getExe pkgs.logiops} -c ${configFile}"
+        ];
+        Restart = "on-failure";
+      };
     };
   };
 }

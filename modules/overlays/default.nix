@@ -13,6 +13,7 @@
     {
       inherit (unstable)
         blender
+        claude-code
         discord
         google-chrome
         neovim
