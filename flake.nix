@@ -1,8 +1,10 @@
 {
+  description = "Reproducible NixOS, nix-darwin, and Home Manager configurations";
+
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -10,7 +12,7 @@
     };
     rust-overlay.url = "github:oxalica/rust-overlay";
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     winapps = {
@@ -26,126 +28,82 @@
       url = "github:momeemt/tmux-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    quickshell = {
-      # add ?ref=<tag> to track a tag
-      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
-
-      # THIS IS IMPORTANT
-      # Mismatched system dependencies will lead to crashes and other issues.
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.noctalia-qs.follows = "noctalia-qs";
     };
-
     noctalia-qs = {
       url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
-
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, home-manager, winapps, antigravity-nix, tmux-nix, quickshell, ... } : let
-    systems = [ "x86_64-linux" ];
-    forEachSystem = nixpkgs.lib.genAttrs systems;
-    niriTaskbarOverlay = import ./overlays;
-    overlays = [
-      (import inputs.rust-overlay)
-      niriTaskbarOverlay
-    ];
-
-    # pkgs インスタンスの共通設定
-    mkPkgs = system: import nixpkgs {
-      inherit system;
-      config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [ "openssl-1.1.1w" ];
-      };
-      overlays = overlays;
+    darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-  in {
-    overlays.default = niriTaskbarOverlay;
-
-    packages = forEachSystem (system: let
-      pkgs = import nixpkgs {
-        inherit system;
-        overlays = overlays;
-      };
-    in {
-      niri-taskbar = pkgs.niri-taskbar;
-      default      = pkgs.niri-taskbar;
-    });
-
-    # ─────────────────────────────────────────
-    # NixOS ホスト設定
-    # 各ホストの詳細は hosts/<HostName>/default.nix を参照
-    # ─────────────────────────────────────────
-    nixosConfigurations = {
-      Nyx = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
-          ./hosts/Nyx
-        ];
-      };
-
-      Atropos = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
-          inputs.xremap-flake.nixosModules.default
-          ./hosts/Atropos
-        ];
-      };
-      Anemoi = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
-        modules = [
-          ({ ... }: { nixpkgs.overlays = overlays; })
-          inputs.xremap-flake.nixosModules.default
-          ./hosts/Anemoi
-        ];
-      };
-    };
-
-    # ─────────────────────────────────────────
-    # Home Manager 設定
-    # 共通設定: home.nix → module/Home/ 以下の各モジュール
-    # ─────────────────────────────────────────
-    homeConfigurations = {
-      NyxHome = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = mkPkgs "x86_64-linux";
-        extraSpecialArgs = { inherit inputs; };
-        modules = [ ./home.nix ];
-      };
-
-      AtroposHome = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = mkPkgs "x86_64-linux";
-        extraSpecialArgs = {
-          inherit inputs;
-          pkgs-stable = import inputs.nixpkgs-stable {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-            overlays = overlays;
-          };
-        };
-        modules = [ ./hosts/Atropos/home.nix ];
-      };
-      AnemoiHome= inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = mkPkgs "x86_64-linux";
-        extraSpecialArgs = {
-          inherit inputs;
-          pkgs-stable = import inputs.nixpkgs-stable {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-            overlays = overlays;
-          };
-        };
-        modules = [ ./hosts/Anemoi/home.nix ];
-      };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL/main";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
+  outputs =
+    inputs:
+    let
+      inherit (inputs.nixpkgs) lib;
+      hosts = import ./hosts { inherit inputs; };
+      overlayList = import ./modules/overlays { inherit inputs; };
+      configurations = import ./lib/mk-configurations.nix {
+        inherit inputs hosts;
+        overlays = overlayList;
+      };
+
+      inherit (configurations)
+        darwinConfigurations
+        homeConfigurations
+        nixosConfigurations
+        pkgsFor
+        supportedSystems
+        ;
+
+      hostsFor = system: lib.filterAttrs (_: host: host.system == system) hosts;
+    in
+    {
+      inherit darwinConfigurations homeConfigurations nixosConfigurations;
+
+      overlays.default = lib.composeManyExtensions overlayList;
+
+      packages = lib.genAttrs supportedSystems (
+        system:
+        let
+          pkgs = pkgsFor system;
+        in
+        lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          inherit (pkgs) niri-taskbar;
+          default = pkgs.niri-taskbar;
+        }
+      );
+
+      formatter = lib.genAttrs supportedSystems (system: (pkgsFor system).nixfmt-rfc-style);
+
+      checks = lib.genAttrs supportedSystems (
+        system:
+        let
+          systemChecks = lib.mapAttrs' (
+            name: host:
+            lib.nameValuePair "${name}-system" (
+              if host.kind == "darwin" then
+                darwinConfigurations.${name}.system
+              else
+                nixosConfigurations.${name}.config.system.build.toplevel
+            )
+          ) (hostsFor system);
+
+          homeChecks = lib.mapAttrs' (
+            name: _: lib.nameValuePair "${name}-home" homeConfigurations."${name}Home".activationPackage
+          ) (hostsFor system);
+        in
+        systemChecks // homeChecks
+      );
+    };
 }

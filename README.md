@@ -1,240 +1,96 @@
-# dotnix - NixOS & Home Manager 設定
+# dotnix
 
-このリポジトリは NixOS と Home Manager を使った再現性のあるシステム構成です。
+NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管理するリポジトリです。依存関係は `flake.lock` に固定し、ホスト定義から各出力を生成します。
 
-## 概要
+## 対象ホスト
 
-- **OS**: NixOS
-- **パッケージマネージャー**: Nix Flakes
-- **ユーザー環境管理**: Home Manager
-- **対象ホスト**: Atropos, Nyx
+| ホスト | 種別 | アーキテクチャ | Home Manager 出力 |
+| --- | --- | --- | --- |
+| `Anemoi` | NixOS | `x86_64-linux` | `AnemoiHome` |
+| `Atropos` | NixOS | `x86_64-linux` | `AtroposHome` |
+| `Clotho` | NixOS-WSL | `x86_64-linux` | `ClothoHome` |
+| `Nyx` | NixOS | `x86_64-linux` | `NyxHome` |
+| `Lachesis` | nix-darwin | `aarch64-darwin` | `LachesisHome` |
 
-## 構成
+ホストのメタデータは `hosts/default.nix` が唯一の定義元です。新しいホストを追加するときは、ここへシステムと Home Manager のエントリーポイントを登録します。
 
-### NixOS 設定
+## ディレクトリ構成
 
-- `Atropos.nix`: Atropos ホストの NixOS 設定
-- `Nyx.nix`: Nyx ホストの NixOS 設定
-- `flake.nix`: Flakes 設定ファイル
-- `hardware/`: ハードウェア固有の設定
+```text
+.
+├── flake.nix                 # 公開する outputs の薄いエントリーポイント
+├── flake.lock                # 入力の固定バージョン
+├── hosts/
+│   ├── default.nix           # ホスト一覧とプラットフォーム情報
+│   └── <Host>/               # ホスト固有の system/home/profile
+├── hardware/                 # ハードウェア固有設定
+├── lib/
+│   └── mk-configurations.nix # NixOS、Darwin、Home の共通生成処理
+├── modules/
+│   ├── NixOS/                # 再利用可能な NixOS モジュール
+│   ├── Home/                 # 再利用可能な Home Manager モジュール
+│   ├── darwin/               # 再利用可能な nix-darwin モジュール
+│   ├── overlays/             # overlay の定義
+│   └── pkgs/                 # ローカルパッケージ
+└── config/                   # Home Manager から配置する設定ファイル
+```
 
-### Home Manager 設定
+`system.stateVersion` と `home.stateVersion` は互換性の基準です。入力を更新しただけでは変更せず、各プロジェクトのリリースノートを確認したうえで明示的に移行します。
 
-- `home.nix`: ユーザー環境の統合設定
-- `module/Home/`: ユーザー環境のモジュール群
-- `config/`: アプリケーション設定ファイル（シンボリックリンク元）
+## 適用
 
-## 主要機能
+リポジトリのルートで、対象ホスト名を指定します。
 
-### デスクトップ環境
-
-- **WM**: Niri（Wayland コンポジター）
-- **Bar**: Waybar
-- **ランチャー**: Wofi
-- **IME**: Fcitx5 + Mozc（日本語入力）
-- **VPN**: Tailscale
-- **通知**: nm-applet
-
-### アプリケーション
-
-- **メール**: Thunderbird
-- **チャット**: Discord
-- **ドキュメントビューワ**: Okular
-- **ファイルマネージャー**: Nautilus + GNOME Sushi
-- **ノート**: Notion, Obsidian
-
-### ターミナル環境
-
-- **エミュレータ**: Alacritty
-- **シェル**: fish + Starship
-- **エディタ**: Neovim (Lazyvim ベース)
-- **ファイラー**: yazi
-
-### 開発ツール
-
-- **コンパイラ**: gcc, g++
-- **環境マネージャー**: mise (node, cargo 管理)
-- **Python**: uv
-- **IDE**: Unity Hub, JetBrains Rider, VSCode
-- **AI**: GitHub Copilot (VSCode 拡張 + CLI)
-
-## ビルド手順
-
-### NixOS のビルド
-
-```fish
-# Atropos ホストの場合
+```bash
+# NixOS
 sudo nixos-rebuild switch --flake .#Atropos
 
-# Nyx ホストの場合
-sudo nixos-rebuild switch --flake .#Nyx
-```
-
-### Home Manager のビルド
-
-```fish
-# Atropos ホストの場合
+# Home Manager（全プラットフォーム共通）
 home-manager switch --flake .#AtroposHome
 
-# Nyx ホストの場合
-home-manager switch --flake .#NyxHome
+# nix-darwin
+sudo darwin-rebuild switch --flake .#Lachesis
 ```
 
-## モジュール構造
+Home Manager はシステムと独立して適用できる構成を維持しています。
+Lachesis では GUI アプリを Homebrew cask で管理するため、初回適用前に Homebrew をインストールしてください。システム activation 中に外部スクリプトを取得して Homebrew を自動導入する処理は置いていません。
 
-### Home Manager モジュール (`module/Home/`)
+## 検証と整形
 
-モジュールはカテゴリーごとに整理されています：
+変更を適用する前に、flake 全体を評価します。
 
-- **`terminal/`**: ターミナル関連
-  - `alacritty.nix`: Alacritty 設定
-  - `kitty.nix`: Kitty 設定
-  - `fish.nix`: fish シェル + Starship
-  - `zsh.nix`: zsh シェル
-  
-- **`editor/`**: エディタ関連
-  - `neovim.nix`: Neovim + Lazyvim 設定
-  - `vscode.nix`: VSCode + 拡張機能
-  
-- **`desktop/`**: デスクトップ環境
-  - `niri.nix`: Niri コンポジター
-  - `hyprland.nix`: Hyprland
-  - `sway.nix`: Sway
-  - `waybar.nix`: Waybar（ステータスバー）
-  - `wofi.nix`: Wofi（ランチャー）
-  - `wlogout.nix`, `anyrun.nix`, `walker.nix`
-  
-- **`apps/`**: アプリケーション
-  - `chrome.nix`, `vivaldi.nix`: ブラウザ
-  - `discord.nix`: Discord
-  - `steam.nix`: Steam
-  
-- **`development/`**: 開発環境
-  - `general.nix`: 一般的な開発ツール
-  - `git.nix`: Git 設定
-  - `direnv.nix`: direnv
-  - `rust.nix`: Rust 環境
-  - `dev-tools.nix`: CLI 開発ツール（yazi, gcc, mise, uv）
-  - `dev-apps.nix`: GUI 開発アプリ（Unity Hub, Rider）
-  
-- **`input/`**: 入力メソッド
-  - `fcitx5.nix`: Fcitx5 + Mozc
-  - `ibus.nix`: IBus（代替）
+```bash
+nix flake check
+nix fmt
+```
 
-### NixOS モジュール (`module/NixOS/`)
+個別に評価だけを確認する場合:
 
-- **`desktop/`**: デスクトップ環境関連
-  - `default.nix`: デスクトップモジュールの統合
-  - `niri.nix`: Niri システム設定
-  - `apps.nix`: デスクトップアプリケーション
-  - `nautilus.nix`, `thunderbird.nix`, `kdeconnect.nix` など
-  
-- **`develop/`**: 開発環境設定
-  - Python, Unity などの開発ツール
-  
-- **`system/`**: システムレベルのサービス
-  - `utils.nix`: ユーティリティツール
-  - `docker.nix`: Docker
-  - `qemu.nix`: QEMU 仮想化
-  - `sunshine.nix`: Sunshine リモートデスクトップ
-  - `parsec.nix`: Parsec
-  - `ollama.nix`: Ollama（LLM）
-  - `gemini.nix`: Gemini
-  - `stock-ticker.nix`: 株価ティッカー
-  - `wine.nix`: Wine
-  
-- **`apps/`**: アプリケーション
-  - `discord.nix`: Discord
-  - `blender.nix`: Blender
-  - `dolphin.nix`: Dolphin
-  - `gaming.nix`: ゲーム関連
-  
-- **`input/`**: 入力メソッド
-  - `fcitx5.nix`: Fcitx5 システム設定
-  - `ibus.nix`: IBus（代替）
-  
-- **`windows/`**: Windows 互換レイヤー（Wine, Bottles）
+```bash
+nix build .#nixosConfigurations.Atropos.config.system.build.toplevel --dry-run
+nix build .#homeConfigurations.AtroposHome.activationPackage --dry-run
+```
 
-## 設定ファイル (`config/`)
+ローカルパッケージ `niri-taskbar` は次の出力でも公開しています。
 
-各アプリケーションの設定ファイルは `config/` ディレクトリに保存され、Home Manager によってシンボリックリンクで配置されます。
-
-- `config/niri/config.kdl`: Niri 設定
-- `config/alacritty/alacritty.toml`: Alacritty 設定
-- `config/waybar/`: Waybar 設定
-- `config/wofi/`: Wofi 設定
-- `config/nvim/`: Neovim 設定
-
-**注意**: `config/` ディレクトリの内容は直接変更してください。Nix 設定からは参照のみ行います。
-
-### カスタムパッケージ: niri-taskbar
-
-- `pkgs/niri-taskbar`: Waybar 用の Niri タスクバー拡張モジュールを Cargo でビルド
-- `overlays/default.nix`: `niri-taskbar` を `pkgs.niri-taskbar` として提供するオーバーレイ
-- `flake.nix`: `nix build .#niri-taskbar` でビルド可能なパッケージ出力と、Home Manager/NixOS 双方でオーバーレイを読み込むよう更新
-- Waybar の `config/waybar/{Bottom,Top}` では `module_path` を `~/.nix-profile/lib/libniri_taskbar.so` に設定済み（Home Manager が `niri-taskbar` を `home.packages` に含めるため、プロファイル経由で解決されます）
-
-ビルド確認:
-
-```fish
+```bash
 nix build .#niri-taskbar
 ```
 
-生成された `libniri_taskbar.so` を Waybar の `cffi/niri-taskbar` モジュールから参照することで、Niri 専用のタスクバーが利用できます。
+## 更新
 
-## よくある操作
+依存関係は一括更新よりも入力単位で更新し、更新後に必ず評価します。
 
-### 新しいパッケージを追加
-
-1. システムパッケージ: `Atropos.nix` または `Nyx.nix` の `environment.systemPackages` に追加
-2. ユーザーパッケージ: 適切なモジュール（例: `dev-tools.nix`）の `home.packages` に追加
-
-### 設定ファイルを変更
-
-1. `config/` ディレクトリ内のファイルを直接編集
-2. Home Manager をリビルド（変更は即座に反映されます）
-
-### ディスクをマウント
-
-詳細は `docs/disk-mount.md` を参照してください。
-
-## フォント設定
-
-日本語フォントは以下が設定済みです：
-
-- **Serif**: Noto Serif CJK JP
-- **Sans-Serif**: Noto Sans CJK JP
-- **Monospace**: JetBrainsMono Nerd Font (HackGen も利用可能)
-- **Emoji**: Noto Color Emoji
-
-## トラブルシューティング
-
-### ビルドエラーが発生した場合
-
-```fish
-# Flake のロックファイルを更新
-nix flake update
-
-# キャッシュをクリア
-sudo nix-collect-garbage -d
+```bash
+nix flake update nixpkgs home-manager
+nix flake check
 ```
 
-### Home Manager の設定が反映されない
+安定版 `nixpkgs`、Home Manager、nix-darwin は同じリリース系列に揃えます。
 
-```fish
-# Home Manager のステートをリセット
-home-manager expire-generations "-30 days"
-
-# 再ビルド
-home-manager switch --flake .#AtroposHome
-```
-
-## ライセンス
-
-このリポジトリの設定ファイルは個人用途です。含まれるソフトウェアは各ライセンスに従います。
-
-## 参考リンク
+## 参考資料
 
 - [NixOS Manual](https://nixos.org/manual/nixos/stable/)
+- [Nix reference manual](https://nix.dev/manual/nix/latest/)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
-- [Nix Flakes](https://nixos.wiki/wiki/Flakes)
+- [nix-darwin](https://github.com/nix-darwin/nix-darwin)
