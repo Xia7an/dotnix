@@ -1,10 +1,11 @@
 {
   imports = [
-    ./profile.nix
-    ../../modules/Home/desktop/darwin.nix
-    ../../modules/Home/darwin/fonts.nix
-    ../../modules/Home/darwin/pinentry-mac.nix
-    ../../modules/Home/darwin/m-cli.nix
+    ./home-manager/applications.nix
+    ./home-manager/development-tools.nix
+    ./home-manager/editors.nix
+    ./home-manager/macos-integration.nix
+    ./home-manager/shell-and-command-line.nix
+    ./home-manager/terminal-emulators.nix
   ];
 
   home.sessionVariables = {

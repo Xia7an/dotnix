@@ -22,7 +22,17 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 ├── flake.lock                # 入力の固定バージョン
 ├── hosts/
 │   ├── default.nix           # ホスト一覧とプラットフォーム情報
-│   └── <Host>/               # ホスト固有の system/home/profile
+│   └── <Host>/
+│       ├── system.nix        # NixOS / nix-darwin のホスト固有設定
+│       ├── home.nix          # Home Manager のエントリーポイント
+│       └── home-manager/     # 用途別の Home Manager 設定
+│           ├── applications.nix
+│           ├── desktop-environment.nix
+│           ├── development-tools.nix
+│           ├── editors.nix
+│           ├── shell-and-command-line.nix
+│           ├── terminal-emulators.nix
+│           └── virtualization.nix
 ├── hardware/                 # ハードウェア固有設定
 ├── lib/
 │   └── mk-configurations.nix # NixOS、Darwin、Home の共通生成処理
@@ -34,6 +44,8 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 │   └── pkgs/                 # ローカルパッケージ
 └── config/                   # Home Manager から配置する設定ファイル
 ```
+
+`home-manager/` 配下は、そのホストで有効にする機能をファイル名どおりに分類しています。ホストによって不要なカテゴリは空の `imports` として残してあり、あとから設定を追加するときの変更先を判断しやすくしています。macOS ホストには、このほか `macos-integration.nix` があります。
 
 `system.stateVersion` と `home.stateVersion` は互換性の基準です。入力を更新しただけでは変更せず、各プロジェクトのリリースノートを確認したうえで明示的に移行します。
 

@@ -7,7 +7,7 @@
 #   ./hardware-configuration.nix
 #   /path/to/dotnix/modules/NixOS/windows/default.nix
 # ];
-# winboat.nix は Atropos 固有のため hosts/Atropos/default.nix でインポートする
+# winboat.nix は Atropos 固有のため hosts/Atropos/system.nix でインポートする
 
 { ... }:
 
