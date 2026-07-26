@@ -24,7 +24,6 @@
     ./utility/screenshot.nix
     ./utility/stock-ticker.nix
     ./utility/system-tools.nix
-    ./utility/univ.nix
     ./vdesktop/immersed.nix
     ./vdesktop/parsec.nix
     ./vdesktop/tigervnc.nix
