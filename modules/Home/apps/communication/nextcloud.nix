@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [ nextcloud-client ];
+  home.packages = with pkgs.unstable; [ nextcloud-client ];
 }

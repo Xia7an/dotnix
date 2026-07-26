@@ -1,20 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
-let
-  claudePkg =
-    if pkgs ? claude-code then
-      pkgs.claude-code
-    else
-      pkgs.writeShellApplication {
-        name = "claude";
-        runtimeInputs = [ pkgs.nodejs ];
-        text = ''
-          exec npx -y @anthropic/claude-code "$@"
-        '';
-      };
-in
 {
-  home.packages = [ claudePkg ];
+  home.packages = [ pkgs.unstable.claude-code ];
 
   # Claude Code の環境変数設定
   # DISABLE_AUTOUPDATER: Nix が更新を管理するため無効化（自動アップデートを抑制）
@@ -30,4 +17,4 @@ in
     # 必要に応じて設定を追加
     # 例: API キーは環境変数 ANTHROPIC_API_KEY で設定推奨
   };
-}
+ }

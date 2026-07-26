@@ -1,6 +1,7 @@
 {pkgs, lib, ... } : {
   programs.zed-editor = {
   enable = true;
+  package = pkgs.unstable.zed-editor;
 
   # This populates the userSettings "auto_install_extensions"
   extensions = [ "nix" "toml" "elixir" "make" "html" "python" ];

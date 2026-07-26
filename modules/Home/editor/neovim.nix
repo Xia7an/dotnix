@@ -1,4 +1,4 @@
-{ config, lib, pkgs-unstable, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -11,7 +11,10 @@
 
   programs.neovim = {
     enable = true;
-    extraPackages = with pkgs-unstable; [
+    # プラグインと treesitter パーサを unstable から取るため、本体も unstable に揃える。
+    # (programs.neovim.package の既定は pkgs.neovim-unwrapped = stable なので明示が必要)
+    package = pkgs.unstable.neovim-unwrapped;
+    extraPackages = with pkgs.unstable; [
       # LazyVim
       lua-language-server
       stylua
@@ -23,11 +26,11 @@
       tectonic
       statix
       tree-sitter
-    ] ++ lib.optionals pkgs-unstable.stdenv.hostPlatform.isDarwin [
+    ] ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
       # macOS: im-select.nvim IME switching
       macism
     ];
-    plugins = with pkgs-unstable.vimPlugins; [
+    plugins = with pkgs.unstable.vimPlugins; [
       lazy-nvim
       nvim-treesitter.withAllGrammars
     ];
@@ -36,7 +39,7 @@
 
     extraLuaConfig =
       let
-        plugins = with pkgs-unstable.vimPlugins; [
+        plugins = with pkgs.unstable.vimPlugins; [
           LazyVim
           bufferline-nvim
           cmp-buffer
@@ -93,7 +96,7 @@
             { name = "${lib.getName drv}"; path = drv; }
           else
             drv;
-        lazyPath = pkgs-unstable.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
+        lazyPath = pkgs.unstable.linkFarm "lazy-plugins" (builtins.map mkEntryFromDrv plugins);
       in
       ''
         require("lazy").setup({
@@ -145,9 +148,11 @@
   # https://github.com/nvim-treesitter/nvim-treesitter#i-get-query-error-invalid-node-type-at-position
   xdg.configFile."nvim/parser".source =
     let
+      # programs.neovim.plugins と同じ unstable の nvim-treesitter から生成する。
+      # stable と混ぜるとパーサの ABI が合わずクエリエラーになる。
       parsers = pkgs.symlinkJoin {
         name = "treesitter-parsers";
-        paths = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+        paths = (pkgs.unstable.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
           c
           lua
         ])).dependencies;

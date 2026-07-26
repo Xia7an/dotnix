@@ -49,6 +49,36 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 
 `system.stateVersion` と `home.stateVersion` は互換性の基準です。入力を更新しただけでは変更せず、各プロジェクトのリリースノートを確認したうえで明示的に移行します。
 
+## パッケージのチャンネル
+
+既定はすべて安定版 (`nixpkgs-25.11`) です。`pkgs.<name>` は常に安定版を指します。
+
+unstable 版が必要なパッケージは、**呼び出し側で `pkgs.unstable.<name>` と明示的に書きます**。
+
+```nix
+{ pkgs, ... }:
+{
+  # 安定版
+  home.packages = [ pkgs.ripgrep ];
+
+  # unstable 版 (更新が速く、安定版では古すぎるもの)
+  programs.opencode = {
+    enable = true;
+    package = pkgs.unstable.opencode;
+  };
+}
+```
+
+Home Manager の `programs.*` モジュールは既定で安定版を使うため、unstable 版にしたい場合は `package` を明示してください。`pkgs.unstable` は NixOS / nix-darwin モジュールからも同じように参照できます。
+
+overlay の定義は `modules/overlays/` にあります。
+
+| ファイル | 役割 |
+| --- | --- |
+| `default.nix` | system ごとの overlay リストを組み立てる |
+| `local-packages.nix` | `modules/pkgs/` の自作パッケージを追加する (`overlays.default` として外部公開) |
+| `unstable.nix` | nixpkgs-unstable 一式を `pkgs.unstable` として追加する |
+
 ## 適用
 
 リポジトリのルートで、対象ホスト名を指定します。

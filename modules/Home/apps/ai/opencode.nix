@@ -3,7 +3,7 @@
 {
   programs.opencode = {
     enable = true;
-    package = pkgs.opencode;
+    package = pkgs.unstable.opencode;
 
     settings = {
       # OpenCode のプラグイン設定

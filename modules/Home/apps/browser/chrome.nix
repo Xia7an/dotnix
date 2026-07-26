@@ -6,6 +6,7 @@ in{
     google-chrome = {
       commandLineArgs = chromeArgs;
       enable = true;
+      package = pkgs.unstable.google-chrome;
     };
     chromium = {
         commandLineArgs = chromeArgs;

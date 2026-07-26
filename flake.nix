@@ -52,11 +52,7 @@
     let
       inherit (inputs.nixpkgs) lib;
       hosts = import ./hosts { inherit inputs; };
-      overlayList = import ./modules/overlays { inherit inputs; };
-      configurations = import ./lib/mk-configurations.nix {
-        inherit inputs hosts;
-        overlays = overlayList;
-      };
+      configurations = import ./lib/mk-configurations.nix { inherit inputs hosts; };
 
       inherit (configurations)
         darwinConfigurations
@@ -71,7 +67,9 @@
     {
       inherit darwinConfigurations homeConfigurations nixosConfigurations;
 
-      overlays.default = lib.composeManyExtensions overlayList;
+      # 外部に公開するのは自作パッケージの overlay のみ。
+      # unstable の取り込みは本リポジトリ内部の都合なので公開しない。
+      overlays.default = import ./modules/overlays/local-packages.nix;
 
       packages = lib.genAttrs supportedSystems (
         system:

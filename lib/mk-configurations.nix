@@ -1,7 +1,6 @@
 {
   inputs,
   hosts,
-  overlays,
 }:
 let
   inherit (inputs.nixpkgs) lib;
@@ -13,17 +12,19 @@ let
     allowUnfree = true;
   };
 
+  # { <system> = [ overlay ... ]; ... }
+  # nixpkgs-unstable も含めた overlay の組み立ては modules/overlays に集約している。
+  overlaysFor = import ../modules/overlays {
+    inherit inputs;
+    config = nixpkgsConfig;
+    systems = supportedSystems;
+  };
+
   pkgsFor =
     system:
     import inputs.nixpkgs {
-      inherit system overlays;
-      config = nixpkgsConfig;
-    };
-
-  unstableFor =
-    system:
-    import inputs.nixpkgs-unstable {
       inherit system;
+      overlays = overlaysFor.${system};
       config = nixpkgsConfig;
     };
 
@@ -33,7 +34,7 @@ let
     {
       nixpkgs = {
         hostPlatform = lib.mkDefault system;
-        inherit overlays;
+        overlays = overlaysFor.${system};
         config = nixpkgsConfig;
       };
     };
@@ -66,9 +67,7 @@ let
     lib.nameValuePair "${hostName}Home" (
       inputs.home-manager.lib.homeManagerConfiguration {
         pkgs = pkgsFor host.system;
-        extraSpecialArgs = (specialArgsFor hostName) // {
-          pkgs-unstable = unstableFor host.system;
-        };
+        extraSpecialArgs = specialArgsFor hostName;
         modules = [
           ../home.nix
           {

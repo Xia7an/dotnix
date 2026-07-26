@@ -1,3 +1,3 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [ rstudio ];
+  home.packages = with pkgs.unstable; [ rstudio ];
 }

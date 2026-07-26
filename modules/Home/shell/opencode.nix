@@ -73,7 +73,7 @@ let
     };
   };
 in {
-  home.packages = [ pkgs.opencode ];
+  home.packages = [ pkgs.unstable.opencode ];
 
   home.file = {
     ".config/opencode/opencode.json" = {

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, lib, ... }: {
+{ ... }: {
   imports = [
     ../../modules/darwin/common.nix
     ../../modules/darwin/defaults.nix

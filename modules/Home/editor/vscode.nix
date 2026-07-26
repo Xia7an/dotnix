@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  marketplaceExtensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+  marketplaceExtensions = pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
     { name = "vscode-sqlite"; publisher = "alexcvzz"; version = "0.14.1"; sha256 = "1iaklnhw74iwyjw74prnrx34ba25ra7ld71zlip04lv401329r4c"; }
     { name = "html-preview-vscode"; publisher = "george-alisson"; version = "0.2.5"; sha256 = "1n41xb22cqpn0058qksyx1xp00zjx5gf8a497lhsnlain4sf2j6n"; }
     { name = "markdown-alert"; publisher = "kejun"; version = "0.0.4"; sha256 = "1jfydk7fsfm760lfgs6igv2xfy62gna49pjq95dmx3cwvabyc8wd"; }
@@ -16,14 +16,14 @@ let
   ];
 
   darwinMarketplaceExtensions = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin (
-    pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+    pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
       { name = "vscode-python-envs"; publisher = "ms-python"; version = "1.30.0"; sha256 = "1rh7pfc4v4rbqi115zszrx35dcm4vl4prhy9h0vb090yrxzh73rm"; arch = "darwin-arm64"; }
       { name = "typst-lsp"; publisher = "nvarner"; version = "0.13.0"; sha256 = "07zdbar4i46qa23l0q1b3n117bjcr14l2r4k51qnjns9qf0z137f"; arch = "darwin-arm64"; }
       { name = "chatgpt"; publisher = "openai"; version = "26.506.21252"; sha256 = "1ihdz2rrqarpnsqfp7xvdqg8c9cnfq7ldcvxph30dzrxxiwrqxcf"; arch = "darwin-arm64"; }
     ]
   );
 
-  vscodeWrapped = pkgs.vscode.overrideAttrs (old: {
+  vscodeWrapped = pkgs.unstable.vscode.overrideAttrs (old: {
     # ./bin/code を置き換える
     postFixup = ''
       wrapProgram $out/bin/code \
@@ -34,10 +34,11 @@ in
 {
   programs.vscode = {
     enable = true;
+    package = pkgs.unstable.vscode;
 
     profiles.default = {
       extensions =
-      (with pkgs.vscode-extensions; [
+      (with pkgs.unstable.vscode-extensions; [
         # General
         vscodevim.vim
         ms-ceintl.vscode-language-pack-ja
