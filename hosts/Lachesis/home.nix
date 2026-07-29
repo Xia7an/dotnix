@@ -15,7 +15,7 @@
 
   programs.ghostty.settings = {
     font-size = 14;
-    theme = "catppuccin-macchiato";
+    theme = "Catppuccin Macchiato";
     macos-titlebar-style = "tabs";
     background-opacity = 0.92;
   };

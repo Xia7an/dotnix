@@ -105,8 +105,30 @@
             enabled = false;
           }; # 入力メニューの Spotlight を無効化
           "64" = {
+            enabled = false;
+          }; # Spotlight 検索を表示 (cmd+space) — Raycast に譲るため無効化
+          "79" = {
             enabled = true;
-          }; # Spotlight 検索を表示
+            value = {
+              type = "standard";
+              parameters = [
+                65535
+                123
+                262144
+              ];
+            };
+          }; # 左の Space に移動 (Ctrl+←)
+          "81" = {
+            enabled = true;
+            value = {
+              type = "standard";
+              parameters = [
+                65535
+                124
+                262144
+              ];
+            };
+          }; # 右の Space に移動 (Ctrl+→)
         };
       };
     };

@@ -9,5 +9,6 @@
     ../../../modules/Home/shell/zellij.nix
     ../../../modules/Home/shell/git.nix
     ../../../modules/Home/shell/utils.nix
+    ../../../modules/Home/shell/herdr.nix
   ];
 }
