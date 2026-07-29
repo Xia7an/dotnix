@@ -15,8 +15,7 @@
     ../../../modules/Home/apps/vdesktop/immersed.nix
     ../../../modules/Home/apps/creative/blender.nix
     ../../../modules/Home/apps/creative/musescore.nix
-    ../../../modules/Home/apps/communication/discord.nix
-    ../../../modules/Home/apps/communication/slack.nix
+    # discord / slack は Homebrew cask で管理する (modules/darwin/homebrew/applications.nix)
     ../../../modules/Home/apps/browser/chrome.nix
     ../../../modules/Home/apps/document/obsidian.nix
   ];

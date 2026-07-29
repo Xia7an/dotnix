@@ -5,13 +5,12 @@
     ../../../modules/Home/darwin/fonts.nix
     ../../../modules/Home/darwin/pinentry-mac.nix
     ../../../modules/Home/darwin/m-cli.nix
-    ../../../modules/Home/darwin/iterm2.nix
-    ../../../modules/Home/darwin/raycast.nix
+    # iterm2 / raycast は Homebrew cask で管理する (modules/darwin/homebrew/)
   ];
 
-  # ログインシェルが Homebrew 版 fish (/opt/homebrew/bin/fish) のため、
-  # nix-darwin が生成する /etc/fish/config.fish (sysconfdir=/etc) が読まれない。
   # darwin-rebuild や home-manager 自体を PATH に通すため明示的に追加する。
+  # (ログインシェルは Nix 版 fish /run/current-system/sw/bin/fish に移行済み。
+  #  以前は Homebrew 版 fish で /etc/fish/config.fish が読まれなかったため必須だった)
   home.sessionPath = [
     "/run/current-system/sw/bin"
     "/nix/var/nix/profiles/default/bin"

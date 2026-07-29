@@ -7,6 +7,7 @@
     # "chromedriver"
     "fork"
     "ghostty"
+    "iterm2"
     "lm-studio"
     "mactex"
     "meta-quest-developer-hub"

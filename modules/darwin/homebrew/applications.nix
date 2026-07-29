@@ -3,6 +3,7 @@
     "audacity"
     "chatgpt"
     "claude"
+    "discord"
     "figma"
     "gdlauncher"
     "microsoft-excel"
@@ -14,7 +15,9 @@
     "onedrive"
     "parsec"
     "playcover-community"
+    "slack"
     "vlc"
     "zoom"
+    "wireshark-app"
   ];
 }

@@ -26,6 +26,7 @@
     ghq
     fzf
     peco
+    tig
   ];
 
   programs.git.settings.ghq.root = "~/Gits";

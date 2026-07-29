@@ -7,6 +7,7 @@
     "logi-options+"
     "macfuse"
     "mounty"
+    "raycast"
     "sdformatter"
     "tailscale-app"
     "xquartz"

@@ -63,6 +63,41 @@ let
       mainProgram = "herdr";
     };
   };
+  # ghq のリポジトリを fzf で選び、新しい workspace として開くスクリプト。
+  # TOML のクォート処理は formats.toml に任せる (Nix の '' エスケープと
+  # TOML のリテラル複数行文字列 ''' が衝突するため、手書きすると壊れる)。
+  ghqSpaceScript = ''
+    repo="$(ghq list -p | fzf --prompt='space> ')" || exit 0
+    [ -n "$repo" ] || exit 0
+
+    herdr_bin="''${HERDR_BIN_PATH:-herdr}"
+    label="$(basename "$repo")"
+
+    "$herdr_bin" workspace create --cwd "$repo" --label "$label" --focus
+  '';
+
+  tomlFormat = pkgs.formats.toml { };
+
+  configFile = tomlFormat.generate "herdr-config.toml" {
+    keys = {
+      # navigate モード (prefix+w のワークスペースピッカー) を vim 風に。
+      # 既定では workspace 選択が up/down、pane 移動が h/j/k/l なので、
+      # j/k を workspace 選択に譲り、pane の上下移動を矢印キーへ退避する。
+      navigate_workspace_down = "j";
+      navigate_workspace_up = "k";
+      navigate_pane_down = "down";
+      navigate_pane_up = "up";
+
+      command = [{
+        key = "prefix+o";
+        type = "pane";
+        command = ghqSpaceScript;
+        description = "open ghq space";
+      }];
+    };
+  };
 in {
   home.packages = [ herdr ];
+
+  xdg.configFile."herdr/config.toml".source = configFile;
 }

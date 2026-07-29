@@ -8,6 +8,7 @@
     ../../../modules/Home/shell/sheldon.nix
     ../../../modules/Home/shell/zellij.nix
     ../../../modules/Home/shell/git.nix
+    ../../../modules/Home/shell/lazigit.nix
     ../../../modules/Home/shell/utils.nix
     ../../../modules/Home/shell/herdr.nix
   ];
