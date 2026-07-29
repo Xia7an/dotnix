@@ -6,7 +6,6 @@
     cmake
     pkg-config
     autogen
-    binutils
     time
     llvm_19
     lldb
