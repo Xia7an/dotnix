@@ -38,6 +38,7 @@
     xorg.libxcb
     libxkbcommon
     mesa
+    libdrm
     alsa-lib
     expat
     udev
