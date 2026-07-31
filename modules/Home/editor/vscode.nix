@@ -12,10 +12,13 @@ let
     else
       "${config.xdg.configHome}/Code/User";
 
+  # modules/Home/development/tex.nix と同じ派生物 (nix store 上は同一実体)。
+  texliveFull = pkgs.texlive.combined.scheme-full;
+
   userSettings = {
     "locale" = "ja";
     "editor.fontFamily" = "'HackGen Console NF'";
-    "editor.fontSize" = 12;
+    "editor.fontSize" = 13;
     "editor.acceptSuggestionOnCommitCharacter" = false;
     "editor.inlineSuggest.enabled" = false;
     "keyboard.dispatch" = "keyCode";
@@ -25,6 +28,30 @@ let
     "extensions.autoCheckUpdates" = false;
     "extensions.autoUpdate" = false;
     "update.mode" = "none";
+
+    # latex-workshop: VSCode.app を Dock/Spotlight から GUI 起動すると
+    # fish の home.sessionPath を継承せず PATH に nix store が乗らないため、
+    # latexmk はコマンド名ではなく nix store の絶対パスで直接指定する。
+    "latex-workshop.latex.tools" = [
+      {
+        "name" = "latexmk";
+        "command" = "${texliveFull}/bin/latexmk";
+        "args" = [
+          "-pdf"
+          "-interaction=nonstopmode"
+          "-synctex=1"
+          "-outdir=%OUTDIR%"
+          "%DOC%"
+        ];
+      }
+    ];
+    "latex-workshop.latex.recipes" = [
+      {
+        "name" = "latexmk";
+        "tools" = [ "latexmk" ];
+      }
+    ];
+    "latex-workshop.view.pdf.viewer" = "tab";
   };
 
   settingsJson = (pkgs.formats.json { }).generate "vscode-user-settings.json" userSettings;
@@ -60,13 +87,6 @@ let
       publisher = "mathworks";
       version = "1.3.10";
       sha256 = "1xn3zg65pwbm7iablxbwx3vpngipkqm7bjap2bvb9wpgbwksb002";
-    }
-    # 全角スペースを可視化
-    {
-      name = "zenkaku";
-      publisher = "mosapride";
-      version = "0.0.3";
-      sha256 = "0abbgg0mjgfy5495ah4iiqf2jck9wjbflvbfwhwll23g0wdazlr5";
     }
     {
       name = "cpp-devtools";
@@ -109,13 +129,6 @@ let
       publisher = "shalldie";
       version = "2.0.10";
       sha256 = "15p3rqsvraiaq3x5xls565l9ysmiahqh9zf9y6cgzj5brl99qhys";
-    }
-    # 日本語の単語単位でカーソル移動 / 削除
-    {
-      name = "japanese-word-handler";
-      publisher = "sgryjp";
-      version = "1.4.1";
-      sha256 = "0as7gm32vk9wp7m96nqza8nhvgaibzyjfcq0fc1s8712snajhs0f";
     }
     {
       name = "open-in-browser";
@@ -182,7 +195,6 @@ in
           ms-vscode.hexeditor
           wakatime.vscode-wakatime
           anthropic.claude-code
-          saoudrizwan.claude-dev
 
           # Nix / Web / Markdown
           bbenoist.nix
@@ -223,11 +235,7 @@ in
           mhutchie.git-graph
           myriad-dreamin.tinymist
           redhat.java
-          reditorsupport.r
-          reditorsupport.r-syntax
-          ritwickdey.liveserver
           rust-lang.rust-analyzer
-          sonarsource.sonarlint-vscode
           tomoki1207.pdf
           vscjava.vscode-gradle
           vscjava.vscode-java-debug
