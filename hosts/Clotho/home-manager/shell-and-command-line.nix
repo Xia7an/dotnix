@@ -6,5 +6,7 @@
     ../../../modules/Home/shell/tmux.nix
     ../../../modules/Home/shell/git.nix
     ../../../modules/Home/shell/utils.nix
+    ../../../modules/Home/shell/lazigit.nix
+    ../../../modules/Home/shell/herdr.nix
   ];
 }
