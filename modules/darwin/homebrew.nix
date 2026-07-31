@@ -18,7 +18,7 @@
       # "uninstall" に切り替える。確認は `brew bundle cleanup --file=<Brewfile>`
       # (--force 無しなら一覧表示のみ) で行う。
       # nix-darwin 25.11 には "check" がまだ無いので "none" のままにしておく。
-      cleanup = "none";
+      cleanup = "uninstall";
     };
   };
 }

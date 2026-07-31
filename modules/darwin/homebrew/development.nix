@@ -9,7 +9,6 @@
     "ghostty"
     "iterm2"
     "lm-studio"
-    "mactex"
     "meta-quest-developer-hub"
     "ollama-app"
     "raspberry-pi-imager"
