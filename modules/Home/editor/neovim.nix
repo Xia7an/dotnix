@@ -12,6 +12,20 @@ let
     name = "nvim-treesitter-parsers";
     paths = pkgs.unstable.vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
   };
+
+  # nvim-lint は upstream が codeberg.org に移動したが、Nix ビルダからの git
+  # フェッチが Codeberg の abuse mitigation に 403 で弾かれてビルドできない
+  # (ブラウザからは 200 なので Codeberg 自体が落ちているわけではない)。
+  # 同じ commit が GitHub ミラーにもあるので src だけ差し替える。
+  # Codeberg 側が復旧したら削除して素の vimPlugins.nvim-lint に戻せる。
+  nvim-lint = pkgs.unstable.vimPlugins.nvim-lint.overrideAttrs (_: {
+    src = pkgs.fetchFromGitHub {
+      owner = "mfussenegger";
+      repo = "nvim-lint";
+      rev = "a219b2c9e5b4765e5c845aba119dad55806fcaf1";
+      hash = "sha256-pABhzTRkcxAT/ELeltz47eCAKCnzdoCtc2QRu3wm0xU=";
+    };
+  });
 in
 
 {
@@ -94,7 +108,9 @@ in
           lualine-nvim
           noice-nvim
           nui-nvim
-          nvim-lint
+          # `with pkgs.unstable.vimPlugins` に上書きされないよう明示的に let 側の
+          # override を指す
+          { name = "nvim-lint"; path = nvim-lint; }
           nvim-lspconfig
           nvim-surround
           nvim-treesitter
