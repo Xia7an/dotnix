@@ -95,7 +95,6 @@ in
           blink-cmp
           bufferline-nvim
           clangd_extensions-nvim
-          claudecode-nvim
           conform-nvim
           crates-nvim
           flash-nvim
@@ -121,6 +120,7 @@ in
           plenary-nvim
           render-markdown-nvim
           rustaceanvim
+          sidekick-nvim
           snacks-nvim
           todo-comments-nvim
           tokyonight-nvim
@@ -184,7 +184,9 @@ in
             -- 実機の ~/.config/nvim/lazyvim.json で有効化されている extras。
             -- lazyvim.json は LazyVim が実行時に書き換えるファイルなので、
             -- nix からは spec に直接 import して宣言的に固定する。
-            { import = "lazyvim.plugins.extras.ai.claudecode" },
+            -- ai.sidekick は右サイドの AI エージェントパネル。
+            -- Claude Code / Codex を同じ枠で切り替える (調整は lua/plugins/sidekick.lua)
+            { import = "lazyvim.plugins.extras.ai.sidekick" },
             { import = "lazyvim.plugins.extras.lang.clangd" },
             { import = "lazyvim.plugins.extras.lang.docker" },
             { import = "lazyvim.plugins.extras.lang.git" },

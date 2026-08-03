@@ -7,6 +7,12 @@
     ../../../modules/Home/darwin/aquaskk.nix
     ../../../modules/Home/darwin/ice.nix
 
+    # ─── AI ───
+    # nvim 右サイドの sidekick.nvim から codex を起動するので PATH に必要。
+    # claude は native installer 版 (~/.local/bin/claude) をそのまま使う。
+    ../../../modules/Home/apps/ai/codex.nix
+    ../../../modules/Home/apps/ai/claude.nix
+
     # ─── マルチメディア / PDF ───
     ../../../modules/Home/apps/media/multimedia.nix
     ../../../modules/Home/apps/document/pdf.nix

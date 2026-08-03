@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   codexPkg =
@@ -17,9 +22,4 @@ in
   home.packages = [
     codexPkg
   ];
-
-  home.file.".codex/config.toml".text = ''
-    # 既定モデル
-    model = "gpt-5.5"
-  '';
 }

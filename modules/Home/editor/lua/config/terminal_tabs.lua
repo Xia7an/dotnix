@@ -36,6 +36,11 @@ local function ensure_win()
   end
 
   vim.cmd("wincmd l")
+  -- 一番右は AI エージェントパネル (sidekick.nvim) のことがあるので、
+  -- そこに潜り込まないよう編集ウィンドウ側に戻してから分割する
+  if vim.bo.filetype == "sidekick_terminal" then
+    vim.cmd("wincmd h")
+  end
   vim.cmd("belowright split")
   vim.api.nvim_win_set_height(0, 15)
   win = vim.api.nvim_get_current_win()
