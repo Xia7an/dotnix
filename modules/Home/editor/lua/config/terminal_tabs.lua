@@ -36,9 +36,9 @@ local function ensure_win()
   end
 
   vim.cmd("wincmd l")
-  -- 一番右は AI エージェントパネル (sidekick.nvim) のことがあるので、
+  -- 一番右は AI エージェントパネル (avante.nvim) のことがあるので、
   -- そこに潜り込まないよう編集ウィンドウ側に戻してから分割する
-  if vim.bo.filetype == "sidekick_terminal" then
+  if vim.bo.filetype:match("^Avante") then
     vim.cmd("wincmd h")
   end
   vim.cmd("belowright split")

@@ -8,10 +8,10 @@
     ../../../modules/Home/darwin/ice.nix
 
     # ─── AI ───
-    # nvim 右サイドの sidekick.nvim から codex を起動するので PATH に必要。
-    # claude は native installer 版 (~/.local/bin/claude) をそのまま使う。
+    # codex は CLI 単体で使う。
+    # claude は native installer 版 (~/.local/bin/claude) をそのまま使う
+    # (nvim の avante.nvim もこれを ACP 経由で叩く)。
     ../../../modules/Home/apps/ai/codex.nix
-    ../../../modules/Home/apps/ai/claude.nix
 
     # ─── マルチメディア / PDF ───
     ../../../modules/Home/apps/media/multimedia.nix
