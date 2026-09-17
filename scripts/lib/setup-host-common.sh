@@ -230,10 +230,14 @@ setup_home_manager_switch() {
   local repo_root="$1"
   local host_name="$2"
   local flake_ref="path:$repo_root"
+  local backup_extension=""
+
+  backup_extension="dotnix-backup-$(date +%Y%m%d-%H%M%S)"
 
   setup_log "activating Home Manager configuration ${host_name}Home"
   setup_nix_with_flakes run "$flake_ref#home-manager" -- \
     switch \
+    -b "$backup_extension" \
     --flake "$flake_ref#${host_name}Home" \
     --option experimental-features "nix-command flakes"
 }
