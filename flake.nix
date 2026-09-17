@@ -1,6 +1,16 @@
 {
   description = "Reproducible NixOS, nix-darwin, and Home Manager configurations";
 
+  # Standalone Home Manager setups (including template/linux-general) do not
+  # load the NixOS or nix-darwin module settings, so expose llm-agents' cache
+  # through the flake itself as well.
+  nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
