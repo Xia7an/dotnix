@@ -21,5 +21,6 @@
     "vlc"
     "zoom"
     "wireshark-app"
+    "teddychan/tap/ice-2"
   ];
 }

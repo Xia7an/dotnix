@@ -1,8 +1,8 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    biome
-    mise
+  home.packages = [
+    pkgs.biome
+    pkgs.unstable.mise
   ];
 
   programs.fish.interactiveShellInit = ''

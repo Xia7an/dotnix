@@ -1,6 +1,5 @@
 {
   homebrew.casks = [
-    "antigravity"
     "arduino-ide"
     "autodesk-fusion"
     "bambu-studio"

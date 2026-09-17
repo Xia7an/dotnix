@@ -17,7 +17,7 @@
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/services/openssh.nix
     ../../modules/NixOS/services/tailscale.nix
-    ../../hardware/Atropos-SSD-hardware.nix
+    ./hardware.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/security.nix
     ../../modules/NixOS/nix-ld.nix

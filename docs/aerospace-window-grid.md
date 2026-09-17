@@ -53,10 +53,12 @@ aerospace reload-config --no-gui
 open -a Hammerspoon
 ```
 
-既存の `~/.hammerspoon/init.lua` や AeroSpace 設定が通常ファイルの場合、
-Home Manager の `-b` はそれを退避する。同名バックアップが存在する場合は
-別の接尾辞を使う。Hammerspoon が既に動いていればメニューから Reload Config。
-従来の PaperWM 設定は、この機能の init.lua に置き換わる。
+既存の `~/.hammerspoon/init.lua` はそのまま残し、Home Manager は上書きしない。
+ファイルが存在しない環境でだけ初期設定を作成する。AeroSpace 設定が通常ファイルの場合は
+Home Manager の `-b` で退避できる。同名バックアップが存在する場合は別の接尾辞を使う。
+Hammerspoon が既に動いていればメニューから Reload Config。
+既存の設定を使う場合は、必要に応じて `require("aerospace-window-grid").start()` を
+既存の `init.lua` に追加する。初期設定が作成される環境では、その設定が有効になる。
 
 システム設定 → プライバシーとセキュリティ:
 

@@ -1,6 +1,6 @@
 { config, pkgs, inputs, ... }: {
   imports = [
-    ../../hardware/anemoi.nix
+    ./hardware.nix
     ../../modules/NixOS/locale.nix
     ../../modules/NixOS/fonts.nix
     ../../modules/NixOS/users.nix
