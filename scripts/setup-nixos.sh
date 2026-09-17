@@ -7,19 +7,38 @@ source "$script_directory/lib/setup-host-common.sh"
 
 usage() {
   cat <<'EOF'
-Usage: scripts/setup-nixos.sh [HOST_NAME]
+Usage: scripts/setup-nixos.sh [--desktop] [HOST_NAME]
 
-Creates hosts/HOST_NAME from template/nixos, copies the current NixOS
-hardware configuration, and activates NixOS and Home Manager. If HOST_NAME is
-omitted, the script prompts for it.
+Creates hosts/HOST_NAME from template/nixos (or template/nixos-desktop),
+copies the current NixOS hardware configuration, and activates NixOS and Home
+Manager. If HOST_NAME is omitted, the script prompts for it.
 EOF
 }
 
-if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
-  usage
-  exit 0
-fi
-[[ $# -le 1 ]] || setup_die "usage: scripts/setup-nixos.sh [HOST_NAME]"
+desktop=false
+host_name_argument=""
+while (($# > 0)); do
+  case "$1" in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    --desktop)
+      desktop=true
+      ;;
+    --*)
+      setup_die "unknown option: $1"
+      ;;
+    *)
+      [[ -z "$host_name_argument" ]] || setup_die "host name specified more than once"
+      host_name_argument="$1"
+      ;;
+  esac
+  shift
+done
+
+template_name="nixos"
+$desktop && template_name="nixos-desktop"
 
 setup_require_linux
 [[ -e /etc/NIXOS || -e /run/current-system/nixos-version ]] \
@@ -31,7 +50,7 @@ command -v nixos-rebuild >/dev/null 2>&1 || setup_die "nixos-rebuild is not avai
 command -v sudo >/dev/null 2>&1 || setup_die "sudo is required for nixos-rebuild switch"
 
 repo_root="$(setup_repo_root)"
-host_name="$(setup_host_name "${1:-}")"
+host_name="$(setup_host_name "$host_name_argument")"
 user_name="$(setup_user_name)"
 home_directory="$(setup_user_home "$user_name")"
 nix_system="$(setup_nix_system)"
@@ -39,7 +58,7 @@ nix_system="$(setup_nix_system)"
 setup_enable_flakes
 sudo -v
 setup_create_host \
-  "$repo_root" nixos "$host_name" "$user_name" "$home_directory" "$nix_system" "$hardware_source"
+  "$repo_root" "$template_name" "$host_name" "$user_name" "$home_directory" "$nix_system" "$hardware_source"
 
 setup_log "the template inherits Nyx's GRUB device (/dev/sda); adjust hosts/$host_name/system.nix if needed"
 setup_log "activating NixOS configuration $host_name"

@@ -44,8 +44,10 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 │   └── pkgs/                 # ローカルパッケージ
 ├── config/                   # Home Manager から配置する設定ファイル
 ├── template/
-│   ├── nixos/                # Nyx + Lachesis を基にした NixOS 用テンプレート
-│   └── linux-general/        # Lachesis を基にした Home Manager 用テンプレート
+│   ├── nixos/                # NixOS 用テンプレート
+│   ├── nixos-desktop/        # デスクトップ向け NixOS 用テンプレート
+│   ├── linux-general/        # Home Manager 用テンプレート
+│   └── linux-general-desktop/ # デスクトップ向け Home Manager 用テンプレート
 └── scripts/                  # 新規ホストのセットアップスクリプト
 ```
 
@@ -110,16 +112,20 @@ NixOS では `/etc/nixos/hardware-configuration.nix` を `hardware.nix` とし�
 ```bash
 ./scripts/setup-nixos.sh
 # または: ./scripts/setup-nixos.sh MyHost
+# デスクトップ向け: ./scripts/setup-nixos.sh --desktop MyHost
 ```
 
-NixOS テンプレートのブートローダー設定は Nyx と同じ `/dev/sda` 向けです。構成が異なるホストでは、初回の rebuild を実行する前に `template/nixos/system.nix` を変更してください。
+NixOS テンプレートのブートローダー設定は Nyx と同じ `/dev/sda` 向けです。構成が異なるホストでは、初回の rebuild を実行する前に使用する `template/nixos*/system.nix` を変更してください。
 
 一般的な Linux では、Nix がなければ公式インストーラーの single-user モードで導入し、Home Manager を適用します。
 
 ```bash
 ./scripts/setup-linux-general.sh
 # または: ./scripts/setup-linux-general.sh MyHost
+# デスクトップ向け: ./scripts/setup-linux-general.sh --desktop MyHost
 ```
+
+`--desktop` を付けると、それぞれ `nixos-desktop`、`linux-general-desktop` テンプレートを使用します。現在は通常版とデスクトップ版が同じ内容になっており、今後パッケージ構成を個別に変更できます。
 
 既に Nix を利用できる場合、一般 Linux 用スクリプトは管理者権限を使いません。Nix 未導入かつ `/nix` が存在しない場合だけ、公式インストーラーが `/nix` の作成のために管理者権限を求めることがあります。通常ユーザーとしてスクリプトを実行してください。
 
