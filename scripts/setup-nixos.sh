@@ -55,13 +55,15 @@ user_name="$(setup_user_name)"
 home_directory="$(setup_user_home "$user_name")"
 nix_system="$(setup_nix_system)"
 
-setup_enable_flakes
+setup_enable_flakes "$home_directory"
 sudo -v
 setup_create_host \
   "$repo_root" "$template_name" "$host_name" "$user_name" "$home_directory" "$nix_system" "$hardware_source"
 
 setup_log "the template inherits Nyx's GRUB device (/dev/sda); adjust hosts/$host_name/system.nix if needed"
 setup_log "activating NixOS configuration $host_name"
-sudo env "NIX_CONFIG=$NIX_CONFIG" nixos-rebuild switch --flake "path:$repo_root#$host_name"
+sudo env "NIX_CONFIG=$NIX_CONFIG" nixos-rebuild switch \
+  --flake "path:$repo_root#$host_name" \
+  --option experimental-features "nix-command flakes"
 setup_home_manager_switch "$repo_root" "$host_name"
 setup_log "setup completed for $host_name"
