@@ -42,7 +42,15 @@ Hammerspoon の event tap が Option+Tab と表示中のキーを消費する。
 
 CLI はシェルを介さず `hs.task` で起動し、3 秒でタイムアウトする。
 終了済みセッションのコールバックは無視する。プレビューは表示中のカードを
-順に取得し、その呼び出し中だけメモリに保持する。画像をディスクには保存しない。
+順に取得し、カードの2倍以下のピクセル寸法にラスタライズして保持する。
+原寸画像は保持せず、画面外へ出たカードの画像も捨てるため、保持枚数は最大24枚。
+画像をディスクには保存しない。
+
+終了・キャンセル時にはタイマーとタスクへの参照、タスクのコールバック、canvas、
+プレビューを明示的に切る。Hammerspoon の停止済みタイマーもコールバックを
+Lua registry に保持するため、単に `stop()` するだけではセッションとの循環参照が
+残る。ネイティブ画像の容量はLuaのGC判定に反映されないため、画像変換後と
+一覧終了時にGCを実行する。
 
 ## 適用と権限
 
@@ -83,6 +91,28 @@ Lua 5.4 のテストは Hammerspoon API を模擬し、Option 解放での確定
 プレビュー取得不可、Secure Input、イベント監視復旧を確認する。
 実機では複数ウィンドウのワークスペースで Option+Tab を押し、Tab を離しても
 hjklで枠だけが動くこと、Option を離すと別ワークスペースのウィンドウにも移れることを確認する。
+
+### メモリの回帰テスト
+
+`tests/aerospace-window-grid-memory.lua` はHammerspoon内で実行する。
+検証時のみ `init.lua` に `require("hs.ipc")` を加えてリロードし、次を実行する。
+完了後はIPCの追加を取り除いてリロードする。
+
+```sh
+hs -c 'GRID_MEMORY_CYCLES=200; dofile("/Users/inoyu/Gits/dotnix/tests/aerospace-window-grid-memory.lua")'
+hs -c 'print(hs.inspect(gridMemoryCheck))'
+```
+
+実ネイティブのタイマーと画像を使い、終了後に弱参照から消えたことを確認する。
+`done` と `passed` が true、`retainedImages` と `retainedTimers` が0なら成功。
+表示・フォーカスは変更しない。実CLI・実ウィンドウ画像・非表示の実canvasも
+検証する場合は、実行前に `GRID_MEMORY_NATIVE=true; GRID_MEMORY_HOLD_TICKS=5` を指定する。
+画面収録権限がない場合、この実画像テストは成功扱いにしない。
+
+2026-09-17の調査では修正前のphysical footprintが26.5GBに達していた。
+20回の再現テストでGC後にも画像20枚・タイマー40個が残った。
+修正後は同じテストを200回繰り返しても残存画像・タイマーはともに0だった。
+実CLI・実画像を使った100回のテスト（画像取得425回）でも残存画像・タイマーは0だった。
 
 ## 参考
 

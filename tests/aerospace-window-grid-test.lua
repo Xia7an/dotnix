@@ -40,6 +40,7 @@ hs.task = { new = function(_, callback, arguments)
     local t = { callback = callback, arguments = arguments }
     function t:start() return not failStart and self end
     function t:terminate() self.terminated = true end
+    function t:setCallback(callback) self.callback = callback end
     tasks[#tasks + 1] = t
     return t
 end }
@@ -49,7 +50,7 @@ hs.canvas = { new = function(frame)
     function c:behaviorAsLabels() return self end
     function c:replaceElements(...) self.elements = { ... }; return self end
     function c:show() self.visible = true; return self end
-    function c:delete() self.visible = false; self.deleted = true end
+    function c:delete() self.visible = false; self.deleted = true; self.elements = nil end
     canvases[#canvases + 1] = c
     return c
 end }
@@ -82,7 +83,7 @@ local function reply(task, count, status, stdout)
         decoded[#decoded + 1] = { ["window-id"] = id, ["app-name"] = "App",
             ["window-title"] = "日本語 title " .. id, workspace = "W" }
     end
-    task.callback(status or 0, stdout or "json", "error")
+    if task.callback then task.callback(status or 0, stdout or "json", "error") end
 end
 local function start()
     modifiers, secure, failStart = { alt = true }, false, false
@@ -312,5 +313,49 @@ assert(canvases[1].visible)
 up("tab")
 event("flagsChanged", nil, {})
 focusIs(1)
+c.stop()
+-- Positive image path: rasterize real-sized sources, retain only visible
+-- thumbnails, and release all thumbnails even if old callbacks still exist.
+c = start()
+hs.screenRecordingState = function() return true end
+local thumbnails = setmetatable({}, { __mode = "v" })
+hs.window.snapshotForID = function(id)
+    return {
+        size = function() return { w = 3840, h = 2160 } end,
+        bitmapRepresentation = function(_, size)
+            assert(size.w <= 600 and size.h <= 400)
+            assert(size.w > 0 and size.h > 0)
+            local thumbnail = { id = id, size = size }
+            thumbnails[id] = thumbnail
+            return thumbnail
+        end,
+    }
+end
+local function drainPreviews()
+    for _ = 1, 30 do
+        local before = #timers
+        timers[before].callback()
+        if #timers == before then break end
+    end
+    collectgarbage("collect")
+end
+focusedID = 101
+manyWorkspaces(query())
+drainPreviews()
+local retained = 0
+for _ in pairs(thumbnails) do retained = retained + 1 end
+assert(retained == 24)
+down("l"); up("l"); down("l"); up("l"); down("l"); up("l"); down("l"); up("l")
+drainPreviews()
+assert(thumbnails[101] == nil and thumbnails[105] ~= nil and thumbnails[201] ~= nil)
+for _ = 1, 6 do down("j"); up("j") end
+drainPreviews()
+assert(thumbnails[102] == nil and thumbnails[701] ~= nil)
+retained = 0
+for _ in pairs(thumbnails) do retained = retained + 1 end
+assert(retained == 24)
+down("escape"); up("escape"); up("tab")
+collectgarbage("collect")
+assert(next(thumbnails) == nil)
 c.stop()
 print("aerospace-window-grid: all tests passed")

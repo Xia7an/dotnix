@@ -31,11 +31,28 @@ function M.start(options)
     local function run(arguments, callback)
         local job = {}
         jobs[job] = true
+        local function dispose(terminate)
+            jobs[job] = nil
+            local timer, task = job.timer, job.task
+            -- hs.timer keeps its callback in the Lua registry until GC, even
+            -- after stop(). Break callback -> job -> timer before returning.
+            job.timer, job.task = nil, nil
+            if timer then timer:stop() end
+            if task then
+                task:setCallback(nil)
+                if terminate then task:terminate() end
+            end
+        end
         local function complete(code, stdout, stderr)
             if not jobs[job] then return end
-            jobs[job] = nil
-            if job.timer then job.timer:stop() end
-            callback(code, stdout, stderr)
+            local fn = callback
+            callback = nil
+            dispose(false)
+            fn(code, stdout, stderr)
+        end
+        function job.cancel()
+            callback = nil
+            dispose(true)
         end
         job.task = hs.task.new(binary, complete, arguments)
         job.timer = hs.timer.doAfter(3, function()
@@ -43,11 +60,6 @@ function M.start(options)
             complete(-1, "", "aerospace timed out")
         end)
         if not job.task or not job.task:start() then complete(-1, "", "cannot start aerospace") end
-        function job.cancel()
-            jobs[job] = nil
-            job.timer:stop()
-            if job.task then job.task:terminate() end
-        end
         return job
     end
 
@@ -55,11 +67,15 @@ function M.start(options)
         local s = session
         if not s then return end
         session = nil -- Invalidate pending callbacks before destroying the UI.
-        if s.query then s.query.cancel() end
-        if s.previewTimer then s.previewTimer:stop() end
-        if s.canvas then s.canvas:delete() end
         local row = s.rows and s.rows[s.selectedRow]
         local window = row and row.windows[row.selected]
+        if s.query then s.query.cancel(); s.query = nil end
+        if s.previewTimer then s.previewTimer:stop(); s.previewTimer = nil end
+        if s.canvas then s.canvas:delete(); s.canvas = nil end
+        s.previews, s.rows = nil, nil
+        -- Native image storage is invisible to Lua's allocation accounting.
+        -- Reclaim the released image userdata at the end of every gesture.
+        collectgarbage("collect")
         if commit and window then
             run({ "focus", "--window-id", tostring(window["window-id"]) },
                 function(code, _, stderr)
@@ -96,6 +112,11 @@ function M.start(options)
 
     draw = function(s)
         if session ~= s then return end
+        local visible = {}
+        visibleWindows(s, function(window) visible[window["window-id"]] = true end)
+        for id in pairs(s.previews) do
+            if not visible[id] then s.previews[id] = nil end
+        end
         local lastRow = math.min(#s.rows, s.firstRow + s.visibleRows - 1)
         local width, height = s.width, s.height
         local elements = {
@@ -159,18 +180,35 @@ function M.start(options)
     -- Capture one visible card per run-loop turn, outside the keyboard callback.
     -- No Accessibility window enumeration, disk screenshots, or persistent cache.
     capture = function(s)
-        if s.previewTimer then s.previewTimer:stop() end
+        if s.previewTimer then s.previewTimer:stop(); s.previewTimer = nil end
         -- Preflight without prompting: a privacy dialog would steal focus while
         -- the gesture is held. Text cards remain usable without this permission.
         if not hs.screenRecordingState() then return end
         s.previewTimer = hs.timer.doAfter(0.01, function()
+            -- Clearing only on finish is insufficient: a completed native timer
+            -- also roots its closure, which otherwise roots s and this timer.
+            s.previewTimer = nil
             if session ~= s then return end
             visibleWindows(s, function(window)
                 local id = window["window-id"]
                 if s.previews[id] == nil then
-                    local ok, preview = pcall(hs.window.snapshotForID, id)
+                    local ok, preview = pcall(function()
+                        local original = hs.window.snapshotForID(id)
+                        if not original then return nil end
+                        local size = original:size()
+                        if size.w <= 0 or size.h <= 0 then return nil end
+                        local scale = math.min(1, math.max(1, s.cardWidth - 16) * 2 / size.w,
+                            math.max(1, s.cardHeight - 48) * 2 / size.h)
+                        -- size()/setSize() changes NSImage's logical size only;
+                        -- rasterize a new bitmap to release the full-size source.
+                        return original:bitmapRepresentation({
+                            w = math.max(1, math.floor(size.w * scale)),
+                            h = math.max(1, math.floor(size.h * scale)),
+                        })
+                    end)
                     s.previews[id] = ok and preview or false
                     draw(s)
+                    collectgarbage("collect")
                     capture(s)
                     return true
                 end
