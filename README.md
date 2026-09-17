@@ -103,7 +103,7 @@ Lachesis では GUI アプリを Homebrew cask で管理するため、初回適
 
 ## 新しい Linux ホストのセットアップ
 
-スクリプトはリポジトリ内のどこからでも実行できます。ホスト名を省略すると対話入力になります。生成された `hosts/<Host>/host.nix` は `hosts/default.nix` によって自動検出されるため、ホスト一覧を手作業で編集する必要はありません。現在の Home Manager モジュール群に合わせ、対象アーキテクチャは `x86_64-linux` です。
+スクリプトはリポジトリ内のどこからでも実行できます。ホスト名を省略すると対話入力になります。生成された `hosts/<Host>/host.nix` は `hosts/default.nix` によって自動検出されるため、ホスト一覧を手作業で編集する必要はありません。`x86_64-linux` と `aarch64-linux` を実行環境から自動判定します。Linux ARM64用の固定情報をまだ持っていないPlatformIO IDE拡張だけは、`aarch64-linux` で除外します。
 
 NixOS では `/etc/nixos/hardware-configuration.nix` を `hardware.nix` としてコピーした後、`nixos-rebuild switch` と `home-manager switch` を順に実行します。
 

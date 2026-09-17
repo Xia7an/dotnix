@@ -55,7 +55,7 @@ setup_nix_system() {
       printf 'x86_64-linux\n'
       ;;
     aarch64|arm64)
-      setup_die "the current Home Manager modules do not yet support aarch64-linux"
+      printf 'aarch64-linux\n'
       ;;
     *)
       setup_die "unsupported architecture: $(uname -m)"

@@ -140,29 +140,34 @@ let
 
   # PlatformIO IDE は nixpkgs の vscode-extensions に無いので marketplace から取る。
   # VSIX がターゲットごとに分かれている (universal 版が存在しない) ため、
-  # 本リポジトリで使う system ごとに arch と sha256 を持つ。
-  # 未対応の system では eval が落ちるので、ホストを増やしたらここに追記すること。
-  platformioTarget =
-    {
-      "aarch64-darwin" = {
-        arch = "darwin-arm64";
-        sha256 = "0avw9arqmfxcmvzmg8q9g6y24dy5p7kr7igimf3pnaqis8ky90lm";
-      };
-      "x86_64-linux" = {
-        arch = "linux-x64";
-        sha256 = "0saqkiaa5f8cnwlr5q51nnzmihx1w268wh7nrfqahh2bmrm85vhw";
-      };
-    }
-    .${pkgs.stdenv.hostPlatform.system};
+  # 本リポジトリで固定済みの system ごとに arch と sha256 を持つ。
+  # 未登録の system では PlatformIO だけを除外する。
+  platformioTargets = {
+    "aarch64-darwin" = {
+      arch = "darwin-arm64";
+      sha256 = "0avw9arqmfxcmvzmg8q9g6y24dy5p7kr7igimf3pnaqis8ky90lm";
+    };
+    "x86_64-linux" = {
+      arch = "linux-x64";
+      sha256 = "0saqkiaa5f8cnwlr5q51nnzmihx1w268wh7nrfqahh2bmrm85vhw";
+    };
+  };
+  platformioTarget = platformioTargets.${pkgs.stdenv.hostPlatform.system} or null;
 
-  platformioExtensions = pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
-    {
-      name = "platformio-ide";
-      publisher = "platformio";
-      version = "3.3.4";
-      inherit (platformioTarget) arch sha256;
-    }
-  ];
+  # Linux ARM64 用 VSIX の固定情報はまだ持っていない。VSCode 自体は
+  # aarch64-linux でも有効にし、この拡張だけを除外する。
+  platformioExtensions =
+    if platformioTarget == null then
+      [ ]
+    else
+      pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+          name = "platformio-ide";
+          publisher = "platformio";
+          version = "3.3.4";
+          inherit (platformioTarget) arch sha256;
+        }
+      ];
 
   darwinMarketplaceExtensions = pkgs.lib.optionals pkgs.stdenv.hostPlatform.isDarwin (
     pkgs.unstable.vscode-utils.extensionsFromVscodeMarketplace [
