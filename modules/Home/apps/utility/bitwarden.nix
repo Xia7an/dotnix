@@ -1,3 +1,4 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [ bitwarden-desktop ];
+  # The stable package depends on Electron 39, which nixpkgs marks insecure.
+  home.packages = with pkgs.unstable; [ bitwarden-desktop ];
 }

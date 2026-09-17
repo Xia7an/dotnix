@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   # fish シェルを有効化
-  # NixOS 側で users.users.<name>.shell = pkgs.fish として設定済み
+  # NixOS / nix-darwin 側のログインシェルも、この package を参照する。
   programs.fish = {
     enable = true;
     shellAliases = {

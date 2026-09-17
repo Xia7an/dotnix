@@ -101,6 +101,7 @@ sudo darwin-rebuild switch --flake .#Lachesis
 ```
 
 Home Manager はシステムと独立して適用できる構成を維持しています。
+NixOS / nix-darwin のログインシェルには、対象ユーザーの Home Manager の `programs.fish.package` を使います。システム設定の適用時に切り替わり、macOS の既存ユーザーにも適用されます。fish のパッケージを変更した場合は Home Manager とシステムの両方を適用し、再ログインしてください。Home Manager 単独の Linux ホストでは、ログインシェルの登録・変更は OS 側で別途行う必要があります。
 Lachesis では GUI アプリを Homebrew cask で管理するため、初回適用前に Homebrew をインストールしてください。システム activation 中に外部スクリプトを取得して Homebrew を自動導入する処理は置いていません。
 
 ## 新しい Linux ホストのセットアップ

@@ -44,13 +44,17 @@ let
     username = hosts.${hostName}.username or defaultUsername;
   };
 
+  systemSpecialArgsFor = hostName: specialArgsFor hostName // {
+    homeManagerConfig = homeConfigurations."${hostName}Home".config;
+  };
+
   nixosHosts = lib.filterAttrs (_: host: host.kind == "nixos") hosts;
   darwinHosts = lib.filterAttrs (_: host: host.kind == "darwin") hosts;
 
   nixosConfigurations = lib.mapAttrs (
     hostName: host:
     inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = specialArgsFor hostName;
+      specialArgs = systemSpecialArgsFor hostName;
       modules = [ (nixpkgsModule host.system) ] ++ host.extraSystemModules ++ [ host.systemModule ];
     }
   ) nixosHosts;
@@ -58,7 +62,7 @@ let
   darwinConfigurations = lib.mapAttrs (
     hostName: host:
     inputs.darwin.lib.darwinSystem {
-      specialArgs = specialArgsFor hostName;
+      specialArgs = systemSpecialArgsFor hostName;
       modules = [ (nixpkgsModule host.system) ] ++ host.extraSystemModules ++ [ host.systemModule ];
     }
   ) darwinHosts;
