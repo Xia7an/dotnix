@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 {
   programs.bash = {
     enable = true;
@@ -7,7 +11,7 @@
     # startup files, so the Nix-provided Bash is not added to the user profile.
     package = null;
 
-    initExtra = ''
+    initExtra = lib.mkAfter ''
       # Keep the OS-provided Bash as the login shell, but hand interactive
       # terminal and SSH sessions over to the Home Manager-managed Fish.
       # Non-interactive SSH commands and an explicitly nested Bash are left alone.
