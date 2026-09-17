@@ -23,6 +23,7 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 ├── hosts/
 │   ├── default.nix           # ホスト一覧とプラットフォーム情報
 │   └── <Host>/
+│       ├── host.nix          # セットアップスクリプト生成ホストのメタデータ
 │       ├── system.nix        # NixOS / nix-darwin のホスト固有設定
 │       ├── home.nix          # Home Manager のエントリーポイント
 │       └── home-manager/     # 用途別の Home Manager 設定
@@ -33,7 +34,6 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 │           ├── shell-and-command-line.nix
 │           ├── terminal-emulators.nix
 │           └── virtualization.nix
-├── hardware/                 # ハードウェア固有設定
 ├── lib/
 │   └── mk-configurations.nix # NixOS、Darwin、Home の共通生成処理
 ├── modules/
@@ -42,7 +42,11 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 │   ├── darwin/               # 再利用可能な nix-darwin モジュール
 │   ├── overlays/             # overlay の定義
 │   └── pkgs/                 # ローカルパッケージ
-└── config/                   # Home Manager から配置する設定ファイル
+├── config/                   # Home Manager から配置する設定ファイル
+├── template/
+│   ├── nixos/                # Nyx + Lachesis を基にした NixOS 用テンプレート
+│   └── linux-general/        # Lachesis を基にした Home Manager 用テンプレート
+└── scripts/                  # 新規ホストのセットアップスクリプト
 ```
 
 `home-manager/` 配下は、そのホストで有効にする機能をファイル名どおりに分類しています。ホストによって不要なカテゴリは空の `imports` として残してあり、あとから設定を追加するときの変更先を判断しやすくしています。macOS ホストには、このほか `macos-integration.nix` があります。
@@ -96,6 +100,28 @@ sudo darwin-rebuild switch --flake .#Lachesis
 
 Home Manager はシステムと独立して適用できる構成を維持しています。
 Lachesis では GUI アプリを Homebrew cask で管理するため、初回適用前に Homebrew をインストールしてください。システム activation 中に外部スクリプトを取得して Homebrew を自動導入する処理は置いていません。
+
+## 新しい Linux ホストのセットアップ
+
+スクリプトはリポジトリ内のどこからでも実行できます。ホスト名を省略すると対話入力になります。生成された `hosts/<Host>/host.nix` は `hosts/default.nix` によって自動検出されるため、ホスト一覧を手作業で編集する必要はありません。現在の Home Manager モジュール群に合わせ、対象アーキテクチャは `x86_64-linux` です。
+
+NixOS では `/etc/nixos/hardware-configuration.nix` を `hardware.nix` としてコピーした後、`nixos-rebuild switch` と `home-manager switch` を順に実行します。
+
+```bash
+./scripts/setup-nixos.sh
+# または: ./scripts/setup-nixos.sh MyHost
+```
+
+NixOS テンプレートのブートローダー設定は Nyx と同じ `/dev/sda` 向けです。構成が異なるホストでは、初回の rebuild を実行する前に `template/nixos/system.nix` を変更してください。
+
+一般的な Linux では、Nix がなければ公式インストーラーの single-user モードで導入し、Home Manager を適用します。
+
+```bash
+./scripts/setup-linux-general.sh
+# または: ./scripts/setup-linux-general.sh MyHost
+```
+
+既に Nix を利用できる場合、一般 Linux 用スクリプトは管理者権限を使いません。Nix 未導入かつ `/nix` が存在しない場合だけ、公式インストーラーが `/nix` の作成のために管理者権限を求めることがあります。通常ユーザーとしてスクリプトを実行してください。
 
 ## 検証と整形
 

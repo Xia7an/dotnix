@@ -83,7 +83,10 @@
         let
           pkgs = pkgsFor system;
         in
-        lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        {
+          home-manager = inputs.home-manager.packages.${system}.default;
+        }
+        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
           inherit (pkgs) niri-taskbar;
           default = pkgs.niri-taskbar;
         }
@@ -94,6 +97,15 @@
       checks = lib.genAttrs supportedSystems (
         system:
         let
+          systemHosts = lib.filterAttrs (
+            _: host:
+            host.system == system
+            && builtins.elem host.kind [
+              "darwin"
+              "nixos"
+            ]
+          ) hosts;
+
           systemChecks = lib.mapAttrs' (
             name: host:
             lib.nameValuePair "${name}-system" (
@@ -102,7 +114,7 @@
               else
                 nixosConfigurations.${name}.config.system.build.toplevel
             )
-          ) (hostsFor system);
+          ) systemHosts;
 
           homeChecks = lib.mapAttrs' (
             name: _: lib.nameValuePair "${name}-home" homeConfigurations."${name}Home".activationPackage

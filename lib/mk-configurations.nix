@@ -5,7 +5,7 @@
 let
   inherit (inputs.nixpkgs) lib;
 
-  username = "inoyu";
+  defaultUsername = "inoyu";
   supportedSystems = lib.unique (map (host: host.system) (lib.attrValues hosts));
 
   nixpkgsConfig = {
@@ -41,6 +41,7 @@ let
 
   specialArgsFor = hostName: {
     inherit inputs hostName;
+    username = hosts.${hostName}.username or defaultUsername;
   };
 
   nixosHosts = lib.filterAttrs (_: host: host.kind == "nixos") hosts;
@@ -72,7 +73,7 @@ let
           ../home.nix
           {
             home = {
-              inherit username;
+              username = host.username or defaultUsername;
               inherit (host) homeDirectory;
               stateVersion = host.homeStateVersion;
             };

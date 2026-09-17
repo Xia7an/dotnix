@@ -1,10 +1,10 @@
-{ pkgs, ... }: {
-  users.users.inoyu = {
+{ pkgs, username, ... }: {
+  users.users.${username} = {
     isNormalUser = true;
-    description  = "Inoyu";
-    shell        = pkgs.fish;
-    packages     = [];
+    description = username;
+    shell = pkgs.fish;
+    packages = [ ];
   };
-  services.getty.autologinUser = "inoyu";
+  services.getty.autologinUser = username;
   programs.fish.enable = true;
 }
