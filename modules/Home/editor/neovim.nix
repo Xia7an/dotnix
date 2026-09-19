@@ -76,6 +76,8 @@ in
       ripgrep
       fd
       lazygit
+      # plugins/yazi.lua のフローティングファイルマネージャ
+      yazi
       tree-sitter
       # extras: lang.clangd
       clang-tools
@@ -164,6 +166,7 @@ in
           typst-vim
           venv-selector-nvim
           which-key-nvim
+          yazi-nvim
           { name = "catppuccin"; path = catppuccin-nvim; }
           { name = "mini.ai"; path = mini-nvim; }
           { name = "mini.icons"; path = mini-nvim; }
