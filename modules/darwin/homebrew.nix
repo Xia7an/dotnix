@@ -7,18 +7,29 @@
     ./homebrew/mas.nix
   ];
 
+  environment.systemPath = [
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+  ];
+
   homebrew = {
     enable = true;
-    taps = [ "nikitabobko/tap" ];
+
+    # 手動の `brew bundle` でも nix-darwin が生成した Brewfile を使用する。
+    global.brewfile = true;
+
+    # version :latest や自己更新型の cask も明示的な更新時には対象にする。
+    greedyCasks = true;
+
+    extraConfig = ''
+      tap "nikitabobko/tap", trusted: { casks: ["aerospace"] }
+      tap "teddychan/tap", trusted: { casks: ["ice-2"] }
+    '';
 
     onActivation = {
       autoUpdate = false;
       upgrade = false;
-      # nix-darwin 25.11 の "uninstall" は Homebrew 6 で廃止された
-      # `brew bundle --cleanup` を生成するため、新しいフラグを直接渡す。
-      # Brewfile 外の formula/cask は従来どおりアンインストールされる。
       cleanup = "none";
-      extraFlags = [ "--force-cleanup" ];
     };
   };
 }

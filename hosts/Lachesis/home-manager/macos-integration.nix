@@ -12,8 +12,10 @@
   # (ログインシェルは Nix 版 fish /run/current-system/sw/bin/fish に移行済み。
   #  以前は Homebrew 版 fish で /etc/fish/config.fish が読まれなかったため必須だった)
   home.sessionPath = [
+    "${config.home.homeDirectory}/.nix-profile/bin"
     "/run/current-system/sw/bin"
     "/nix/var/nix/profiles/default/bin"
-    "${config.home.homeDirectory}/.nix-profile/bin"
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
   ];
 }
