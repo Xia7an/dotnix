@@ -106,6 +106,8 @@ NixOS / nix-darwin のログインシェルには、対象ユーザーの Home M
 hermes では `home-manager switch --flake .#hermesHome` が、Home Manager のプロファイル内の `bin/fish` を `/etc/shells` に登録し、対象ユーザーのログインシェルを自動設定します。変更が必要な場合のみ sudo 認証を求めます（ホスト OS の `/usr/bin/sudo`・`getent`・`chsh` が必要）。適用後は再ログインしてください。設定済みなら sudo は実行せず、dry-run では変更しません。その他の Home Manager 単独の Linux ホストでは、ログインシェルの登録・変更は OS 側で別途行う必要があります。
 Lachesis では GUI アプリを Homebrew cask で管理するため、初回適用前に Homebrew をインストールしてください。システム activation 中に外部スクリプトを取得して Homebrew を自動導入する処理は置いていません。
 
+macOS の `codex` は ChatGPT アプリの内蔵 CLI を使います。アプリの所在は Launch Services の識別子 `com.openai.codex` で取得し、起動のたびにアプリ内の `codex-package.json` から `entrypoint` を解決します。配置や起動ファイル名の変更には Nix の再適用なしで追従します。メタデータの形式が未知の場合や起動先が複数ある場合は診断を出して停止します。Linux では引き続き `llm-agents` の CLI を使います。
+
 ## 新しい Linux ホストのセットアップ
 
 スクリプトはリポジトリ内のどこからでも実行できます。ホスト名を省略すると対話入力になります。生成された `hosts/<Host>/host.nix` は `hosts/default.nix` によって自動検出されるため、ホスト一覧を手作業で編集する必要はありません。`x86_64-linux` と `aarch64-linux` を実行環境から自動判定します。Linux ARM64用の固定情報をまだ持っていないPlatformIO IDE拡張だけは、`aarch64-linux` で除外します。
