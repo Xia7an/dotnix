@@ -17,6 +17,7 @@
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/services/openssh.nix
     ../../modules/NixOS/services/tailscale.nix
+    ../../modules/NixOS/services/cloudflare-warp.nix
     ./hardware.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/security.nix

@@ -4,6 +4,7 @@
     "audacity"
     "chatgpt"
     "claude"
+    "cloudflare-warp"
     "discord"
     "figma"
     "gdlauncher"

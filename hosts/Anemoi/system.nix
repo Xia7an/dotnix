@@ -10,6 +10,7 @@
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/services/openssh.nix
     ../../modules/NixOS/services/tailscale.nix
+    ../../modules/NixOS/services/cloudflare-warp.nix
     ../../modules/NixOS/networkmanager.nix
     ../../modules/NixOS/desktop
     ../../modules/NixOS/desktop/sunshine.nix
