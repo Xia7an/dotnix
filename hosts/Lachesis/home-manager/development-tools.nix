@@ -11,6 +11,7 @@
     ../../../modules/Home/development/java-dotnet.nix
     ../../../modules/Home/development/database.nix
     ../../../modules/Home/development/tex.nix
+    ../../../modules/Home/development/verilog.nix
     ../../../modules/Home/virtualization/docker.nix
     ../../../modules/Home/virtualization/lima.nix
     # ../../../modules/Home/darwin/cocoapods.nix
