@@ -23,7 +23,7 @@
       set fish_pager_color_selected_completion black
     '';
     shellAbbrs = {
-      cduniv = "cd ~/Documents/大学/授業/3年前期/";
+      cduniv = "cd ~/Documents/大学/授業/3年後期/";
       ls = "eza --icons always --classify always";
       la = "eza --icons always --classify always --all";
       ll = "eza --icons always --long --all --git";
@@ -42,6 +42,6 @@
     };
   };
   home.sessionVariables = {
-    UNIV = "$HOME/Documents/大学/授業/3年前期/";
+    UNIV = "$HOME/Documents/大学/授業/3年後期/";
   };
 }
