@@ -21,6 +21,7 @@
     ../../../modules/Home/apps/vdesktop/tigervnc.nix
 
     # ─── AI ───
+    ../../../modules/Home/apps/ai/chatgpt.nix
     ../../../modules/Home/apps/ai/claude.nix
 
     # ─── 同期 / セキュリティ ───

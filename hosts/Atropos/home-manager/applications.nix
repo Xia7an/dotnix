@@ -18,7 +18,7 @@
 
     # ─── AI ───
     ../../../modules/Home/apps/ai/opencode.nix
-    ../../../modules/Home/apps/ai/codex.nix
+    ../../../modules/Home/apps/ai/chatgpt.nix
     ../../../modules/Home/apps/ai/claude.nix
 
     # ─── 開発 / IDE ───

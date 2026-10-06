@@ -117,7 +117,53 @@ warp-cli registration new
 warp-cli connect
 ```
 
-macOS の `codex` は ChatGPT アプリの内蔵 CLI を使います。アプリの所在は Launch Services の識別子 `com.openai.codex` で取得し、起動のたびにアプリ内の `codex-package.json` から `entrypoint` を解決します。配置や起動ファイル名の変更には Nix の再適用なしで追従します。メタデータの形式が未知の場合や起動先が複数ある場合は診断を出して停止します。Linux では引き続き `llm-agents` の CLI を使います。
+## ChatGPT アプリと Codex CLI
+
+GUI は複数のチャット・プロジェクト、ファイルの確認に、CLI はリポジトリ内の実装・レビュー、SSH、`codex exec` に使う構成です。
+
+| 環境 | ChatGPT GUI | 通常の `codex` |
+| --- | --- | --- |
+| macOS (`Lachesis`) | 公式アプリを Homebrew cask `chatgpt` で管理 | `llm-agents` の Nix パッケージ |
+| Linux デスクトップ (`Anemoi` / `Atropos` / `Nyx`) | 公式 Linux preview を `llm-agents.chatgpt` で管理 | `llm-agents` の Nix パッケージ |
+| Home Manager 単独 (`hermes`)・通常版 Linux テンプレート | CLI のみ | `llm-agents` の Nix パッケージ |
+| WSL (`Clotho`) | Windows 側で導入 | WSL 内の `llm-agents` の Nix パッケージ |
+
+`modules/Home/apps/ai/codex.nix` は CLI のみ、`chatgpt.nix` は GUI と CLI を導入します。デスクトップ版テンプレートは後者を使います。Linux は x86_64 / ARM64 の両方を上流パッケージがサポートします。
+
+通常の `codex` は両 OS とも `flake.lock` で固定され、Mac の GUI の有無・自己更新から独立します。Herdr 用の `HERDR_AGENT=codex` と上流のシェル補完も維持します。macOS の GUI は公式署名・Keychain 権限と自己更新を保つため Homebrew 管理です。Linux の GUI は NixOS 向けライブラリ設定と、アプリが取得する runtime のパッチを含む上流パッケージを使用します。Linux GUI 自体はプレビュー版で、NixOS は OpenAI の公式サポート対象ディストリビューションには含まれていません。
+
+### 初回利用
+
+Home Manager を適用し、Mac では nix-darwin も適用して GUI を導入します。GUI はアプリ一覧または `chatgpt` で起動できます。
+
+```bash
+codex --version
+codex login                 # ChatGPT アカウントで CLI にログイン
+codex login --device-auth   # SSH など、ローカルでブラウザを開けない場合
+
+# 対象リポジトリ内で
+codex
+codex resume --last
+codex exec "このリポジトリの構成を説明して"
+```
+
+GUI でも必要に応じて同じ ChatGPT アカウントにログインします。`~/.codex` の設定・認証・履歴は書き込み可能なままにし、Home Manager から `config.toml` や認証ファイルを上書きしません。モデルはアカウントで利用可能なものをアプリや `/model` から選びます。別の `CODEX_HOME` は設定しません。GUI と CLI の版は異なる場合があるため、特定の機能や会話の再開が両方で同じように動くとは限りません。
+
+Mac で GUI と同じ版の CLI が必要な場合は `codex-bundled` を使えます。Launch Services の識別子 `com.openai.codex` でアプリを取得し、起動のたびに `codex-package.json` の `entrypoint` を解決します。アプリが未導入、メタデータが未知、起動先が複数の場合は診断を出して停止します。
+
+Linux では Wayland セッションを上流ラッパーが扱います。ネイティブ Wayland はまだ実験的なので、表示やフォーカスに問題がある場合は XWayland が使える環境で `chatgpt --ozone-platform=x11`、ネイティブ Wayland を選ぶ場合は `chatgpt --ozone-platform=wayland` を使います。GUI の動作にはデスクトップセッションが必要です。
+
+### 更新
+
+```bash
+nix flake update llm-agents
+home-manager switch --flake .#LachesisHome # Linux は対象の <Host>Home に変更
+brew upgrade --cask chatgpt               # macOS の GUI
+```
+
+Nix 管理の CLI と Linux GUI は Nix 入力の更新・再適用で更新します。macOS の GUI はアプリ自身または Homebrew で更新します。
+
+参考: [Codex CLI](https://developers.openai.com/codex/cli/)、[Linux アプリ](https://developers.openai.com/codex/linux/linux-app/)、[llm-agents.nix](https://github.com/numtide/llm-agents.nix)。
 
 ## 新しい Linux ホストのセットアップ
 
@@ -141,7 +187,7 @@ NixOS テンプレートのブートローダー設定は Nyx と同じ `/dev/sd
 # デスクトップ向け: ./scripts/setup-linux-general.sh --desktop MyHost
 ```
 
-`--desktop` を付けると、それぞれ `nixos-desktop`、`linux-general-desktop` テンプレートを使用します。現在は通常版とデスクトップ版が同じ内容になっており、今後パッケージ構成を個別に変更できます。
+`--desktop` を付けると、それぞれ `nixos-desktop`、`linux-general-desktop` テンプレートを使用します。通常版は Codex CLI のみ、デスクトップ版は ChatGPT GUI も導入します。そのほかのアプリケーション構成もテンプレートごとに変更できます。
 
 既に Nix を利用できる場合、一般 Linux 用スクリプトは管理者権限を使いません。Nix 未導入かつ `/nix` が存在しない場合だけ、公式インストーラーが `/nix` の作成のために管理者権限を求めることがあります。通常ユーザーとしてスクリプトを実行してください。
 

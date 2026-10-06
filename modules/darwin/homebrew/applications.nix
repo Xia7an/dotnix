@@ -2,7 +2,7 @@
   homebrew.casks = [
     "aerospace"
     "audacity"
-    "chatgpt"
+    "chatgpt" # GUI 本体のみ。Codex CLI は Home Manager の llm-agents で管理。
     "claude"
     "cloudflare-warp"
     "discord"

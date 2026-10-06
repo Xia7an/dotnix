@@ -9,5 +9,8 @@
 
     # ─── ノート / ドキュメント ───
     ../../../modules/Home/apps/document/obsidian.nix
+
+    # ─── AI ───
+    ../../../modules/Home/apps/ai/chatgpt.nix
   ];
 }
