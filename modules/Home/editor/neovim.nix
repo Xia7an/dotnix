@@ -85,6 +85,16 @@ in
       dockerfile-language-server
       docker-compose-language-service
       hadolint
+      # extras: lang.haskell
+      # HLS は GHC が無いと解析できない。単体ファイル用に既定の ghc を同梱する
+      # (extraPackages は PATH の末尾に足されるので、direnv 等で入るプロジェクト側の
+      # ghc がある場合はそちらが優先される)
+      haskell-language-server
+      ghc
+      cabal-install
+      fourmolu
+      haskellPackages.cabal-fmt
+      hlint
       # extras: lang.nix
       nil
       nixfmt
@@ -137,6 +147,7 @@ in
           friendly-snippets
           gitsigns-nvim
           grug-far-nvim
+          haskell-tools-nvim
           im-select-nvim
           image-nvim
           img-clip-nvim
@@ -228,6 +239,7 @@ in
             { import = "lazyvim.plugins.extras.lang.clangd" },
             { import = "lazyvim.plugins.extras.lang.docker" },
             { import = "lazyvim.plugins.extras.lang.git" },
+            { import = "lazyvim.plugins.extras.lang.haskell" },
             { import = "lazyvim.plugins.extras.lang.nix" },
             { import = "lazyvim.plugins.extras.lang.python" },
             { import = "lazyvim.plugins.extras.lang.rust" },
@@ -244,6 +256,9 @@ in
               build = false,
               opts = { fuzzy = { prebuilt_binaries = { download = false } } },
             },
+            -- lang.haskell が足す haskell-snippets は LuaSnip 前提だが、
+            -- こちらは blink.cmp + friendly-snippets 構成で LuaSnip を入れていない
+            { "mrcjkb/haskell-snippets.nvim", enabled = false },
 
             -- カーソル下の Markdown 表を、元のソースを変更せず罫線付きで表示する。
             -- 表にいる間だけ nowrap にすることで、長い表の崩れを防ぐ。

@@ -1,6 +1,10 @@
 { ... }:
 {
   system.defaults = {
+    # 「ディスプレイごとに個別の操作スペース」を OFF にする (AeroSpace 推奨)。
+    # 変更した場合はログアウトで反映される。
+    spaces.spans-displays = true;
+
     dock = {
       autohide = true;
       expose-group-apps = false;

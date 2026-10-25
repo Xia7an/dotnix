@@ -45,6 +45,26 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Keep all windows floating instead of placing them in the tiling tree.
 on-window-detected = [
     { check-further-callbacks = true, run = 'layout floating' },
+
+    # Looking Glass Go: the LookinGirl Unity app goes to L (pinned to the LKG).
+    # Matched by app name because its bundle ID is still the URP template default.
+    { if.app-name-regex-substring = '^LookinGirl$', run = ['layout floating', 'move-node-to-workspace L'] },
+
+    # Per-app workspace assignment.
+    { if.app-id = 'com.google.Chrome', run = 'move-node-to-workspace W' },
+    { if.app-id = 'com.microsoft.Excel', run = 'move-node-to-workspace E' },
+    { if.app-id = 'com.mitchellh.ghostty', run = 'move-node-to-workspace T' },
+    { if.app-id = 'com.microsoft.VSCode', run = 'move-node-to-workspace T' },
+    { if.app-id = 'com.unity3d.unityhub', run = 'move-node-to-workspace U' },
+
+    { if.app-id = 'com.anthropic.claudefordesktop', run = 'move-node-to-workspace A' },
+    { if.app-id = 'com.openai.codex', run = 'move-node-to-workspace A' }, # ChatGPT
+    { if.app-id = 'com.apple.Preview', run = 'move-node-to-workspace S' },
+    { if.app-id = 'com.hnc.Discord', run = 'move-node-to-workspace D' },
+    { if.app-id = 'com.vmware.fusion', run = 'move-node-to-workspace V' },
+    { if.app-id = 'tv.parsec.www', run = 'move-node-to-workspace V' },
+    { if.app-id = 'notion.id', run = 'move-node-to-workspace N' },
+    { if.app-id = 'org.prismlauncher.PrismLauncher', run = 'move-node-to-workspace M' },
 ]
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
@@ -55,7 +75,17 @@ automatically-unhide-macos-hidden-apps = false
 # Preserve the workspaces inferred by config-version = 1.
 persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B",
                          "C", "D", "E", "F", "G", "I", "M", "N", "O", "P", "Q",
-                         "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+                         "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+                         "L"] # Looking Glass Go only (no key binding: alt-l is focus right)
+
+# Pin workspaces to monitors. Each pattern is a case-insensitive regex on the
+# monitor name; the first connected match wins, later entries are fallbacks.
+# Workspaces listed here can't be moved with move-workspace-to-monitor.
+# See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+[workspace-to-monitor-force-assignment]
+T = 'built-in'                                    # Terminal: always built-in
+W = ['^(?!.*(built-in|lkg)).*', 'built-in']       # Browser: any external monitor, else built-in
+L = ['lkg', 'built-in']                           # Looking Glass Go (LKG-xxxxxx)
 
 # Possible values: (qwerty|dvorak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping

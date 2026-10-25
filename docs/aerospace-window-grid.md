@@ -29,9 +29,10 @@ Tab は離してよく、Option を押している間は一覧を表示し続け
 ## 構成
 
 - `config/hammerspoon/aerospace-window-grid.lua`: キー処理、非同期 CLI、canvas 描画。
-- `modules/Home/darwin/hammerspoon.nix`: Lua の配置とログイン起動。
-- `config/aerospace/aerospace.toml`: Lachesis の既存設定を移管。競合する `alt-tab` のみ解除。
-- `modules/Home/darwin/aerospace.nix`: AeroSpace 設定の配置。
+- `config/hammerspoon/init.lua`: ログイン起動と grid の開始。
+- `modules/Home/darwin/hammerspoon.nix`: 上記2ファイルを `~/.hammerspoon/` へリンク。
+- `config/aerospace/aerospace.toml`: AeroSpace 設定。競合する `alt-tab` のみ解除。
+- `modules/Home/darwin/aerospace.nix`: `~/.config/aerospace/aerospace.toml` へリンク。
 - `modules/darwin/homebrew/applications.nix`: Hammerspoon cask。
 
 AeroSpace の `list-windows --all --json` で全ウィンドウと所属ワークスペースを取得し、
@@ -56,17 +57,20 @@ Lua registry に保持するため、単に `stop()` するだけではセッシ
 
 ```sh
 sudo darwin-rebuild switch --flake .#Lachesis
-home-manager switch -b before-window-grid --flake .#LachesisHome
+home-manager switch --flake .#LachesisHome
 aerospace reload-config --no-gui
 open -a Hammerspoon
 ```
 
-既存の `~/.hammerspoon/init.lua` はそのまま残し、Home Manager は上書きしない。
-ファイルが存在しない環境でだけ初期設定を作成する。AeroSpace 設定が通常ファイルの場合は
-Home Manager の `-b` で退避できる。同名バックアップが存在する場合は別の接尾辞を使う。
-Hammerspoon が既に動いていればメニューから Reload Config。
-既存の設定を使う場合は、必要に応じて `require("aerospace-window-grid").start()` を
-既存の `init.lua` に追加する。初期設定が作成される環境では、その設定が有効になる。
+設定ファイルは `mkOutOfStoreSymlink` でリポジトリ (`~/Gits/dotnix`) のファイルへ
+直接リンクする。編集後は switch せず、`aerospace reload-config` や Hammerspoon の
+Reload Config だけで反映される。リポジトリを別の場所に置く場合は各 nix ファイルの
+パスを直す。
+
+Home Manager は、リンク先と中身が同じ通常ファイルが既にあると警告だけ出して
+リンクを作らず、中身が違うと switch を中断する。初回は既存の通常ファイル
+(`~/.hammerspoon/init.lua`、`~/.hammerspoon/aerospace-window-grid.lua`、
+`~/.config/aerospace/aerospace.toml`) を退避・削除してから switch する。
 
 システム設定 → プライバシーとセキュリティ:
 
