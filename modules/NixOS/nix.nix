@@ -1,6 +1,14 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 {
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  # unfree 許可済みの nixpkgs (詳細は lib/nixpkgs-unfree.nix)
+  # nixpkgs.flake.setFlakeRegistry の mkDefault より優先させるため to を直接指定する。
+  nix.registry.nixpkgs.to = {
+    type = "path";
+    path = import ../../lib/nixpkgs-unfree.nix {
+      inherit pkgs;
+      inherit (inputs) nixpkgs;
+    };
+  };
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
   nix.optimise.automatic = true;
   nix.settings = {

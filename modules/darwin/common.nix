@@ -1,4 +1,4 @@
-{ inputs, lib, homeManagerConfig, username, ... }:
+{ inputs, lib, pkgs, homeManagerConfig, username, ... }:
 let
   fishPackage = homeManagerConfig.programs.fish.package;
   fishShell = lib.getExe fishPackage;
@@ -25,7 +25,15 @@ in
   '';
 
   nix = {
-    registry.nixpkgs.flake = inputs.nixpkgs;
+    # unfree 許可済みの nixpkgs (詳細は lib/nixpkgs-unfree.nix)
+    # nixpkgs.flake.setFlakeRegistry の mkDefault より優先させるため to を直接指定する。
+    registry.nixpkgs.to = {
+      type = "path";
+      path = import ../../lib/nixpkgs-unfree.nix {
+        inherit pkgs;
+        inherit (inputs) nixpkgs;
+      };
+    };
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     optimise.automatic = true;
     settings = {

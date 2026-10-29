@@ -8,12 +8,6 @@
     ./home-manager/terminal-emulators.nix
   ];
 
-  # flake 構成 (lib/mk-configurations.nix) の外で評価される nix-shell -p や
-  # nix shell --impure nixpkgs#... でも unfree パッケージを使えるようにする。
-  xdg.configFile."nixpkgs/config.nix".text = ''
-    { allowUnfree = true; }
-  '';
-
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
