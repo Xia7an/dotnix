@@ -65,6 +65,7 @@ on-window-detected = [
     { if.app-id = 'tv.parsec.www', run = 'move-node-to-workspace V' },
     { if.app-id = 'notion.id', run = 'move-node-to-workspace N' },
     { if.app-id = 'org.prismlauncher.PrismLauncher', run = 'move-node-to-workspace M' },
+    { if.app-id = 'us.zoom.xos', run = 'move-node-to-workspace Z' },
 ]
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
