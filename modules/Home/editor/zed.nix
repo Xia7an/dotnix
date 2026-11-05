@@ -10,6 +10,9 @@ let
   tlp = inputs.zed-typst-preview.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
+  imports = [ inputs.zed-typst-preview.homeManagerModules.default ];
+
+  programs.typst-livepreview.enable = true;
   programs.zed-editor = {
     enable = true;
     # Linux ではパッチ済み Zed は未検証なので、Mac だけ差し替える
