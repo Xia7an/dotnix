@@ -64,6 +64,11 @@
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
     };
+    zed-typst-preview = {
+      # private リポジトリなので SSH で取得
+      url = "git+ssh://git@github.com/Xia7an/zed-typst-preview";
+      # nixpkgs は follows させない(ビルド・検証済みの Zed 1.26.2 をそのまま使うため)
+    };
   };
 
   outputs =

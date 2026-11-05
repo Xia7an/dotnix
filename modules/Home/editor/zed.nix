@@ -1,13 +1,19 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
-  # tinymist のバックグラウンドプレビューが待ち受けるアドレス
-  typstPreviewHost = "127.0.0.1:23635";
-  openCommand = if pkgs.stdenv.hostPlatform.isDarwin then "open" else "xdg-open";
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  # Typst プレビューペイン入りのパッチ済み Zed と、その言語サーバー兼レンダラ (Xia7an/zed-typst-preview)
+  tlp = inputs.zed-typst-preview.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   programs.zed-editor = {
     enable = true;
-    package = pkgs.unstable.zed-editor;
+    # Linux ではパッチ済み Zed は未検証なので、Mac だけ差し替える
+    package = if isDarwin then tlp.zed-editor else pkgs.unstable.zed-editor;
 
     # Zed 専用の PATH に LSP/フォーマッタ/デバッガを同梱する。
     # PATH の末尾に足されるので、direnv 等でプロジェクト側に入っているものがあればそちらが優先される。
@@ -47,30 +53,6 @@ in
       "python"
       "haskell"
       "typst"
-    ];
-
-    userTasks = [
-      {
-        # tinymist のバックグラウンドプレビュー (フォーカス中の .typ を追従) をブラウザで開く
-        label = "Typst: ライブプレビューを開く";
-        command = openCommand;
-        args = [ "http://${typstPreviewHost}" ];
-        reveal = "never";
-        hide = "always";
-      }
-      {
-        # 現在のファイルを固定してプレビューしたいとき用 (ブラウザが自動で開く)
-        label = "Typst: このファイルをプレビュー";
-        command = "tinymist";
-        args = [
-          "preview"
-          "--invert-colors=never"
-          "$ZED_FILE"
-        ];
-        use_new_terminal = true;
-        allow_concurrent_runs = true;
-        reveal = "no_focus";
-      }
     ];
 
     # Everything inside of these brackets are Zed options
@@ -154,20 +136,14 @@ in
         };
 
         tinymist = {
-          initialization_options = {
-            # バックグラウンドでライブプレビューサーバを起動する
-            # (タスク「Typst: ライブプレビューを開く」でブラウザから見る)
-            preview.background = {
-              enabled = true;
-              args = [
-                "--data-plane-host=${typstPreviewHost}"
-                "--invert-colors=never"
-              ];
-            };
-          };
           settings = {
             formatterMode = "typstyle";
           };
+        };
+
+        # Zed 内のプレビューペイン用 (補完・診断は tinymist、プレビューだけこちら)
+        typst-livepreview = lib.mkIf isDarwin {
+          binary.path = lib.getExe tlp.typst-livepreview;
         };
 
         nix = {
