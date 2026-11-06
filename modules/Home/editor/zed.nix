@@ -8,6 +8,7 @@ let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   # Typst プレビューペイン入りのパッチ済み Zed と、その言語サーバー兼レンダラ (Xia7an/zed-typst-preview)
   tlp = inputs.zed-typst-preview.packages.${pkgs.stdenv.hostPlatform.system};
+  llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   imports = [ inputs.zed-typst-preview.homeManagerModules.default ];
@@ -71,6 +72,22 @@ in
         # - anthropic models (claude-3-5-sonnet-latest, claude-3-haiku-latest, claude-3-opus-latest) requires API_KEY
         # - copilot_chat models (gpt-4o, gpt-4, gpt-3.5-turbo, o1-preview, gpt-5-mini) requires GitHub connected
         model_parameters = [ ];
+      };
+
+      # エージェントパネルの外部エージェント (ACP)。
+      # レジストリ版は npx 等で自動ダウンロードされるので、Nix のバイナリを直接指定する。
+      # 認証はそれぞれの CLI と共有 (~/.claude, ~/.config/opencode)。
+      agent_servers = {
+        "Claude Code" = {
+          type = "custom";
+          # llm-agents の claude-code を CLAUDE_CODE_EXECUTABLE に設定済みのラッパー
+          command = lib.getExe llmAgents.claude-agent-acp;
+        };
+        "OpenCode" = {
+          type = "custom";
+          command = lib.getExe llmAgents.opencode;
+          args = [ "acp" ];
+        };
       };
 
       node = {
