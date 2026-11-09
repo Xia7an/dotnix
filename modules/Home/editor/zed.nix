@@ -63,8 +63,6 @@ in
     userSettings = {
       agent = {
         enabled = true;
-        version = "2";
-        default_open_ai_model = null;
         default_profile = "write";
 
         # Provider options:
