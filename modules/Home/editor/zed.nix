@@ -1,11 +1,11 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
   ...
 }:
 let
-  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   # Typst プレビューペイン入りのパッチ済み Zed と、その言語サーバー兼レンダラ (Xia7an/zed-typst-preview)
   tlp = inputs.zed-typst-preview.packages.${pkgs.stdenv.hostPlatform.system};
   llmAgents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
@@ -16,8 +16,10 @@ in
   programs.typst-livepreview.enable = true;
   programs.zed-editor = {
     enable = true;
-    # Linux ではパッチ済み Zed は未検証なので、Mac だけ差し替える
-    package = if isDarwin then tlp.zed-editor else pkgs.unstable.zed-editor;
+    # Mac / Linux とも、Typst プレビューペイン入りのパッチ済み Zed を使う。
+    # バイナリキャッシュに無いので初回は手元でソースからビルドされる
+    # (1 時間前後、ビルド中に 40 GB 程度の空きディスクが必要)。
+    package = tlp.zed-editor;
 
     # Zed 専用の PATH に LSP/フォーマッタ/デバッガを同梱する。
     # PATH の末尾に足されるので、direnv 等でプロジェクト側に入っているものがあればそちらが優先される。
@@ -112,7 +114,9 @@ in
             activate_script = "default";
           };
         };
-        env = {
+        # ghostty の terminfo があるとき (programs.ghostty を有効にしているホスト) だけ
+        # TERM を合わせる。無いホストで指定するとシェルが端末を認識できない。
+        env = lib.optionalAttrs config.programs.ghostty.enable {
           TERM = "ghostty";
         };
         font_family = "HackGen35 Console NF";
@@ -160,7 +164,7 @@ in
         };
 
         # Zed 内のプレビューペイン用 (補完・診断は tinymist、プレビューだけこちら)
-        typst-livepreview = lib.mkIf isDarwin {
+        typst-livepreview = {
           binary.path = lib.getExe tlp.typst-livepreview;
         };
 
