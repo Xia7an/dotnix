@@ -1332,11 +1332,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1793897179,
-        "narHash": "sha256-aCC/y/k1b/neMrPMJX4VqC/N4N+uVHAzXn0Oen44/MU=",
+        "lastModified": 1794208058,
+        "narHash": "sha256-r9jNt7Mzbto6uGPoO1hnzEm1oqOxB8bbAueowwjhiPg=",
         "ref": "refs/heads/master",
-        "rev": "dd546529776176438120c409c61a29386152d018",
-        "revCount": 7,
+        "rev": "b794f2e1b7ce74af7eddeb5011a3ac5dfc5654ec",
+        "revCount": 10,
         "type": "git",
         "url": "ssh://git@github.com/Xia7an/zed-typst-preview"
       },
