@@ -57,6 +57,7 @@ in
       "python"
       "haskell"
       "typst"
+      "latex"
     ];
 
     # Everything inside of these brackets are Zed options
