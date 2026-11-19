@@ -27,19 +27,6 @@ let
     };
   });
 
-  # avante.nvim は Rust 製のコアライブラリ (avante_templates など) を require するが、
-  # nixpkgs は macOS 向けにこれを lua/*.dylib という名前で出力する。
-  # 一方 Neovim の Lua ローダが runtimepath から探すのは lua/?.so だけなので、
-  # そのままだと require に失敗し avante 側が「ビルドしていない」と判断して落ちる。
-  # .so の別名を張って両方から見えるようにする。
-  avante-nvim = pkgs.unstable.vimPlugins.avante-nvim.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
-      for dylib in $out/lua/*.dylib; do
-        ln -s "$dylib" "''${dylib%.dylib}.so"
-      done
-    '';
-  });
-
   # markdown-table-wrap.nvim はまだ nixpkgs に収録されていないため、upstream の
   # commit を固定して取り込む。nixpkgs に追加されたら vimPlugins のものへ置換できる。
   markdown-table-wrap-nvim = pkgs.unstable.vimUtils.buildVimPlugin {
@@ -104,12 +91,11 @@ in
       ruff
       # extras: lang.rust
       rust-analyzer
+      # extras: lang.sql
+      sqlfluff
       # extras: lang.typescript (+ biome)
       vtsls
       biome
-      # 独自: plugins/avante.lua (provider = "claude-code")
-      # avante が ACP で起動するアダプタ。claude 本体は PATH のものを使う
-      claude-agent-acp
       # 独自: plugins/image.lua (processor = "magick_cli")
       imagemagick
       # 独自: plugins/typst.lua
@@ -133,12 +119,7 @@ in
         # サブモジュール) だけ手で名前を付けている。
         plugins = with pkgs.unstable.vimPlugins; [
           LazyVim
-          # `with pkgs.unstable.vimPlugins` に上書きされないよう明示的に let 側の
-          # override を指す
-          { name = "avante.nvim"; path = avante-nvim; }
           blink-cmp
-          # extras/ai/avante.lua が blink.cmp の specs に足すので実体が要る
-          blink-cmp-avante
           bufferline-nvim
           clangd_extensions-nvim
           conform-nvim
@@ -150,7 +131,6 @@ in
           haskell-tools-nvim
           im-select-nvim
           image-nvim
-          img-clip-nvim
           lazydev-nvim
           lualine-nvim
           { name = "markdown-table-wrap.nvim"; path = markdown-table-wrap-nvim; }
@@ -233,9 +213,6 @@ in
             -- 実機の ~/.config/nvim/lazyvim.json で有効化されている extras。
             -- lazyvim.json は LazyVim が実行時に書き換えるファイルなので、
             -- nix からは spec に直接 import して宣言的に固定する。
-            -- ai.avante は右サイドの AI エージェントパネル
-            -- (プロバイダなどの調整は lua/plugins/avante.lua)
-            { import = "lazyvim.plugins.extras.ai.avante" },
             { import = "lazyvim.plugins.extras.lang.clangd" },
             { import = "lazyvim.plugins.extras.lang.docker" },
             { import = "lazyvim.plugins.extras.lang.git" },

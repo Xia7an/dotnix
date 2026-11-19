@@ -11,8 +11,7 @@
 
     # ─── AI ───
     # ChatGPT 本体は Homebrew、通常の Codex CLI は Nix で管理する。
-    # claude は native installer 版 (~/.local/bin/claude) をそのまま使う
-    # (nvim の avante.nvim もこれを ACP 経由で叩く)。
+    # claude は native installer 版 (~/.local/bin/claude) をそのまま使う。
     ../../../modules/Home/apps/ai/chatgpt.nix
     ../../../modules/Home/apps/ai/opencode.nix
 
