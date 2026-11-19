@@ -44,6 +44,18 @@
   ];
   boot.supportedFilesystems = [ "ntfs" ];
 
+  # GPU の電力制限 (nvidia-smi -pl 175 相当)。NixOS に専用オプションがないため oneshot サービスで適用する
+  systemd.services.nvidia-power-limit = {
+    description = "Set NVIDIA GPU power limit";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-modules-load.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -pl 175";
+    };
+  };
+
   networking.hostName = "Atropos";
   networking.networkmanager.enable = false;
   networking.useNetworkd = true;
