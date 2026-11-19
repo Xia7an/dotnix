@@ -84,9 +84,7 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B",
 # Workspaces listed here can't be moved with move-workspace-to-monitor.
 # See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [workspace-to-monitor-force-assignment]
-T = 'built-in'                                    # Terminal: always built-in
-W = ['^(?!.*(built-in|lkg)).*', 'built-in']       # Browser: any external monitor, else built-in
-L = ['lkg', 'built-in']                           # Looking Glass Go (LKG-xxxxxx)
+L =['lkg', 'built-in']                           # Looking Glass Go (LKG-xxxxxx)
 
 # Possible values: (qwerty|dvorak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
@@ -182,10 +180,10 @@ alt-p = 'summon-workspace P'
 alt-q = 'summon-workspace Q'
 alt-r = 'summon-workspace R'
 alt-s = 'summon-workspace S'
-alt-t = 'workspace T'
+alt-t = 'summon-workspace T'
 alt-u = 'summon-workspace U'
 alt-v = 'summon-workspace V'
-alt-w = 'workspace W'
+alt-w = 'summon-workspace W'
 alt-x = 'summon-workspace X'
 alt-y = 'summon-workspace Y'
 alt-z = 'summon-workspace Z'
