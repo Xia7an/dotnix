@@ -2,6 +2,7 @@
 // 実行: node tests/gnome-aerogrid-model-test.mjs  (GNOME は不要)
 import assert from 'node:assert/strict';
 import * as M from '../config/gnome-shell/aerogrid/model.js';
+import { placementRect } from '../config/gnome-shell/aerogrid/placement.js';
 
 const frame = { x: 0, y: 0, width: 1600, height: 1000 };
 const w = (id, workspace) => ({ id, workspace });
@@ -97,6 +98,62 @@ assert.equal(M.buildSession([], 1).rows.length, 0);
     const s = M.layout(M.buildSession(many, 1), small);
     assert.ok(s.width <= small.width && s.height <= small.height);
     assert.ok(s.x >= small.x && s.x + s.width <= small.x + small.width);
+}
+
+// 既定の寸法は Hammerspoon 版と同じ。
+{
+    const s = M.layout(M.buildSession([w(1, 'A'), w(2, 'A')], 1), frame);
+    assert.equal(s.rowsTop, 56);
+    assert.equal(s.cardsLeft, 112);
+    assert.equal(s.width, 132 + 2 * (s.cardWidth + 12) - 12);
+    assert.equal(s.height, 124 + s.rowHeight - 12);
+    assert.deepEqual(s.cardText.app, { x: 10, y: s.cardHeight - 41, width: s.cardWidth - 20, height: 18 });
+}
+
+// 文字が枠に収まり、互いに重ならないこと (表示倍率 1/2、大きな文字、狭い画面、行数の多い場合)。
+const overlaps = (a, b) => a.y < b.y + b.height && b.y < a.y + a.height
+    && a.x < b.x + b.width && b.x < a.x + a.width;
+const inside = (a, width, height) => a.x >= 0 && a.y >= 0
+    && a.x + a.width <= width + 0.001 && a.y + a.height <= height + 0.001;
+const bigText = { scale: 1, title: 40, hint: 32, rowName: 36, rowSmall: 30, rowArrow: 30, app: 26, cardTitle: 28 };
+const hidpi = Object.fromEntries(Object.entries(M.DEFAULT_METRICS).map(([key, v]) => [key, v * 2]));
+for (const [name, metrics, area] of [
+    ['default', M.DEFAULT_METRICS, frame],
+    ['hidpi', hidpi, { x: 0, y: 0, width: 3840, height: 2100 }],
+    ['big text', bigText, frame],
+    ['small screen + big text', bigText, { x: 0, y: 0, width: 1280, height: 720 }],
+]) {
+    const windows = Array.from({ length: 30 }, (_, i) => w(i + 1, String(i % 9 + 1)));
+    const s = M.layout(M.buildSession(windows, 1), area, metrics);
+    const t = s.text;
+    for (const box of Object.values(t))
+        assert.ok(inside(box, s.width, s.height), `${name}: ヘッダー/フッターがポップアップ内`);
+    assert.ok(!overlaps(t.hint1, t.hint2) && !overlaps(t.hint2, t.range), `${name}: フッターが重ならない`);
+    assert.ok(t.title.y + t.title.height <= s.rowsTop, `${name}: タイトルとカードが重ならない`);
+    const lastRowBottom = s.rowsTop + s.visibleRows * s.rowHeight - s.gap;
+    assert.ok(lastRowBottom <= t.hint1.y, `${name}: カードとフッターが重ならない`);
+    const c = s.cardText;
+    for (const box of Object.values(c))
+        assert.ok(inside(box, s.cardWidth, s.cardHeight), `${name}: カード内に収まる`);
+    assert.ok(!overlaps(c.preview, c.app) && !overlaps(c.app, c.title), `${name}: カード内で重ならない`);
+    const r = s.rowText;
+    assert.ok(!overlaps(r.name, r.range) && !overlaps(r.range, r.arrow), `${name}: 行見出しが重ならない`);
+    assert.ok(r.arrow.y + r.arrow.height <= s.rowHeight, `${name}: 行見出しが行の高さに収まる`);
+    assert.ok(r.name.x + r.name.width <= s.cardsLeft, `${name}: 行見出しとカードが重ならない`);
+}
+
+// ウィンドウ配置 (Raycast 相当)。奇数幅でも隙間・重なりなく作業領域を分ける。
+{
+    const area = { x: 100, y: 32, width: 1921, height: 1047 };
+    const l = placementRect(area, 'left-half'), r = placementRect(area, 'right-half');
+    const t = placementRect(area, 'top-half'), b = placementRect(area, 'bottom-half');
+    assert.deepEqual(l, { x: 100, y: 32, width: 960, height: 1047 });
+    assert.deepEqual(r, { x: 1060, y: 32, width: 961, height: 1047 });
+    assert.equal(l.width + r.width, area.width);
+    assert.deepEqual(t, { x: 100, y: 32, width: 1921, height: 523 });
+    assert.deepEqual(b, { x: 100, y: 555, width: 1921, height: 524 });
+    assert.deepEqual(placementRect(area, 'maximize'), area);
+    assert.throws(() => placementRect(area, 'nope'));
 }
 
 console.log('gnome-aerogrid model: ok');

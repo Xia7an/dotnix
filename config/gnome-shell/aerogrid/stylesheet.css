@@ -51,3 +51,41 @@
   color: rgba(242, 242, 242, 1);
   font-size: 12px;
 }
+
+.aerogrid-range {
+  text-align: right;
+}
+
+/* 上部バーのワークスペース表示 */
+.aerogrid-indicator {
+  spacing: 4px;
+}
+
+.aerogrid-ws {
+  min-width: 20px;
+  padding: 0 5px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-weight: bold;
+  text-align: center;
+}
+
+.aerogrid-ws-occupied {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.aerogrid-ws-occupied:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 操作中のモニタに表示中 */
+.aerogrid-ws-focused {
+  color: rgb(18, 18, 18);
+  background-color: rgb(102, 179, 255);
+}
+
+/* 別のモニタに表示中 */
+.aerogrid-ws-visible {
+  color: rgb(102, 179, 255);
+  border-color: rgb(102, 179, 255);
+}

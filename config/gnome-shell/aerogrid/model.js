@@ -45,19 +45,75 @@ export function buildSession(windows, focusedId) {
     return { rows, selectedRow, firstRow: 0, windowCount };
 }
 
-// frame: 表示先モニタの作業領域 { x, y, width, height }。カードを画面に合わせて縮める。
-export function layout(session, frame) {
+// 文字の高さ (物理ピクセル) と表示倍率。grid.js が実際のラベルを測って渡す。
+// 既定値は倍率 1・標準の文字サイズで、Hammerspoon 版と同じ寸法になる。
+export const DEFAULT_METRICS = {
+    scale: 1, // St の scale_factor (HiDPI で 2 など)
+    title: 28, hint: 24,
+    rowName: 26, rowSmall: 22, rowArrow: 22,
+    app: 18, cardTitle: 20,
+};
+
+// frame: 表示先モニタの作業領域 { x, y, width, height } (物理ピクセル)。
+// 余白は scale 倍し、文字の領域は metrics の高さで確保するので、
+// HiDPI や「大きな文字」の設定でも文字が枠からはみ出さない。
+export function layout(session, frame, metrics = DEFAULT_METRICS) {
     const s = session;
+    const m = { ...DEFAULT_METRICS, ...metrics };
+    const k = m.scale;
+    const gap = 12 * k;
+    s.metrics = m;
+    s.gap = gap;
+
     const maxWindows = Math.max(1, ...s.rows.map(r => r.windows.length));
     s.columns = Math.min(maxWindows, MAX_COLUMNS);
     s.visibleRows = Math.min(s.rows.length, MAX_ROWS);
-    s.cardWidth = Math.floor(Math.min(300, (frame.width - 180) / s.columns - 12));
-    s.rowHeight = Math.floor(Math.min(232, (frame.height - 164) / s.visibleRows));
-    s.cardHeight = s.rowHeight - 12;
-    s.width = 132 + s.columns * (s.cardWidth + 12) - 12;
-    s.height = 124 + s.visibleRows * s.rowHeight - 12;
-    s.x = Math.floor(frame.x + (frame.width - s.width) / 2);
-    s.y = Math.floor(frame.y + (frame.height - s.height) / 2);
+
+    s.rowsTop = 16 * k + m.title + gap;
+    s.cardsLeft = 32 * k + Math.max(80 * k, m.rowName * 2);
+    const footer = gap + 2 * m.hint + 8 * k;
+    const right = 20 * k;
+
+    // カード内: 上端 6 / プレビュー / 2 / アプリ名 / タイトル / 下端 3
+    const cardText = m.app + m.cardTitle + 3 * k;
+    const minCardHeight = 6 * k + 24 * k + 2 * k + cardText;
+    const rowLabels = 12 * k + m.rowName + 2 * k + m.rowSmall + m.rowArrow;
+    const minRow = Math.max(minCardHeight + gap, rowLabels);
+
+    s.cardWidth = Math.floor(Math.max(80 * k,
+        Math.min(300 * k, (frame.width - s.cardsLeft - right - 48 * k) / s.columns - gap)));
+    s.rowHeight = Math.floor(Math.max(minRow,
+        Math.min(232 * k, (frame.height - s.rowsTop - footer - 40 * k) / s.visibleRows)));
+    s.cardHeight = s.rowHeight - gap;
+    s.width = Math.ceil(s.cardsLeft + s.columns * (s.cardWidth + gap) - gap + right);
+    s.height = Math.ceil(s.rowsTop + s.visibleRows * s.rowHeight - gap + footer);
+    s.x = Math.floor(frame.x + Math.max(0, frame.width - s.width) / 2);
+    s.y = Math.floor(frame.y + Math.max(0, frame.height - s.height) / 2);
+
+    // ポップアップ内の各テキストの位置 { x, y, width, height }。
+    const pad = 24 * k;
+    const hint2 = s.height - 6 * k - m.hint;
+    s.text = {
+        title: { x: pad, y: 16 * k, width: s.width - 2 * pad, height: m.title },
+        hint1: { x: pad, y: hint2 - m.hint, width: s.width - 2 * pad, height: m.hint },
+        hint2: { x: pad, y: hint2, width: s.width - 2 * pad - 150 * k, height: m.hint },
+        range: { x: s.width - 150 * k, y: hint2, width: 126 * k, height: m.hint },
+    };
+    // 行見出し (行の y からの相対位置) とカード内の配置。
+    const labelWidth = s.cardsLeft - 32 * k;
+    const nameY = 12 * k;
+    s.rowText = {
+        name: { x: 20 * k, y: nameY, width: labelWidth, height: m.rowName },
+        range: { x: 20 * k, y: nameY + m.rowName + 2 * k, width: labelWidth, height: m.rowSmall },
+        arrow: { x: 20 * k, y: nameY + m.rowName + 2 * k + m.rowSmall, width: labelWidth, height: m.rowArrow },
+    };
+    const titleY = s.cardHeight - 3 * k - m.cardTitle;
+    const appY = titleY - m.app;
+    s.cardText = {
+        preview: { x: 8 * k, y: 6 * k, width: Math.max(1, s.cardWidth - 16 * k), height: Math.max(1, appY - 8 * k) },
+        app: { x: 10 * k, y: appY, width: s.cardWidth - 20 * k, height: m.app },
+        title: { x: 10 * k, y: titleY, width: s.cardWidth - 20 * k, height: m.cardTitle },
+    };
     reveal(s);
     return s;
 }
@@ -99,7 +155,7 @@ export function visibleRows(s) {
         const row = s.rows[rowIndex];
         result.push({
             row, rowIndex,
-            y: 56 + (rowIndex - s.firstRow) * s.rowHeight,
+            y: s.rowsTop + (rowIndex - s.firstRow) * s.rowHeight,
             last: Math.min(row.windows.length, row.first + s.columns) - 1,
         });
     }
@@ -113,7 +169,7 @@ export function visibleCards(s) {
         for (let index = row.first; index <= last; index++) {
             cards.push({
                 window: row.windows[index], rowIndex, index,
-                x: 112 + (index - row.first) * (s.cardWidth + 12), y,
+                x: s.cardsLeft + (index - row.first) * (s.cardWidth + s.gap), y,
                 selected: rowIndex === s.selectedRow && index === row.selected,
             });
         }

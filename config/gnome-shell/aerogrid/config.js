@@ -5,8 +5,9 @@
 // macOS と同じ物理キー (Option) で操作するため Alt を使う。
 export const MODIFIER = '<Alt>';
 
-// ワークスペースの並び = GNOME のワークスペース番号順 (0 始まり)。
-// 拡張が有効になると num-workspaces と workspace-names をこの一覧に合わせる。
+// 仮想ワークスペースの一覧。グリッドと上部バーもこの順に並べる
+// (グリッドは数字を先に数値順、残りを名前順)。
+// GNOME 自体のワークスペースは 1 つにまとめ、各モニタがこの中から 1 つずつ表示する。
 // H/J/K は AeroSpace と同じく欠番 (macOS 側で Option+hjkl をフォーカス移動に使っていたため)。
 export const WORKSPACES = [
     '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -17,6 +18,18 @@ export const WORKSPACES = [
 
 // キーを割り当てないワークスペース (macOS 側でも L はキーなし)。
 export const KEYLESS = ['L'];
+
+// ウィンドウ配置 (Raycast の Window Management 相当)。Option+Control+キー。
+// 値は placement.js の PLACEMENTS のいずれか。maximize は GNOME の最大化状態にはせず、
+// 作業領域いっぱいに広げるだけ (Raycast と同じ)。
+export const PLACEMENT_MODIFIER = '<Control><Alt>';
+export const PLACEMENT_KEYS = {
+    h: 'left-half',
+    j: 'bottom-half',
+    k: 'top-half',
+    l: 'right-half',
+    space: 'maximize',
+};
 
 // 新しいウィンドウの自動割り当て (on-window-detected 相当)。
 // match は X11 の WM_CLASS (class と instance の両方) に対して評価する。

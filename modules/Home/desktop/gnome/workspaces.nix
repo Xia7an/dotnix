@@ -1,9 +1,12 @@
-# AeroSpace と同じく固定数のワークスペースを全モニタ共通で使う。
-# 数と名前は AeroGrid 拡張が config/gnome-shell/aerogrid/config.js から設定する。
+# AeroSpace と同じく、GNOME (Mutter) のワークスペースは 1 つだけにして、
+# 32 個のワークスペースは AeroGrid 拡張が仮想的に管理する (モニタごとに別々に表示するため)。
+# 拡張も起動時に同じ値へそろえるが、拡張が読み込まれる前の状態も合わせておく。
 {
-  dconf.settings."org/gnome/mutter" = {
-    dynamic-workspaces = false;
-    # true だとサブモニタのウィンドウが全ワークスペースに出て、アプリの割り当てが効かない。
-    workspaces-only-on-primary = false;
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      dynamic-workspaces = false;
+      workspaces-only-on-primary = false;
+    };
+    "org/gnome/desktop/wm/preferences".num-workspaces = 1;
   };
 }
