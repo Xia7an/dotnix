@@ -20,7 +20,6 @@
     ../../../modules/Home/apps/document/pdf.nix
 
     # ─── Nixpkgs で管理する GUI アプリ ───
-    ../../../modules/Home/apps/vdesktop/immersed.nix
     ../../../modules/Home/apps/creative/blender.nix
     ../../../modules/Home/apps/creative/musescore.nix
 
