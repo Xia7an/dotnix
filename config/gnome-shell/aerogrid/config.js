@@ -19,6 +19,15 @@ export const WORKSPACES = [
 // キーを割り当てないワークスペース (macOS 側でも L はキーなし)。
 export const KEYLESS = ['L'];
 
+// ワークスペースを別のモニタに呼んだとき、マウスをそのモニタの中央へ移す
+// (Lachesis の on-focused-monitor-changed = 'move-mouse monitor-lazy-center' と同じ)。
+// GNOME は新しいウィンドウをマウスのあるモニタに開くので、開く先もそろう。
+export const MOUSE_FOLLOWS_FOCUS = true;
+
+// true にすると、切り替えのたびにモニタ構成とウィンドウの移動を journal に出す。
+// 確認: journalctl -f -o cat /usr/bin/gnome-shell | grep AeroGrid
+export const DEBUG = true;
+
 // ウィンドウ配置 (Raycast の Window Management 相当)。Option+Control+キー。
 // 値は placement.js の PLACEMENTS のいずれか。maximize は GNOME の最大化状態にはせず、
 // 作業領域いっぱいに広げるだけ (Raycast と同じ)。

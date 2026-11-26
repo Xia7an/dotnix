@@ -23,7 +23,9 @@ import Shell from 'gi://Shell';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-import { KEYLESS, MODIFIER, PLACEMENT_KEYS, PLACEMENT_MODIFIER, RULES, WORKSPACES } from './config.js';
+import {
+    DEBUG, KEYLESS, MODIFIER, MOUSE_FOLLOWS_FOCUS, PLACEMENT_KEYS, PLACEMENT_MODIFIER, RULES, WORKSPACES,
+} from './config.js';
 import { WindowGrid } from './grid.js';
 import { WorkspaceIndicator } from './indicator.js';
 import { placementRect } from './placement.js';
@@ -36,6 +38,21 @@ const MODIFIER_MASKS = {
 };
 const MANAGED_TYPES = [Meta.WindowType.NORMAL, Meta.WindowType.DIALOG, Meta.WindowType.MODAL_DIALOG];
 const STATE_VERSION = 1;
+// 新しいウィンドウの位置が決まるのを待つ上限 (ms)。
+const SETTLE_TIMEOUT = 1500;
+// 切り替え直後に GNOME が自動で移すフォーカスを、操作とみなさない期間 (ms)。
+const FOCUS_SUPPRESS = 600;
+
+function log(message) {
+    if (DEBUG)
+        console.log(`AeroGrid: ${message}`);
+}
+
+function describe(window) {
+    const r = window.get_frame_rect();
+    return `"${(window.get_title() ?? '').slice(0, 30)}" mon=${window.get_monitor()} ` +
+        `rect=${r.x},${r.y} ${r.width}x${r.height}${window.minimized ? ' min' : ''}`;
+}
 
 export default class AeroGridExtension extends Extension {
     enable() {
@@ -45,15 +62,23 @@ export default class AeroGridExtension extends Extension {
         this._busy = 0; // 自分で最小化・移動している間は、そのシグナルに反応しない
         this._signals = [];
         this._saveId = 0;
+        this._suppressFocusUntil = 0;
         this._statePath = GLib.build_filenamev([GLib.get_user_cache_dir(), 'aerogrid', 'state.json']);
 
+        this._logMonitors('enable');
         this._restore();
+        const focus = global.display.focus_window;
+        this._activeMonitor = focus && focus.get_monitor() >= 0
+            ? focus.get_monitor() : Math.max(0, global.display.get_current_monitor());
 
         this._indicator = new WorkspaceIndicator(name => this._summon(name, this._focusedMonitor()));
         Main.panel.addToStatusArea(this.uuid, this._indicator, 1, 'left');
 
         this._grid = new WindowGrid(MODIFIER_MASKS[MODIFIER], {
-            windows: () => [...this._windows].map(([meta, entry]) => ({ meta, workspace: entry.workspace })),
+            windows: () => {
+                this._reconcile();
+                return [...this._windows].map(([meta, entry]) => ({ meta, workspace: entry.workspace }));
+            },
             focusedMonitor: () => this._focusedMonitor(),
             activate: window => this._activate(window),
         });
@@ -109,8 +134,11 @@ export default class AeroGridExtension extends Extension {
             this._skipEffect(window);
             window.unminimize();
         }
-        for (const [window, entry] of this._windows)
+        for (const [window, entry] of this._windows) {
             entry.ids.forEach(id => window.disconnect(id));
+            if (entry.timeout)
+                GLib.source_remove(entry.timeout);
+        }
         this._windows = null;
         this._hidden = null;
         this._workspaces = null;
@@ -141,11 +169,14 @@ export default class AeroGridExtension extends Extension {
         const manager = global.workspace_manager;
         const monitors = global.display.get_n_monitors();
 
-        // 初回 (保存が無い) は GNOME のワークスペースの所属をそのまま引き継ぐ。
+        // 見えているウィンドウは、今あるモニタに表示するワークスペースに所属させる (null で後から決める)。
+        // 隠れているウィンドウは保存した所属、初回は GNOME のワークスペースの所属を引き継ぐ。
         const assigned = new Map();
+        const active = manager.get_active_workspace_index();
         for (const window of global.display.list_all_windows().filter(w => this._isManaged(w))) {
             const index = window.get_workspace()?.index();
-            const name = saved ? windowsByKey[this._windowKey(window)] : WORKSPACES[index];
+            const hiddenBefore = saved ? window.minimized : index !== active;
+            const name = !hiddenBefore ? null : saved ? windowsByKey[this._windowKey(window)] : WORKSPACES[index];
             assigned.set(window, WORKSPACES.includes(name) ? name : null);
         }
         let visible = saved?.visible ?? [];
@@ -256,6 +287,8 @@ export default class AeroGridExtension extends Extension {
         if (!entry)
             return;
         entry.ids.forEach(id => window.disconnect(id));
+        if (entry.timeout)
+            GLib.source_remove(entry.timeout);
         this._windows.delete(window);
         this._hidden.delete(window);
         this._changed();
@@ -264,11 +297,12 @@ export default class AeroGridExtension extends Extension {
     _onWindowCreated(window) {
         if (!this._isManaged(window))
             return;
-        // 規則が無ければ、操作中のモニタに表示しているワークスペースに入れる。
-        // 位置が決まるのは最初の表示時なので、それまでは settling として扱う。
+        // 規則のあるウィンドウはそのワークスペースへ。規則が無ければ、GNOME が置いたモニタに
+        // 表示中のワークスペースに入れる (位置は最初の表示時に決まるので、それまでは仮の所属)。
         const rule = this._ruleFor(window);
         const entry = this._track(window, rule ?? this._workspaces.visibleOn(this._focusedMonitor()), true);
-        if (!this._workspaces.isVisible(entry.workspace))
+        entry.rule = rule;
+        if (rule && !this._workspaces.isVisible(rule))
             this._withBusy(() => this._hide(window));
 
         if (!window.get_wm_class()) {
@@ -277,19 +311,45 @@ export default class AeroGridExtension extends Extension {
                 window.disconnect(id);
                 entry.ids = entry.ids.filter(i => i !== id);
                 const late = this._ruleFor(window);
-                if (late)
+                if (!late)
+                    return;
+                entry.rule = late;
+                if (entry.settling)
+                    entry.workspace = late;
+                else
                     this._moveWindow(window, late);
             });
             entry.ids.push(id);
         }
-        const shownId = window.connect('shown', () => {
-            window.disconnect(shownId);
-            entry.ids = entry.ids.filter(i => i !== shownId);
-            entry.settling = false;
-            // Mutter が別のモニタに置いた場合は、所属するワークスペースのモニタへ戻す。
-            this._withBusy(() => this._sync(window, entry.workspace));
-        });
+        const shownId = window.connect('shown', () => this._settle(window));
         entry.ids.push(shownId);
+        // 'shown' が来ない場合に備えて、一定時間で確定する。
+        entry.timeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, SETTLE_TIMEOUT, () => {
+            entry.timeout = 0;
+            if (!window.minimized)
+                this._settle(window);
+            return GLib.SOURCE_REMOVE;
+        });
+        this._changed();
+    }
+
+    _settle(window) {
+        const entry = this._windows?.get(window);
+        if (!entry || !entry.settling)
+            return;
+        entry.settling = false;
+        if (entry.timeout) {
+            GLib.source_remove(entry.timeout);
+            entry.timeout = 0;
+        }
+        if (entry.rule) {
+            entry.workspace = entry.rule;
+            // 規則のワークスペースが別のモニタに表示中なら、そちらへ移す。
+            this._withBusy(() => this._sync(window, entry.workspace));
+        } else if (!window.minimized) {
+            entry.workspace = this._workspaces.visibleOn(this._monitorOf(window)) ?? entry.workspace;
+        }
+        log(`settled ${describe(window)} -> ${entry.workspace}`);
         this._changed();
     }
 
@@ -297,6 +357,23 @@ export default class AeroGridExtension extends Extension {
         const classes = [window.get_wm_class(), window.get_wm_class_instance()].filter(Boolean);
         const rule = RULES.find(r => classes.some(c => r.match.test(c)));
         return rule && WORKSPACES.includes(rule.workspace) ? rule.workspace : null;
+    }
+
+    // 表示中のウィンドウは、実際にあるモニタのワークスペースに所属させる (AeroSpace と同じく
+    // 「ウィンドウがある場所が所属」)。シグナルを取りこぼしても、切り替えの前にここで正す。
+    _reconcile() {
+        if (this._busy || global.display.get_n_monitors() !== this._workspaces.monitorCount)
+            return;
+        for (const [window, entry] of this._windows) {
+            if (entry.settling || window.minimized)
+                continue;
+            const monitor = window.get_monitor();
+            const workspace = monitor >= 0 ? this._workspaces.visibleOn(monitor) : null;
+            if (workspace && workspace !== entry.workspace) {
+                log(`reconcile ${describe(window)}: ${entry.workspace} -> ${workspace}`);
+                entry.workspace = workspace;
+            }
+        }
     }
 
     // ドラッグなどで別のモニタへ移されたウィンドウは、そのモニタのワークスペースに所属を移す。
@@ -334,11 +411,33 @@ export default class AeroGridExtension extends Extension {
             this._scheduleSave();
     }
 
+    // 操作中のモニタは、利用者がフォーカスを移したときだけ変える。
+    // 切り替えでウィンドウを隠した直後は、GNOME が別のモニタのウィンドウへ自動でフォーカスを
+    // 移すことがある。それを操作とみなすと、次の Option+文字が別のモニタに効いてしまうので無視し、
+    // フォーカスも外す (AeroSpace の空のワークスペースと同じ状態にする)。
     _onFocusChanged() {
         const window = global.display.focus_window;
-        if (window && this._windows.has(window) && window.get_monitor() >= 0)
-            this._lastMonitor = window.get_monitor();
+        const monitor = window?.get_monitor() ?? -1;
+        if (window && monitor >= 0 && monitor !== this._activeMonitor) {
+            if (GLib.get_monotonic_time() < this._suppressFocusUntil) {
+                log(`ignore automatic focus on monitor ${monitor}: ${describe(window)}`);
+                global.display.unset_input_focus?.(global.get_current_time());
+            } else {
+                this._setActiveMonitor(monitor);
+            }
+        }
         this._updateIndicator();
+    }
+
+    _setActiveMonitor(monitor) {
+        if (monitor === this._activeMonitor)
+            return;
+        this._activeMonitor = monitor;
+        if (MOUSE_FOLLOWS_FOCUS && global.display.get_current_monitor() !== monitor) {
+            const geometry = global.display.get_monitor_geometry(monitor);
+            Clutter.get_default_backend().get_default_seat().warp_pointer(
+                geometry.x + Math.floor(geometry.width / 2), geometry.y + Math.floor(geometry.height / 2));
+        }
     }
 
     _onMonitorsChanged() {
@@ -351,23 +450,32 @@ export default class AeroGridExtension extends Extension {
             for (const { monitor, to } of shown)
                 this._windowsOf(to).forEach(w => this._show(w, monitor));
         });
-        if (this._lastMonitor >= count)
-            this._lastMonitor = 0;
+        if (this._activeMonitor >= count)
+            this._activeMonitor = 0;
+        this._logMonitors('monitors-changed');
         this._changed();
     }
 
     // ---- 表示の切り替え ---------------------------------------------------
 
-    // 操作中のモニタ: フォーカス中のウィンドウのモニタ。空のワークスペースを表示していて
-    // フォーカスが無いときは、最後に操作したモニタ。
+    // 操作中のモニタ (AeroSpace の focused monitor)。
     _focusedMonitor() {
-        const window = global.display.focus_window;
         const count = global.display.get_n_monitors();
-        if (window && this._windows?.has(window) && window.get_monitor() >= 0)
-            return window.get_monitor();
-        if (this._lastMonitor !== undefined && this._lastMonitor < count)
-            return this._lastMonitor;
+        if (this._activeMonitor !== undefined && this._activeMonitor >= 0 && this._activeMonitor < count)
+            return this._activeMonitor;
         return Math.max(0, global.display.get_current_monitor());
+    }
+
+    _logMonitors(reason) {
+        if (!DEBUG)
+            return;
+        const monitors = [];
+        for (let i = 0; i < global.display.get_n_monitors(); i++) {
+            const g = global.display.get_monitor_geometry(i);
+            monitors.push(`${i}:${g.x},${g.y} ${g.width}x${g.height}`);
+        }
+        log(`${reason}: monitors [${monitors.join(' | ')}] primary=${global.display.get_primary_monitor()} ` +
+            `visible=${JSON.stringify(this._workspaces?.visible ?? [])}`);
     }
 
     _monitorOf(window) {
@@ -383,7 +491,12 @@ export default class AeroGridExtension extends Extension {
     _summon(name, monitor, focusWindow = null) {
         if (Main.overview.visible)
             Main.overview.hide();
+        this._reconcile();
+        const before = JSON.stringify(this._workspaces.visible);
         const changes = this._workspaces.summon(name, monitor);
+        log(`summon ${name} -> monitor ${monitor}: ${before} => ${JSON.stringify(this._workspaces.visible)}`);
+        this._suppressFocusUntil = GLib.get_monotonic_time() + FOCUS_SUPPRESS * 1000;
+        this._setActiveMonitor(monitor);
         this._withBusy(() => {
             // どのモニタにも表示されなくなったワークスペースを先に隠す。
             for (const { from } of changes) {
@@ -395,7 +508,6 @@ export default class AeroGridExtension extends Extension {
                     this._windowsOf(to).forEach(w => this._show(w, m));
             }
         });
-        this._lastMonitor = monitor;
         const time = global.get_current_time();
         const target = focusWindow ?? this._recentWindow(name);
         if (target)
@@ -418,6 +530,7 @@ export default class AeroGridExtension extends Extension {
     }
 
     _moveWindow(window, name) {
+        this._reconcile();
         const entry = this._windows.get(window);
         if (!entry || entry.workspace === name)
             return;
@@ -436,9 +549,12 @@ export default class AeroGridExtension extends Extension {
     }
 
     _show(window, monitor) {
-        if (window.get_monitor() !== monitor)
+        if (window.get_monitor() !== monitor) {
+            log(`move ${describe(window)} -> monitor ${monitor}`);
             window.move_to_monitor(monitor);
+        }
         if (this._hidden.delete(window)) {
+            log(`show ${describe(window)}`);
             this._skipEffect(window);
             window.unminimize();
         }
@@ -452,6 +568,9 @@ export default class AeroGridExtension extends Extension {
             console.warn(`AeroGrid: 最小化できないウィンドウは隠せません: ${window.get_title()}`);
             return;
         }
+        log(`hide ${describe(window)}`);
+        // 隠した後に GNOME が別のモニタへ移すフォーカスは、操作とみなさない。
+        this._suppressFocusUntil = GLib.get_monotonic_time() + FOCUS_SUPPRESS * 1000;
         this._hidden.add(window);
         this._skipEffect(window);
         window.minimize();
