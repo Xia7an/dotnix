@@ -1,7 +1,7 @@
 // AeroGrid の仮想ワークスペース (config/gnome-shell/aerogrid/workspaces.js) のテスト。
 // 実行: node tests/gnome-aerogrid-workspaces-test.mjs  (GNOME は不要)
 import assert from 'node:assert/strict';
-import { MonitorWorkspaces, indicatorItems } from '../config/gnome-shell/aerogrid/workspaces.js';
+import { MonitorWorkspaces, indicatorModel, looksMerged } from '../config/gnome-shell/aerogrid/workspaces.js';
 
 const names = ['1', '2', 'A', 'T', 'W'];
 
@@ -68,15 +68,24 @@ const names = ['1', '2', 'A', 'T', 'W'];
     assert.deepEqual(ws.visible, ['T', '2', 'A']);
 }
 
-// 上部バー: ウィンドウがあるか表示中のものを、設定の順に並べる。
+// 上部バー: モニタごとの表示と、隠れているがウィンドウがあるワークスペース。
 {
     const ws = new MonitorWorkspaces(names, 2, ['T', '2']);
-    const items = indicatorItems(ws, new Set(['W', 'T', 'A']), 0);
-    assert.deepEqual(items.map(i => [i.name, i.state]), [
-        ['2', 'visible'], ['A', 'occupied'], ['T', 'focused'], ['W', 'occupied'],
-    ]);
-    assert.deepEqual(indicatorItems(ws, new Set(), 1).map(i => [i.name, i.state]),
-        [['2', 'focused'], ['T', 'visible']]);
+    assert.deepEqual(indicatorModel(ws, new Set(['W', 'T', 'A']), 0), {
+        monitors: [{ monitor: 0, name: 'T', active: true }, { monitor: 1, name: '2', active: false }],
+        hidden: ['A', 'W'],
+    });
+    ws.summon('W', 1);
+    assert.deepEqual(indicatorModel(ws, new Set(['W', 'T', 'A']), 1), {
+        monitors: [{ monitor: 0, name: 'T', active: false }, { monitor: 1, name: 'W', active: true }],
+        hidden: ['A'],
+    });
 }
+
+// 1 枚に統合された画面の検出。
+assert.equal(looksMerged([{ width: 3840, height: 1080 }]), true);
+assert.equal(looksMerged([{ width: 5120, height: 1440 }]), true);
+assert.equal(looksMerged([{ width: 2560, height: 1440 }]), false);
+assert.equal(looksMerged([{ width: 1920, height: 1080 }, { width: 1920, height: 1080 }]), false);
 
 console.log('gnome-aerogrid workspaces: ok');

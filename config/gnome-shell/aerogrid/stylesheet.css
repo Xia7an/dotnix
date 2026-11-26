@@ -56,36 +56,67 @@
   text-align: right;
 }
 
-/* 上部バーのワークスペース表示 */
+/* 上部バーのワークスペース表示: [1 T] [2 W] · A D */
 .aerogrid-indicator {
   spacing: 4px;
 }
 
-.aerogrid-ws {
-  min-width: 20px;
-  padding: 0 5px;
+.aerogrid-monitor {
+  padding: 0 6px 0 4px;
   border-radius: 6px;
-  border: 1px solid transparent;
+  border: 1px solid rgba(102, 179, 255, 0.6);
+  color: rgb(102, 179, 255);
   font-weight: bold;
-  text-align: center;
 }
 
-.aerogrid-ws-occupied {
+.aerogrid-monitor-number {
+  font-size: 9px;
+  padding-right: 3px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* 操作中のモニタ (Option+文字が効くモニタ) */
+.aerogrid-monitor-active {
+  background-color: rgb(102, 179, 255);
+  border-color: rgb(102, 179, 255);
+  color: rgb(18, 18, 18);
+}
+
+.aerogrid-monitor-active .aerogrid-monitor-number {
+  color: rgba(18, 18, 18, 0.7);
+}
+
+.aerogrid-separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 隠れているがウィンドウがあるワークスペース */
+.aerogrid-ws {
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 6px;
+  font-weight: bold;
   color: rgba(255, 255, 255, 0.55);
 }
 
-.aerogrid-ws-occupied:hover {
-  color: rgba(255, 255, 255, 0.9);
+.aerogrid-ws:hover {
+  color: rgba(255, 255, 255, 0.95);
 }
 
-/* 操作中のモニタに表示中 */
-.aerogrid-ws-focused {
-  color: rgb(18, 18, 18);
-  background-color: rgb(102, 179, 255);
+/* 切り替え時に各モニタの中央へ出す表示 */
+.aerogrid-flash {
+  background-color: rgba(18, 18, 18, 0.85);
+  border-radius: 18px;
+  padding: 16px 32px;
 }
 
-/* 別のモニタに表示中 */
-.aerogrid-ws-visible {
+.aerogrid-flash-workspace {
   color: rgb(102, 179, 255);
-  border-color: rgb(102, 179, 255);
+  font-size: 64px;
+  font-weight: bold;
+}
+
+.aerogrid-flash-monitor {
+  color: rgba(242, 242, 242, 0.8);
+  font-size: 14px;
 }

@@ -79,15 +79,22 @@ export class MonitorWorkspaces {
     }
 }
 
-// 上部バーに出す項目。ウィンドウがあるか、どこかのモニタに表示中のワークスペースを
-// config.js の並び順で返す。state は focused (操作中のモニタ) / visible (別のモニタに表示中)
-// / occupied (非表示だがウィンドウがある)。
-export function indicatorItems(workspaces, occupied, focusedMonitor) {
-    return workspaces.names
-        .filter(name => occupied.has(name) || workspaces.isVisible(name))
-        .map(name => {
-            const monitor = workspaces.monitorOf(name);
-            const state = monitor < 0 ? 'occupied' : monitor === focusedMonitor ? 'focused' : 'visible';
-            return { name, state, monitor };
-        });
+// 上部バーに出す内容。
+//   monitors: 各モニタが表示中のワークスペース [{ monitor, name, active }] (モニタ番号順)
+//   hidden: 表示されていないがウィンドウがあるワークスペース (config.js の並び順)
+// active は操作中のモニタ (Option+文字が効くモニタ)。
+export function indicatorModel(workspaces, occupied, activeMonitor) {
+    return {
+        monitors: workspaces.visible.map((name, monitor) => ({ monitor, name, active: monitor === activeMonitor })),
+        hidden: workspaces.names.filter(name => occupied.has(name) && !workspaces.isVisible(name)),
+    };
+}
+
+// 2 枚以上の画面が 1 つの横長 (縦長) モニタとして認識されていそうか。
+// NVIDIA の Mosaic/TwinView などでこうなると、モニタごとの切り替えはできない。
+export function looksMerged(geometries) {
+    if (geometries.length !== 1)
+        return false;
+    const { width, height } = geometries[0];
+    return width / height >= 2.5 || height / width >= 2.5;
 }
