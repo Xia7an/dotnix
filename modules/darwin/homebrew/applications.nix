@@ -23,5 +23,6 @@
     "zoom"
     "wireshark-app"
     "teddychan/tap/ice-2"
+    "kicad"
   ];
 }

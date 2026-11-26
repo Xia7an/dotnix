@@ -1,0 +1,6 @@
+{
+  "uuid": "aerogrid@inoyu",
+  "name": "AeroGrid",
+  "description": "Lachesis の AeroSpace + Hammerspoon 運用の再現: 名前付きワークスペース、アプリ固定割り当て、Option+Tab のワークスペース別ウィンドウグリッド。",
+  "shell-version": ["46"]
+}

@@ -11,6 +11,7 @@ NixOS、NixOS-WSL、nix-darwin、Home Manager の設定を 1 つの flake で管
 | `Clotho` | NixOS-WSL | `x86_64-linux` | `ClothoHome` |
 | `Nyx` | NixOS | `x86_64-linux` | `NyxHome` |
 | `Lachesis` | nix-darwin | `aarch64-darwin` | `LachesisHome` |
+| `Odin` | Ubuntu 24.04 + Home Manager | `x86_64-linux` | `OdinHome` |
 
 ホストのメタデータは `hosts/default.nix` が唯一の定義元です。新しいホストを追加するときは、ここへシステムと Home Manager のエントリーポイントを登録します。
 

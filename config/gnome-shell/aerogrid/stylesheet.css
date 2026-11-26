@@ -1,0 +1,53 @@
+/* Hammerspoon 版 aerospace-window-grid と同じ配色 */
+.aerogrid-popup {
+  background-color: rgba(18, 18, 18, 0.97);
+  border-radius: 18px;
+}
+
+.aerogrid-title {
+  color: rgba(242, 242, 242, 1);
+  font-size: 19px;
+}
+
+.aerogrid-hint {
+  color: rgba(166, 166, 166, 1);
+  font-size: 12px;
+}
+
+.aerogrid-row {
+  color: rgba(166, 166, 166, 1);
+  font-size: 11px;
+}
+
+.aerogrid-row-name {
+  font-size: 18px;
+}
+
+.aerogrid-row-arrow {
+  font-size: 14px;
+}
+
+.aerogrid-row-selected {
+  color: rgb(102, 179, 255);
+}
+
+.aerogrid-card {
+  background-color: rgb(31, 31, 31);
+  border: 1px solid rgb(61, 61, 61);
+  border-radius: 10px;
+}
+
+.aerogrid-card-selected {
+  background-color: rgb(48, 48, 48);
+  border: 3px solid rgb(102, 179, 255);
+}
+
+.aerogrid-card-app {
+  color: rgba(166, 166, 166, 1);
+  font-size: 11px;
+}
+
+.aerogrid-card-title {
+  color: rgba(242, 242, 242, 1);
+  font-size: 12px;
+}

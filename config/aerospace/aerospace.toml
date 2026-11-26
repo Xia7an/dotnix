@@ -55,12 +55,14 @@ on-window-detected = [
     { if.app-id = 'com.microsoft.Excel', run = 'move-node-to-workspace E' },
     { if.app-id = 'com.mitchellh.ghostty', run = 'move-node-to-workspace T' },
     { if.app-id = 'com.microsoft.VSCode', run = 'move-node-to-workspace T' },
+    { if.app-id = 'dev.zed.Zed', run = 'move-node-to-workspace T' },
     { if.app-id = 'com.unity3d.unityhub', run = 'move-node-to-workspace U' },
 
-    { if.app-id = 'com.anthropic.claudefordesktop', run = 'move-node-to-workspace A' },
+    { if.app-id = 'com.anthropic.claudefordesktop', run = 'move-node-to-workspace A' }, # Claude
     { if.app-id = 'com.openai.codex', run = 'move-node-to-workspace A' }, # ChatGPT
     { if.app-id = 'com.apple.Preview', run = 'move-node-to-workspace S' },
     { if.app-id = 'com.hnc.Discord', run = 'move-node-to-workspace D' },
+    { if.app-id = 'com.tinyspeck.slackmacgap', run = 'move-node-to-workspace D' },
     { if.app-id = 'com.vmware.fusion', run = 'move-node-to-workspace V' },
     { if.app-id = 'tv.parsec.www', run = 'move-node-to-workspace V' },
     { if.app-id = 'notion.id', run = 'move-node-to-workspace N' },
