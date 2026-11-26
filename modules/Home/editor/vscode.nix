@@ -13,7 +13,8 @@ let
       "${config.xdg.configHome}/Code/User";
 
   # modules/Home/development/tex.nix と同じ派生物 (nix store 上は同一実体)。
-  texliveFull = pkgs.texlive.combined.scheme-full;
+  # texlive.combined.scheme-full は非推奨かつ cache.nixos.org に無いため texliveFull を使う。
+  texliveFull = pkgs.texliveFull;
 
   userSettings = {
     "locale" = "ja";

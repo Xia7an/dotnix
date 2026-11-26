@@ -52,6 +52,7 @@ nix_system="$(setup_nix_system)"
 
 setup_install_nix
 setup_enable_flakes "$home_directory"
+setup_enable_binary_caches "$home_directory"
 setup_create_host \
   "$repo_root" "$template_name" "$host_name" "$user_name" "$home_directory" "$nix_system"
 setup_home_manager_switch "$repo_root" "$host_name"

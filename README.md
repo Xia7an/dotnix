@@ -192,7 +192,7 @@ NixOS テンプレートのブートローダー設定は Nyx と同じ `/dev/sd
 
 既に Nix を利用できる場合、一般 Linux 用スクリプトは管理者権限を使いません。Nix 未導入かつ `/nix` が存在しない場合だけ、公式インストーラーが `/nix` の作成のために管理者権限を求めることがあります。通常ユーザーとしてスクリプトを実行してください。
 
-セットアップ時には `~/.config/nix/nix.conf` へ `nix-command` と `flakes` を有効にする設定を追加し、初回実行でも各Nixコマンドへ同じ機能を明示します。rebuildやHome Manager適用の途中で失敗した場合は、同じホスト名でスクリプトを再実行すると生成済みのホスト構成を再利用して処理を続行します。
+セットアップ時には `~/.config/nix/nix.conf` へ `nix-command` と `flakes` を有効にする設定を追加し、初回実行でも各Nixコマンドへ同じ機能を明示します。同じファイルに llm-agents (Codex / OpenCode など) のバイナリキャッシュ `cache.numtide.com` も追加します。これが無いと Codex などが手元で Rust からフルビルドされます。既存ホストでは同じホスト名でスクリプトを再実行すれば追加されます。multi-user の Nix を使っている場合はユーザの `nix.conf` の substituter が無視されるため、`/etc/nix/nix.conf` に `extra-substituters` と `extra-trusted-public-keys` を直接書いてデーモンを再起動してください。rebuildやHome Manager適用の途中で失敗した場合は、同じホスト名でスクリプトを再実行すると生成済みのホスト構成を再利用して処理を続行します。
 
 ## 検証と整形
 

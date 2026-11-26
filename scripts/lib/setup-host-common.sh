@@ -222,6 +222,35 @@ setup_enable_flakes() {
   fi
 }
 
+# llm-agents (codex / opencode など) のビルド済みバイナリキャッシュを有効にする。
+# flake.nix の nixConfig にも同じ値があるが、そちらは accept-flake-config を
+# 対話で承認しないと無視され、手元で Rust のフルビルドが走ってしまう。
+# single-user の Nix ではユーザの nix.conf の substituter がそのまま有効になる。
+# (multi-user の Nix では /etc/nix/nix.conf 側に書くか trusted-users に入る必要がある)
+setup_enable_binary_caches() {
+  local home_directory="$1"
+  local nix_config_file="$home_directory/.config/nix/nix.conf"
+  local substituter='https://cache.numtide.com'
+  local public_key='niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g='
+
+  install -d -m 0755 "$(dirname "$nix_config_file")"
+  touch "$nix_config_file"
+
+  if grep -qF "$substituter" "$nix_config_file" && grep -qF "$public_key" "$nix_config_file"; then
+    setup_log "binary caches are already configured in $nix_config_file"
+  else
+    printf '\n# Added by dotnix setup (llm-agents binary cache).\n%s\n%s\n' \
+      "extra-substituters = $substituter" \
+      "extra-trusted-public-keys = $public_key" >> "$nix_config_file"
+    setup_log "added $substituter to $nix_config_file"
+  fi
+
+  if [[ -e /nix/var/nix/daemon-socket/socket ]]; then
+    setup_log "warning: multi-user Nix detected; $substituter is used only if"
+    setup_log "  /etc/nix/nix.conf lists it in trusted-substituters (or you are a trusted user)"
+  fi
+}
+
 setup_nix_with_flakes() {
   nix --extra-experimental-features "nix-command flakes" "$@"
 }

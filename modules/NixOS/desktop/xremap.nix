@@ -1,6 +1,15 @@
-{inputs, config, pkgs, ...} : {
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
+{
   services.xremap = {
     enable = true;
+    # flake 既定のパッケージは上流ソースを crane で毎回手元ビルドするため、
+    # cache.nixos.org にある nixpkgs 版を使う。modmap しか使わないので版差は問題にならない。
+    package = pkgs.xremap;
     userName = "inoyu";
     serviceMode = "system";
     config = {
