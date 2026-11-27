@@ -65,6 +65,13 @@ assert.equal(M.buildSession([], 1).rows.length, 0);
     const cards = M.visibleCards(s);
     assert.deepEqual(cards.filter(c => c.rowIndex === 0).map(c => c.window.id), [3, 4, 5, 6]);
     assert.deepEqual(cards.filter(c => c.selected).map(c => c.window.id), [6]);
+    // cardState (使い回すカード用) は visibleCards と同じカードを同じ位置に出す。
+    const states = M.allCards(s)
+        .map(c => Object.assign({ id: c.window.id }, M.cardState(s, c.rowIndex, c.index)))
+        .filter(c => c.visible);
+    assert.deepEqual(states.map(c => [c.id, c.x, c.y, c.selected]),
+        cards.map(c => [c.window.id, c.x, c.y, c.selected]));
+    assert.deepEqual(M.allCards(s).map(c => c.window.id), s.rows.flatMap(r => r.windows.map(x => x.id)));
 }
 
 // 6 行を超えると 1 行ずつ縦スクロールする。

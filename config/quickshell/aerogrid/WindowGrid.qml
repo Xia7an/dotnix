@@ -14,6 +14,10 @@ Scope {
 
     property var session: null
     property int revision: 0 // session (ただの JS オブジェクト) を変えたら増やし、表示を更新する
+    // Repeater のモデル。セッション中は変えない: 移動のたびに作り直すと全カードが作り直され、
+    // プレビュー (ScreencopyView) を取り直す間ちらついたり真っ暗になったりする。
+    property var cards: []
+    property var rows: []
     property ShellScreen targetScreen: Quickshell.screens[0]
 
     GlobalShortcut {
@@ -37,6 +41,8 @@ Scope {
         Model.layout(s, { x: 0, y: 0, width: screen.width, height: screen.height });
         Hyprland.refreshToplevels(); // アプリ名 (class) を最新にする
         targetScreen = screen;
+        cards = Model.allCards(s);
+        rows = s.rows.map((row, rowIndex) => ({ rowIndex }));
         session = s;
         revision++;
     }
@@ -52,6 +58,8 @@ Scope {
             return;
         session = null;
         revision++;
+        cards = [];
+        rows = [];
         const target = commit ? Model.selectedWindow(s) : null;
         // グリッド (キーボードを独占するレイヤー) が表示中だと Hyprland はフォーカスの移動を拒否するので、
         // レイヤーが閉じてから (closelayer イベント) 移す。イベントを取り逃したときは Timer で移す。
@@ -189,49 +197,56 @@ Scope {
 
             // 行見出し: ワークスペース名、表示範囲、横スクロールの矢印
             Repeater {
-                model: popup.s ? Model.visibleRows(popup.s) : []
+                model: root.rows
                 Item {
                     id: rowLabel
                     required property var modelData
-                    readonly property bool selected: modelData.rowIndex === popup.s.selectedRow
+                    // popup.s は revision ごとに変わるので、row.first などの変化もここで拾える。
+                    readonly property var row: popup.s?.rows[modelData.rowIndex] ?? null
+                    readonly property var st: popup.s ? Model.rowState(popup.s, modelData.rowIndex) : null
+                    readonly property bool selected: modelData.rowIndex === popup.s?.selectedRow
                     readonly property color tint: selected ? Theme.accent : Theme.dim
-                    y: modelData.y
+                    visible: (st?.visible ?? false) && row !== null
+                    y: st?.y ?? 0
                     Text {
-                        x: popup.s.rowText.name.x
-                        y: popup.s.rowText.name.y
-                        width: popup.s.rowText.name.width
-                        text: rowLabel.modelData.row.name
+                        x: popup.s?.rowText.name.x ?? 0
+                        y: popup.s?.rowText.name.y ?? 0
+                        width: popup.s?.rowText.name.width ?? 0
+                        text: rowLabel.row?.name ?? ""
                         color: rowLabel.tint
                         font.pixelSize: 18
                         elide: Text.ElideRight
                     }
                     Text {
-                        x: popup.s.rowText.range.x
-                        y: popup.s.rowText.range.y
-                        text: `${rowLabel.modelData.row.first + 1}–${rowLabel.modelData.last + 1}/${rowLabel.modelData.row.windows.length}`
+                        x: popup.s?.rowText.range.x ?? 0
+                        y: popup.s?.rowText.range.y ?? 0
+                        text: rowLabel.row ? `${rowLabel.row.first + 1}–${rowLabel.st.last + 1}/${rowLabel.row.windows.length}` : ""
                         color: rowLabel.tint
                         font.pixelSize: 11
                     }
                     Text {
-                        x: popup.s.rowText.arrow.x
-                        y: popup.s.rowText.arrow.y
-                        text: `${rowLabel.modelData.row.first > 0 ? "← " : ""}${rowLabel.modelData.last < rowLabel.modelData.row.windows.length - 1 ? "→" : ""}`
+                        x: popup.s?.rowText.arrow.x ?? 0
+                        y: popup.s?.rowText.arrow.y ?? 0
+                        text: rowLabel.row ? `${rowLabel.row.first > 0 ? "← " : ""}${rowLabel.st.last < rowLabel.row.windows.length - 1 ? "→" : ""}` : ""
                         color: rowLabel.tint
                         font.pixelSize: 14
                     }
                 }
             }
 
+            // カードはセッション中ずっと同じもの (root.cards) を使い、位置・表示・選択だけ更新する。
             Repeater {
-                model: popup.s ? Model.visibleCards(popup.s) : []
+                model: root.cards
                 WindowCard {
                     required property var modelData
+                    readonly property var st: popup.s ? Model.cardState(popup.s, modelData.rowIndex, modelData.index) : null
                     toplevel: modelData.window.toplevel
-                    selected: modelData.selected
-                    x: modelData.x
-                    y: modelData.y
-                    width: popup.s.cardWidth
-                    height: popup.s.cardHeight
+                    visible: st?.visible ?? false
+                    selected: st?.selected ?? false
+                    x: st?.x ?? 0
+                    y: st?.y ?? 0
+                    width: popup.s?.cardWidth ?? 0
+                    height: popup.s?.cardHeight ?? 0
                 }
             }
         }

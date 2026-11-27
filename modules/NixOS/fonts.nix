@@ -5,7 +5,6 @@
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
       hackgen-nf-font
-      biz-ud-gothic # BIZ UDPGothic (GUI アプリのベースフォント)
       (pkgs.texlive.withPackages (ps: [
         ps.haranoaji
       ]))
@@ -15,7 +14,6 @@
       # ホスト側 (Atropos など) で上書きできるように mkDefault にしておく。
       defaultFonts = {
         sansSerif = lib.mkDefault [
-          "BIZ UDPGothic"
           "Noto Sans CJK JP"
           "Noto Color Emoji"
         ];

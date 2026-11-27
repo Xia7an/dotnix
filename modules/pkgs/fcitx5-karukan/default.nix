@@ -38,6 +38,14 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-Qkubj92MZM7EfoWJKg0mCCrPDxNWkjz/YYsEa7Fs6JY=";
   };
 
+  patches = [
+    # 変換中 (Space で候補選択中) に文字キーを打つと、選択中の候補を確定して
+    # その文字から新しい入力を始める (mozc と同じ挙動)。
+    # 数字キー 1〜9 は Ctrl+数字 と同じく、その番号の候補を選んで確定する。
+    # 上流は確定せず読みを伸ばして変換し直す仕様で、設定項目も無い。
+    ./commit-on-typing.patch
+  ];
+
   cargoDeps = rustPlatform.importCargoLock {
     lockFile = "${finalAttrs.src}/Cargo.lock";
   };

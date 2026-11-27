@@ -28,10 +28,18 @@ Rectangle {
         height: Math.max(1, card.height - 49 * card.uiScale)
 
         // 別のワークスペースのウィンドウも、最後に描画された内容を取得できる。
+        // 初めて表示されたときに 1 回だけ取得し、スクロールで隠れても破棄しない
+        // (captureSource を外すと、再表示のたびに取り直してちらつく)。
+        property bool shown: false
+        Component.onCompleted: if (card.visible) shown = true
+        Connections {
+            target: card
+            function onVisibleChanged() { if (card.visible) previewArea.shown = true; }
+        }
         ScreencopyView {
             id: preview
             anchors.centerIn: parent
-            captureSource: card.toplevel?.wayland ?? null
+            captureSource: previewArea.shown ? (card.toplevel?.wayland ?? null) : null
             live: false
             constraintSize: Qt.size(previewArea.width, previewArea.height)
             width: implicitWidth

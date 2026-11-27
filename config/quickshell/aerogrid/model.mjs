@@ -175,3 +175,35 @@ export function visibleCards(s) {
     }
     return cards;
 }
+
+// セッション中のすべてのカード: [{ window, rowIndex, index }]。
+// WindowGrid.qml はこれを Repeater のモデルにして、カード (とプレビューのキャプチャ) を
+// セッション中ずっと使い回す。移動のたびに作り直すと、プレビューを取り直す間ちらつく。
+export function allCards(s) {
+    const cards = [];
+    s.rows.forEach((row, rowIndex) => row.windows.forEach((window, index) => cards.push({ window, rowIndex, index })));
+    return cards;
+}
+
+// 行 rowIndex の見出しの状態: { visible, y, last }。
+export function rowState(s, rowIndex) {
+    const row = s.rows[rowIndex];
+    const visible = !!row && rowIndex >= s.firstRow && rowIndex <= lastVisibleRow(s);
+    return {
+        visible,
+        y: s.rowsTop + (rowIndex - s.firstRow) * s.rowHeight,
+        last: row ? Math.min(row.windows.length, row.first + s.columns) - 1 : -1,
+    };
+}
+
+// カード (rowIndex, index) の状態: { visible, x, y, selected } (visibleCards と同じ座標)。
+export function cardState(s, rowIndex, index) {
+    const row = s.rows[rowIndex];
+    const r = rowState(s, rowIndex);
+    return {
+        visible: r.visible && index >= row.first && index <= r.last,
+        x: s.cardsLeft + (index - (row?.first ?? 0)) * (s.cardWidth + s.gap),
+        y: r.y,
+        selected: rowIndex === s.selectedRow && index === row?.selected,
+    };
+}
