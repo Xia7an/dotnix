@@ -2,7 +2,7 @@
 // 実行: node tests/aerogrid-model-test.mjs  (Hyprland / Quickshell は不要)
 import assert from 'node:assert/strict';
 import * as M from '../config/quickshell/aerogrid/model.mjs';
-import { placementRect, workArea } from '../config/quickshell/aerogrid/placement.mjs';
+import { fitRect, fitWorkspaceWindows, placementRect, workArea } from '../config/quickshell/aerogrid/placement.mjs';
 
 const frame = { x: 0, y: 0, width: 1600, height: 1000 };
 const w = (id, workspace) => ({ id, workspace });
@@ -165,5 +165,53 @@ assert.deepEqual(workArea({ x: -1080, y: 0, width: 1920, height: 1080, scale: 1,
     { x: -1080, y: 30, width: 1080, height: 1890 });
 assert.deepEqual(workArea({ x: 0, y: 0, width: 1920, height: 1080, scale: 1 }),
     { x: 0, y: 0, width: 1920, height: 1080 });
+
+// ワークスペースを別のモニタへ移したときの調整。
+{
+    const big = { x: 0, y: 34, width: 2560, height: 1406 };
+    const small = { x: 2560, y: 30, width: 1920, height: 1050 };
+
+    // 半分・全体に置いたものは比率を保ち、辺に吸着したまま。
+    assert.deepEqual(fitRect(placementRect(big, 'left-half'), big, small), placementRect(small, 'left-half'));
+    assert.deepEqual(fitRect(placementRect(big, 'right-half'), big, small), placementRect(small, 'right-half'));
+    assert.deepEqual(fitRect(placementRect(big, 'bottom-half'), big, small), placementRect(small, 'bottom-half'));
+    assert.deepEqual(fitRect(big, big, small), small);
+
+    // 自由に置いたものはサイズを保ち、中心の相対位置を移す。
+    assert.deepEqual(fitRect({ x: 1080, y: 587, width: 400, height: 300 }, big, small),
+        { x: 2560 + 960 - 200, y: 30 + 525 - 150, width: 400, height: 300 });
+
+    // 入りきらないものは縮め、はみ出したものは中へ寄せる。
+    const huge = fitRect({ x: 100, y: 100, width: 2200, height: 1200 }, big, small);
+    assert.deepEqual(huge, small);
+    const out = fitRect({ x: 2400, y: 1300, width: 400, height: 300 }, big, big);
+    assert.deepEqual(out, { x: 2160, y: 1140, width: 400, height: 300 });
+
+    // 同じ大きさの作業領域どうしなら、収まっているウィンドウは変わらない。
+    const r = { x: 300, y: 200, width: 800, height: 600 };
+    assert.deepEqual(fitRect(r, big, big), r);
+}
+
+// hyprctl の情報から、移したワークスペースのウィンドウの調整内容を求める。
+{
+    const oldMon = { name: 'DP-2', x: 0, y: 0, width: 2560, height: 1440, scale: 1, reserved: [0, 34, 0, 0] };
+    const newMon = { name: 'HDMI-A-1', x: 2560, y: 0, width: 3840, height: 2160, scale: 2, reserved: [0, 30, 0, 0] };
+    // Hyprland が平行移動した後の位置 (移動元では左半分)。
+    const leftHalf = { address: '0x1', workspace: { id: 3 }, floating: true, at: [2560, 34], size: [1280, 1406] };
+    const fits = { address: '0x2', workspace: { id: 3 }, floating: true, at: [2560 + 100, 100], size: [400, 300] };
+    const others = [
+        { address: '0x3', workspace: { id: 4 }, floating: true, at: [2560, 34], size: [1280, 1406] },
+        { address: '0x4', workspace: { id: 3 }, floating: true, pinned: true, at: [2560, 34], size: [5000, 5000] },
+        { address: '0x5', workspace: { id: 3 }, floating: true, fullscreen: 2, at: [2560, 0], size: [1920, 1080] },
+        { address: '0x6', workspace: { id: 3 }, floating: false, at: [2560, 34], size: [5000, 5000] },
+    ];
+    const result = fitWorkspaceWindows([leftHalf, fits, ...others], 3, oldMon, newMon);
+    assert.deepEqual(result.map(x => x.address), ['0x1', '0x2']);
+    assert.deepEqual(result[0].rect, placementRect(workArea(newMon), 'left-half'));
+    assert.equal(result[1].rect.width, 400);
+
+    // 移動元が分からなければ、移動先に収めるだけ。収まっていれば何もしない。
+    assert.deepEqual(fitWorkspaceWindows([{ address: '0x7', workspace: { id: 3 }, floating: true, at: [2600, 40], size: [400, 300] }], 3, null, newMon), []);
+}
 
 console.log('aerogrid model: ok');

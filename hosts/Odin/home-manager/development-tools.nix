@@ -9,6 +9,7 @@
     ../../../modules/Home/development/js-ts.nix
     ../../../modules/Home/development/python.nix
     ../../../modules/Home/development/java-dotnet.nix
+    ../../../modules/Home/development/unity.nix
     ../../../modules/Home/development/database.nix
     ../../../modules/Home/development/tex.nix
     ../../../modules/Home/virtualization/docker.nix

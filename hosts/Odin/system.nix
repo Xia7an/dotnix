@@ -1,6 +1,7 @@
 # Odin: NixOS + Hyprland (AeroSpace 風の floating 運用) + RTX 2070 Super
 {
   config,
+  lib,
   pkgs,
   username,
   ...
@@ -24,11 +25,33 @@
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/desktop/hyprland-aerogrid.nix
+    ../../modules/NixOS/desktop/nautilus.nix
   ];
 
   # UEFI + systemd-boot。インストール時のディスク構成に合わせて変更する。
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # ハイバネート: RAM (32GB) を書き出せるサイズのスワップファイルを用意する。
+  # systemd initrd を使うと、systemd が EFI 変数 (HibernateLocation) に復帰先を記録するため
+  # resume_offset をカーネルパラメータに書かずにスワップファイルから復帰できる。
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 32 * 1024; # MiB
+    }
+  ];
+  boot.initrd.systemd.enable = true;
+  # NVIDIA の VRAM をハイバネート/サスペンド時に退避・復元する (nvidia-hibernate.service 等)。
+  hardware.nvidia.powerManagement.enable = lib.mkForce true;
+
+  # キーボードは JIS 配列。TTY と GDM のログイン画面 (XKB の既定値を使う) も合わせる。
+  # セッション内は Hyprland (config/hypr/aerogrid) と fcitx5 (modules/NixOS/input/fcitx5.nix) で設定している。
+  console.keyMap = "jp106";
+  services.xserver.xkb = {
+    layout = "jp";
+    model = "jp106";
+  };
 
   networking.hostName = "Odin";
   networking.firewall = {
@@ -42,12 +65,6 @@
     "networkmanager"
     "wheel"
   ];
-
-  # Magic Keyboard は US 配列 (Lachesis の入力ソースも ABC)。fcitx5 モジュールの既定は JIS。
-  i18n.inputMethod.fcitx5.settings.inputMethod = {
-    "Groups/0"."Default Layout" = pkgs.lib.mkForce "us";
-    "Groups/0/Items/0".Name = pkgs.lib.mkForce "keyboard-us";
-  };
 
   system.stateVersion = "25.11";
 }

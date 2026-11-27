@@ -2,6 +2,7 @@
 {
   imports = [
     ../../../modules/Home/apps/ai/chatgpt.nix
+    ../../../modules/Home/apps/ai/claude.nix
     ../../../modules/Home/apps/ai/opencode.nix
     ../../../modules/Home/apps/media/multimedia.nix
     ../../../modules/Home/apps/document/pdf.nix
@@ -10,5 +11,6 @@
     ../../../modules/Home/apps/creative/musescore.nix
     ../../../modules/Home/apps/browser/chrome.nix
     ../../../modules/Home/apps/document/obsidian.nix
+    ../../../modules/Home/apps/explorer/nautilus.nix
   ];
 }

@@ -13,6 +13,7 @@
     ../../modules/NixOS/nix.nix
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/desktop/niri.nix
+    ../../modules/NixOS/desktop/nautilus.nix
     ../../modules/NixOS/desktop/xremap.nix
     ../../modules/NixOS/git.nix
     ../../modules/NixOS/services/openssh.nix

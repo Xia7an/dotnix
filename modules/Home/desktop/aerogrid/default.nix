@@ -34,6 +34,18 @@ in
     [ -e "$HOME/.config/hypr/monitors.conf" ] || run touch "$HOME/.config/hypr/monitors.conf"
   '';
 
+  # マウスカーソル。XCURSOR_* と HYPRCURSOR_* の env、GTK の設定、X11 アプリ用の設定をまとめて出す。
+  # 見た目は name (Bibata-Modern-Classic: 黒 / Bibata-Modern-Ice: 白 / Bibata-Modern-Amber: 橙)、
+  # 大きさは size で変える。bibata-cursors はキャッシュあり。
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 32;
+    gtk.enable = true;
+    x11.enable = true;
+    hyprcursor.enable = true;
+  };
+
   xdg.configFile."hypr/aerogrid".source = hyprConfig;
   xdg.configFile."noctalia/config.toml".source = ../../../../config/noctalia/config.toml;
   xdg.configFile."quickshell/aerogrid".source = ../../../../config/quickshell/aerogrid;
