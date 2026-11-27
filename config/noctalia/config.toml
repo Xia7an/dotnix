@@ -1,0 +1,37 @@
+# Odin の noctalia (v5) 設定。~/.config/noctalia/config.toml へリンクされ、保存すると自動で再読込される。
+# 書いていない項目は noctalia の既定値。設定画面 (noctalia msg settings-open) で変えた値は
+# ~/.config/noctalia/settings.toml に保存され、このファイルより優先される。
+# 全項目の既定値: https://github.com/noctalia-dev/noctalia/blob/main/example.toml
+
+[shell]
+font_family = "Noto Sans CJK JP"
+telemetry_enabled = false
+# 認証ダイアログ (polkit エージェント) も noctalia が出す。
+polkit_agent = true
+
+# Command+Tab (Lachesis の alt-tab-macos 相当): 全モニタ・全ワークスペースのウィンドウを最近使った順に。
+[shell.window_switcher]
+style = "compact"
+mru = true
+show_all_outputs = true
+current_workspace_only = false
+
+# モニタごとの上部バー。
+[bar.main]
+position = "top"
+start = ["launcher", "workspaces", "active_window"]
+center = ["clock"]
+end = ["tray", "notifications", "network", "bluetooth", "volume", "control-center", "session"]
+
+# 各バーには、そのモニタのワークスペースを出す。操作中のモニタ (マウスがあるモニタ) の
+# 表示中ワークスペースだけを強調し、他のモニタの表示中ワークスペースは控えめな色にする。
+[widget.workspaces]
+label_source = "name"      # 1〜9 は番号、他は W・T などの名前
+max_label_chars = 2
+hide_when_empty = true
+focused_output_only = true
+show_all_outputs = false
+
+# Lachesis のメニューバーと同じく、日付・曜日・秒まで表示する。
+[widget.clock]
+format = "{:%-m/%-d(%a) %H:%M:%S}"

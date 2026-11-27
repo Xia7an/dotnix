@@ -1,4 +1,4 @@
-// グリッドとスイッチャーで使うウィンドウのカード: プレビュー、アプリ名、タイトル。
+// グリッドで使うウィンドウのカード: プレビュー、アプリ名、タイトル。
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland

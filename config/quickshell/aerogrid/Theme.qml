@@ -12,6 +12,5 @@ Singleton {
     readonly property color text: "#f2f2f2"
     readonly property color dim: "#a6a6a6"
     readonly property color faint: Qt.rgba(1, 1, 1, 0.45)
-    readonly property color bar: Qt.rgba(0.07, 0.07, 0.07, 0.92)
     readonly property color onAccent: "#121212"
 }

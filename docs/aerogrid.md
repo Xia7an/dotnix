@@ -1,7 +1,9 @@
 # AeroGrid (Odin: NixOS + Hyprland)
 
 Lachesis のデスクトップ (AeroSpace の floating 運用、Hammerspoon の Option+Tab グリッド、
-alt-tab-macos、Raycast のウィンドウ配置) を、Odin の Hyprland + Quickshell で再現する。
+alt-tab-macos、Raycast) を、Odin の Hyprland + noctalia + Quickshell で再現する。
+シェル (バー、ランチャー、通知、壁紙、画面ロック、認証ダイアログ、Command+Tab) は noctalia v5 に
+まとめ、noctalia に無い Option+Tab のグリッドとウィンドウ配置だけを AeroGrid (Quickshell) で補う。
 キーボードは Magic Keyboard (Option = ALT、Command = SUPER)。GPU は RTX 2070 Super。
 
 | macOS (Lachesis) | Odin |
@@ -13,29 +15,26 @@ alt-tab-macos、Raycast のウィンドウ配置) を、Odin の Hyprland + Quic
 | `on-window-detected` | `config/hypr/aerogrid/rules.conf` |
 | `move-mouse monitor-lazy-center` | `cursor:warp_on_change_workspace` |
 | Option+Tab (Hammerspoon グリッド) | Quickshell の `WindowGrid.qml` |
-| Command+Tab (alt-tab-macos) | Quickshell の `WindowSwitcher.qml` |
+| Command+Tab (alt-tab-macos) | noctalia のウィンドウスイッチャー |
 | Option+Control+hjkl/Space (Raycast) | Quickshell の `WindowPlacement.qml` |
-| メニューバー | Quickshell の `Bar.qml` (モニタごと) |
-| Raycast (Command+Space) | rofi |
-| 画面ロック (Control+Command+Q) | hyprlock |
+| メニューバー | noctalia のバー (モニタごと) |
+| Raycast (Command+Space) | noctalia のランチャー |
+| 画面ロック (Control+Command+Q) | noctalia のロック画面 |
+| 通知、壁紙、認証ダイアログ | noctalia |
 
 操作中のモニタは、マウスがあるモニタ (Hyprland の focused monitor)。フォーカスは
 クリックで移る (`follow_mouse = 2`、macOS と同じ)。H/J/K と L にはキーを割り当てない
 (L は Looking Glass Go 専用)。
 
-## 上部バー
+## 上部バー (noctalia)
 
-モニタごとに 1 本。左にワークスペースを数字 → 名前の順で並べる。
+モニタごとに 1 本。左からランチャー、そのモニタのワークスペース、フォーカス中のウィンドウ、
+中央に時計 (日付・曜日・秒)、右にトレイ、通知、ネットワーク、Bluetooth、音量、
+コントロールセンター、セッション (ロック・ログアウトなど)。
 
-| 表示 | 意味 |
-| --- | --- |
-| 青の塗りつぶし | このモニタに表示中で、このモニタが操作中 |
-| 灰の塗りつぶし | このモニタに表示中 (操作中のモニタは別) |
-| 青の枠 | 別のモニタに表示中 |
-| 薄い文字 | 隠れているがウィンドウがある |
-
-クリックすると、そのワークスペースをこのモニタに呼ぶ。中央はこのモニタでフォーカス中の
-ウィンドウのタイトル、右はシステムトレイと時計。
+ワークスペースは、各バーにそのモニタのものを出す。操作中のモニタ (マウスがあるモニタ) の
+表示中ワークスペースだけを強調し、他のモニタの表示中ワークスペースは控えめな色になる
+(`[widget.workspaces].focused_output_only`)。
 
 ## グリッド (Option+Tab)
 
@@ -55,11 +54,15 @@ Hammerspoon 版 (`docs/aerospace-window-grid.md`) と同じ。
 Option を Tab よりかなり早く離すと、一覧がキーボードを受け取る前に離したことになり、
 開いたままになることがある。その場合は Esc で閉じるか、Option を押して離すと確定する。
 
-## ウィンドウスイッチャー (Command+Tab)
+## ウィンドウスイッチャー (Command+Tab、noctalia)
 
-全ワークスペースのウィンドウを最近使った順に並べる。Command+Tab で次、Command+Shift+Tab で前、
-左右キーでも移動し、Command を離すとフォーカスする。1 回目の Command+Tab では直前に使った
-ウィンドウを選ぶ。
+全モニタ・全ワークスペースのウィンドウを最近使った順に並べる (`[shell.window_switcher]`)。
+Command+Tab で次、Command+Shift+Tab で前、Command を離すとフォーカスする。Command+Tab を
+素早く押して離すと、直前に使ったウィンドウへ切り替わる。Esc で取消。
+
+## ランチャー (Command+Space、noctalia)
+
+アプリの検索と起動のほか、計算、絵文字、ウィンドウ検索などを同じ入力欄で使える。
 
 ## ウィンドウ配置 (Option+Control)
 
@@ -78,14 +81,17 @@ Option を Tab よりかなり早く離すと、一覧がキーボードを受�
   - `keybinds.conf`: キー割り当て
   - `rules.conf`: floating と、アプリごとのワークスペース
   - `nvidia.conf`: NVIDIA 用の環境変数
-- `config/quickshell/aerogrid/`: Quickshell の設定 (`~/.config/quickshell/aerogrid/` へリンク)
-  - `shell.qml`、`Bar.qml`、`WindowGrid.qml`、`WindowSwitcher.qml`、`WindowPlacement.qml`、
-    `WindowCard.qml`、`Theme.qml`
+- `config/noctalia/config.toml`: noctalia の設定 (`~/.config/noctalia/config.toml` へリンク)。
+  設定画面で変えた値は `~/.config/noctalia/settings.toml` に保存され、こちらより優先される。
+- `config/quickshell/aerogrid/`: AeroGrid の設定 (`~/.config/quickshell/aerogrid/` へリンク)
+  - `shell.qml`、`WindowGrid.qml`、`WindowPlacement.qml`、`WindowCard.qml`、`Theme.qml`
   - `model.mjs`: グリッドの状態とレイアウト (Quickshell 非依存、テスト対象)
   - `placement.mjs`: ウィンドウ配置と作業領域の計算 (Quickshell 非依存、テスト対象)
-- `modules/Home/desktop/aerogrid/`: 上の 2 つのリンク、Hyprland の Home Manager 設定
-  (本体はシステム側を使い、`hyprland-session.target` だけ用意する)、Quickshell など
-- `modules/NixOS/desktop/hyprland-aerogrid.nix`: Hyprland 本体、ポータル、hyprlock の PAM、PipeWire
+- `modules/Home/desktop/aerogrid/`: 上の 3 つのリンク、Hyprland の Home Manager 設定
+  (本体はシステム側を使い、`hyprland-session.target` だけ用意する)、noctalia、Quickshell など。
+  noctalia v5 は nixpkgs unstable にだけあるので `pkgs.unstable.noctalia` を使う (キャッシュあり)。
+- `modules/NixOS/desktop/hyprland-aerogrid.nix`: Hyprland 本体、ポータル、polkit、upower、
+  power-profiles-daemon、PipeWire。ロック画面は PAM の `login` サービスで認証する。
 - `hosts/Odin/`: NixOS ホスト
 
 Quickshell が受け取るキーは、`keybinds.conf` の `global, aerogrid:<名前>` と
@@ -116,7 +122,10 @@ NVIDIA のドライバは unfree のため公式のバイナリキャッシュ�
 
 - アプリの class は `hyprctl clients` で確認して `rules.conf` に書く。
 - `config/hypr/aerogrid/` と `config/quickshell/aerogrid/` は保存すると自動で再読込される。
-  Quickshell のログは `qs -c aerogrid log`、Hyprland の設定エラーは画面上部に表示される。
+  noctalia のログは `~/.cache/noctalia/noctalia.log`、AeroGrid のログは `qs -c aerogrid log`、
+  Hyprland の設定エラーは画面上部に表示される。
+- noctalia の設定項目は `noctalia msg config-get <項目>` で確認でき、全項目の既定値は上流の
+  `example.toml` にある。macOS の Dock に当たる `[dock]` もある (未設定)。
 - 入力メソッドは fcitx5 + Mozc (US 配列)。
 
 ## テスト

@@ -1,10 +1,7 @@
-# Hyprland を Lachesis の AeroSpace + Hammerspoon + Raycast と同じ使い方に寄せる。
+# Hyprland を Lachesis の AeroSpace + Hammerspoon + alt-tab-macos + Raycast と同じ使い方に寄せる。
+# バー・ランチャー・通知・壁紙・画面ロックは noctalia にまとめている (modules/Home/desktop/aerogrid)。
 {
   imports = [
     ../../../modules/Home/desktop/aerogrid
-    ../../../modules/Home/desktop/hyprlock.nix
-    ../../../modules/Home/desktop/rofi.nix
-    ../../../modules/Home/desktop/swaync.nix
-    ../../../modules/Home/desktop/swww.nix
   ];
 }
