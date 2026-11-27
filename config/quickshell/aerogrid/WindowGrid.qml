@@ -53,8 +53,35 @@ Scope {
         session = null;
         revision++;
         const target = commit ? Model.selectedWindow(s) : null;
-        if (target)
-            Hyprland.dispatch(`focuswindow address:0x${target.toplevel.address}`);
+        // グリッド (キーボードを独占するレイヤー) が表示中だと Hyprland はフォーカスの移動を拒否するので、
+        // レイヤーが閉じてから (closelayer イベント) 移す。イベントを取り逃したときは Timer で移す。
+        pendingFocus = target ? target.toplevel.address : "";
+        if (pendingFocus)
+            focusFallback.restart();
+    }
+
+    property string pendingFocus: ""
+
+    function focusPending() {
+        const address = pendingFocus;
+        pendingFocus = "";
+        focusFallback.stop();
+        if (address)
+            Hyprland.dispatch(`focuswindow address:0x${address}`);
+    }
+
+    Connections {
+        target: Hyprland
+        function onRawEvent(event) {
+            if (event.name === "closelayer" && event.data === "aerogrid-grid")
+                root.focusPending();
+        }
+    }
+
+    Timer {
+        id: focusFallback
+        interval: 300
+        onTriggered: root.focusPending()
     }
 
     PanelWindow {
