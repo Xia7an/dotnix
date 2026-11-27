@@ -1,4 +1,4 @@
-# /home/inoyu/dotnix/modules/NixOS/windows/default.nix
+# modules/NixOS/windows/default.nix
 # このファイルは、windows関連の設定をまとめるためのエントリーポイントです。
 # NixOSのメイン設定(configuration.nix)からこのファイルをインポートしてください。
 #

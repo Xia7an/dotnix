@@ -1,12 +1,11 @@
-• 移行前バックアップの導線を追加しました。[scripts/darwin-pre-nix-backup.sh](/Users/inoyu/
-  Gits/dotnix/scripts/darwin-pre-nix-backup.sh:1) で、~/.config と macOS 固有の設定群、
+• 移行前バックアップの導線を追加しました。[scripts/darwin-pre-nix-backup.sh](../../
+  scripts/darwin-pre-nix-backup.sh) で、~/.config と macOS 固有の設定群、
   Homebrew の Brewfile、/Applications 一覧、pkgutil レシートをまとめて退避できます。[scripts/
-  darwin-pre-nix-restore.sh](/Users/inoyu/Gits/dotnix/scripts/darwin-pre-nix-restore.sh:1)
+  darwin-pre-nix-restore.sh](../../scripts/darwin-pre-nix-restore.sh)
   は、そのバックアップをプレビュー付きで $HOME に戻し、必要なら --restore-brew で Homebrew
   パッケージも再導入します。
 
-  手順と注意点は [docs/darwin-pre-nix-backup.md](/Users/inoyu/Gits/dotnix/docs/darwin-pre-
-  nix-backup.md:1) にまとめ、[README.md](/Users/inoyu/Gits/dotnix/README.md:162) にも入口を追
+  手順と注意点は [docs/darwin-pre-nix-backup.md](../../docs/darwin-pre-nix-backup.md) にまとめ、[README.md](../../README.md) にも入口を追
   加しました。バックアップ対象には ~/.config に加えて、AquaSKK、Raycast、iTerm2、Logi、
   Hammerspoon、AltTab、Ice の関連ファイルも含めています。
 

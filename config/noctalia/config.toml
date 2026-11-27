@@ -1,4 +1,4 @@
-# Odin の noctalia (v5) 設定。~/.config/noctalia/config.toml へリンクされ、保存すると自動で再読込される。
+# Odin の noctalia (v5) 設定。~/.config/noctalia/config.toml に配置される (変更は home-manager switch で反映)。
 # 書いていない項目は noctalia の既定値。設定画面 (noctalia msg settings-open) で変えた値は
 # ~/.config/noctalia/settings.toml に保存され、このファイルより優先される。
 # 全項目の既定値: https://github.com/noctalia-dev/noctalia/blob/main/example.toml

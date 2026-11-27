@@ -76,18 +76,18 @@ Command+Tab で次、Command+Shift+Tab で前、Command を離すとフォーカ
 
 ## 構成
 
-- `config/hypr/aerogrid/`: Hyprland の設定 (`~/.config/hypr/aerogrid/` へリンク)
+- `config/hypr/aerogrid/`: Hyprland の設定 (`~/.config/hypr/aerogrid/` に配置)
   - `hyprland.conf`: 入力、見た目、起動するもの
   - `keybinds.conf`: キー割り当て
   - `rules.conf`: floating と、アプリごとのワークスペース
   - `nvidia.conf`: NVIDIA 用の環境変数
-- `config/noctalia/config.toml`: noctalia の設定 (`~/.config/noctalia/config.toml` へリンク)。
+- `config/noctalia/config.toml`: noctalia の設定 (`~/.config/noctalia/config.toml` に配置)。
   設定画面で変えた値は `~/.config/noctalia/settings.toml` に保存され、こちらより優先される。
-- `config/quickshell/aerogrid/`: AeroGrid の設定 (`~/.config/quickshell/aerogrid/` へリンク)
+- `config/quickshell/aerogrid/`: AeroGrid の設定 (`~/.config/quickshell/aerogrid/` に配置)
   - `shell.qml`、`WindowGrid.qml`、`WindowPlacement.qml`、`WindowCard.qml`、`Theme.qml`
   - `model.mjs`: グリッドの状態とレイアウト (Quickshell 非依存、テスト対象)
   - `placement.mjs`: ウィンドウ配置と作業領域の計算 (Quickshell 非依存、テスト対象)
-- `modules/Home/desktop/aerogrid/`: 上の 3 つのリンク、Hyprland の Home Manager 設定
+- `modules/Home/desktop/aerogrid/`: 上の 3 つの配置、Hyprland の Home Manager 設定
   (本体はシステム側を使い、`hyprland-session.target` だけ用意する)、noctalia、Quickshell など。
   noctalia v5 は nixpkgs unstable にだけあるので `pkgs.unstable.noctalia` を使う (キャッシュあり)。
 - `modules/NixOS/desktop/hyprland-aerogrid.nix`: Hyprland 本体、ポータル、polkit、upower、
@@ -100,7 +100,7 @@ QML の `GlobalShortcut { appid: "aerogrid"; name: "<名前>" }` の組で対応
 ## セットアップ
 
 1. RTX 2070 Super に換装し、NixOS をインストールする (UEFI)。
-2. このリポジトリを `~/Gits/dotnix` に置く (設定ファイルのリンク先)。
+2. このリポジトリを任意の場所に置く (設定ファイルは Nix store に取り込まれる)。
 3. ハードウェア設定を実機のものに置き換える。仮のファイルのままだと assertion で止まる。
 
    ```sh
@@ -121,7 +121,8 @@ NVIDIA のドライバは unfree のため公式のバイナリキャッシュ�
 ## 調整
 
 - アプリの class は `hyprctl clients` で確認して `rules.conf` に書く。
-- `config/hypr/aerogrid/` と `config/quickshell/aerogrid/` は保存すると自動で再読込される。
+- 設定を編集したら `home-manager switch --flake .#OdinHome` で反映する。Hyprland は switch 時に
+  再読込される。noctalia と AeroGrid が新しい設定を読まないときは再起動する。
   noctalia のログは `~/.cache/noctalia/noctalia.log`、AeroGrid のログは `qs -c aerogrid log`、
   Hyprland の設定エラーは画面上部に表示される。
 - noctalia の設定項目は `noctalia msg config-get <項目>` で確認でき、全項目の既定値は上流の

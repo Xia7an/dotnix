@@ -3,7 +3,7 @@
 //   WindowPlacement Option+Control+hjkl/Space: ウィンドウ配置 (Raycast 相当)
 // バー・ランチャー・通知・Command+Tab などは noctalia (config/noctalia/config.toml)。
 // キーは config/hypr/aerogrid/keybinds.conf の `global, aerogrid:*` で受け取る。
-// 起動: qs -c aerogrid (Hyprland の exec-once)。ファイルを保存すると自動で再読込される。
+// 起動: qs -c aerogrid (Hyprland の exec-once)。変更は home-manager switch で反映される。
 import Quickshell
 
 ShellRoot {

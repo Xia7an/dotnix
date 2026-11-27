@@ -62,10 +62,9 @@ aerospace reload-config --no-gui
 open -a Hammerspoon
 ```
 
-設定ファイルは `mkOutOfStoreSymlink` でリポジトリ (`~/Gits/dotnix`) のファイルへ
-直接リンクする。編集後は switch せず、`aerospace reload-config` や Hammerspoon の
-Reload Config だけで反映される。リポジトリを別の場所に置く場合は各 nix ファイルの
-パスを直す。
+設定ファイルはリポジトリのファイルを Nix store に取り込んで配置するので、
+リポジトリはどこに置いてもよい。編集後は `home-manager switch` のあと、
+`aerospace reload-config` や Hammerspoon の Reload Config で反映される。
 
 Home Manager は、リンク先と中身が同じ通常ファイルが既にあると警告だけ出して
 リンクを作らず、中身が違うと switch を中断する。初回は既存の通常ファイル
@@ -103,7 +102,7 @@ hjklで枠だけが動くこと、Option を離すと別ワークスペースの
 完了後はIPCの追加を取り除いてリロードする。
 
 ```sh
-hs -c 'GRID_MEMORY_CYCLES=200; dofile("/Users/inoyu/Gits/dotnix/tests/aerospace-window-grid-memory.lua")'
+hs -c 'GRID_MEMORY_CYCLES=200; dofile("'"$PWD"'/tests/aerospace-window-grid-memory.lua")'
 hs -c 'print(hs.inspect(gridMemoryCheck))'
 ```
 
