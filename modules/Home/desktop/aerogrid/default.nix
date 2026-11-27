@@ -7,7 +7,7 @@
 #   config/noctalia/config.toml  noctalia (バー、ランチャー、通知、壁紙、画面ロック、Command+Tab)
 #   config/quickshell/aerogrid/  AeroGrid (Option+Tab のグリッド、ウィンドウ配置)
 # Hyprland 本体はシステム側 (modules/NixOS/desktop/hyprland-aerogrid.nix) で入れる。
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   hyprConfig = ../../../../config/hypr/aerogrid;
 in
@@ -22,8 +22,17 @@ in
     # store のパスを直接読むので、設定を変えると hyprland.conf も変わり、switch 時に再読込される。
     extraConfig = ''
       source = ${hyprConfig}/hyprland.conf
+      # nwg-displays (GUI) で決めたモニタ配置。Nix 管理外の書き込み可能なファイルで、
+      # aerogrid の `monitor = , preferred, auto, 1` より後に読むので、こちらが優先される。
+      source = ~/.config/hypr/monitors.conf
     '';
   };
+
+  # monitors.conf が無いと Hyprland が source のエラーを出すので、空ファイルを用意しておく。
+  home.activation.hyprMonitorsConf = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    run mkdir -p "$HOME/.config/hypr"
+    [ -e "$HOME/.config/hypr/monitors.conf" ] || run touch "$HOME/.config/hypr/monitors.conf"
+  '';
 
   xdg.configFile."hypr/aerogrid".source = hyprConfig;
   xdg.configFile."noctalia/config.toml".source = ../../../../config/noctalia/config.toml;
@@ -33,6 +42,8 @@ in
     # noctalia v5 は nixpkgs unstable にだけある (安定版の 25.11 には無い)。キャッシュあり。
     unstable.noctalia
     quickshell
+    # モニタ配置の GUI エディタ。~/.config/hypr/monitors.conf に書き出す。
+    nwg-displays
     wl-clipboard
     grim
     slurp
