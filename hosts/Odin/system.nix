@@ -22,6 +22,7 @@
     ../../modules/NixOS/services/tailscale.nix
     ../../modules/NixOS/system/bluetooth.nix
     ../../modules/NixOS/input/fcitx5.nix
+    ../../modules/NixOS/input/karukan.nix
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/desktop/hyprland-aerogrid.nix
@@ -51,6 +52,14 @@
   services.xserver.xkb = {
     layout = "jp";
     model = "jp106";
+  };
+
+  # 日本語入力は karukan を既定にし、mozc も切り替え先として残す。
+  # 辞書と config.toml は Home Manager 側 (hosts/Odin/home.nix) で配置している。
+  programs.karukan.enable = true;
+  i18n.inputMethod.fcitx5.settings.inputMethod = {
+    "Groups/0".DefaultIM = lib.mkForce "karukan";
+    "Groups/0/Items/2".Name = "karukan";
   };
 
   networking.hostName = "Odin";

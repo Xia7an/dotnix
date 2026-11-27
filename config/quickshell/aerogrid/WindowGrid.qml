@@ -66,8 +66,12 @@ Scope {
         const address = pendingFocus;
         pendingFocus = "";
         focusFallback.stop();
-        if (address)
-            Hyprland.dispatch(`focuswindow address:0x${address}`);
+        if (!address)
+            return;
+        Hyprland.dispatch(`focuswindow address:0x${address}`);
+        // focuswindow は (フルスクリーン時を除き) floating ウィンドウを前面に出さない。
+        // すべて floating なので、同じワークスペース内では選んだウィンドウが後ろに隠れたままになる。
+        Hyprland.dispatch(`alterzorder top,address:0x${address}`);
     }
 
     Connections {

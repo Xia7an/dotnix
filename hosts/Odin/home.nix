@@ -6,7 +6,15 @@
     ./home-manager/editors.nix
     ./home-manager/shell-and-command-line.nix
     ./home-manager/terminal-emulators.nix
+    ../../modules/Home/input/karukan.nix
   ];
+
+  # アドオン本体は NixOS 側 (hosts/Odin/system.nix) で fcitx5 に追加している。
+  # ここではシステム辞書 (と必要なら config.toml) だけ配置する。
+  programs.karukan = {
+    enable = true;
+    addToFcitx5Addons = false;
+  };
 
   home.sessionVariables = {
     EDITOR = "nvim";

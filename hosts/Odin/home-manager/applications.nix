@@ -11,6 +11,8 @@
     ../../../modules/Home/apps/creative/musescore.nix
     ../../../modules/Home/apps/browser/chrome.nix
     ../../../modules/Home/apps/document/obsidian.nix
+    ../../../modules/Home/apps/communication/discord.nix
+    ../../../modules/Home/apps/communication/slack.nix
     ../../../modules/Home/apps/explorer/nautilus.nix
   ];
 }
