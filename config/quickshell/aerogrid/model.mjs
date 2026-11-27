@@ -1,6 +1,6 @@
-// グリッドの純粋な状態管理 (Hammerspoon 版 aerospace-window-grid.lua の移植)。
-// GNOME の API に依存しないので Node でテストできる (tests/gnome-aerogrid-model-test.mjs)。
-// インデックスはすべて 0 始まり。
+// Option+Tab グリッドの状態管理 (Hammerspoon 版 aerospace-window-grid.lua の移植)。
+// Quickshell に依存しないので Node でテストできる (tests/aerogrid-model-test.mjs)。
+// インデックスはすべて 0 始まり。座標は論理ピクセル。
 
 export const MAX_COLUMNS = 4;
 export const MAX_ROWS = 6;
@@ -45,8 +45,7 @@ export function buildSession(windows, focusedId) {
     return { rows, selectedRow, firstRow: 0, windowCount };
 }
 
-// 文字の高さ (物理ピクセル) と表示倍率。grid.js が実際のラベルを測って渡す。
-// 既定値は倍率 1・標準の文字サイズで、Hammerspoon 版と同じ寸法になる。
+// 文字の高さと倍率。既定値は Hammerspoon 版と同じ寸法 (WindowGrid.qml はこれを使う)。
 export const DEFAULT_METRICS = {
     scale: 1, // St の scale_factor (HiDPI で 2 など)
     title: 28, hint: 24,
@@ -54,9 +53,8 @@ export const DEFAULT_METRICS = {
     app: 18, cardTitle: 20,
 };
 
-// frame: 表示先モニタの作業領域 { x, y, width, height } (物理ピクセル)。
-// 余白は scale 倍し、文字の領域は metrics の高さで確保するので、
-// HiDPI や「大きな文字」の設定でも文字が枠からはみ出さない。
+// frame: 表示先モニタの領域 { x, y, width, height }。
+// 余白は scale 倍し、文字の領域は metrics の高さで確保するので、文字が枠からはみ出さない。
 export function layout(session, frame, metrics = DEFAULT_METRICS) {
     const s = session;
     const m = { ...DEFAULT_METRICS, ...metrics };

@@ -1,8 +1,8 @@
-// AeroGrid のグリッド状態 (config/gnome-shell/aerogrid/model.js) のテスト。
-// 実行: node tests/gnome-aerogrid-model-test.mjs  (GNOME は不要)
+// AeroGrid (config/quickshell/aerogrid) のグリッド状態とウィンドウ配置のテスト。
+// 実行: node tests/aerogrid-model-test.mjs  (Hyprland / Quickshell は不要)
 import assert from 'node:assert/strict';
-import * as M from '../config/gnome-shell/aerogrid/model.js';
-import { placementRect } from '../config/gnome-shell/aerogrid/placement.js';
+import * as M from '../config/quickshell/aerogrid/model.mjs';
+import { placementRect, workArea } from '../config/quickshell/aerogrid/placement.mjs';
 
 const frame = { x: 0, y: 0, width: 1600, height: 1000 };
 const w = (id, workspace) => ({ id, workspace });
@@ -156,4 +156,14 @@ for (const [name, metrics, area] of [
     assert.throws(() => placementRect(area, 'nope'));
 }
 
-console.log('gnome-aerogrid model: ok');
+// hyprctl monitors のモニタ情報から作業領域 (バーを除く、論理ピクセル) を求める。
+assert.deepEqual(workArea({ x: 0, y: 0, width: 2560, height: 1440, scale: 1, transform: 0, reserved: [0, 30, 0, 0] }),
+    { x: 0, y: 30, width: 2560, height: 1410 });
+assert.deepEqual(workArea({ x: 2560, y: 0, width: 3840, height: 2160, scale: 2, transform: 0, reserved: [0, 30, 0, 0] }),
+    { x: 2560, y: 30, width: 1920, height: 1050 });
+assert.deepEqual(workArea({ x: -1080, y: 0, width: 1920, height: 1080, scale: 1, transform: 1, reserved: [0, 30, 0, 0] }),
+    { x: -1080, y: 30, width: 1080, height: 1890 });
+assert.deepEqual(workArea({ x: 0, y: 0, width: 1920, height: 1080, scale: 1 }),
+    { x: 0, y: 0, width: 1920, height: 1080 });
+
+console.log('aerogrid model: ok');

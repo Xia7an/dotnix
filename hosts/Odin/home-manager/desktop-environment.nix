@@ -1,6 +1,10 @@
-# Ubuntu 24.04 標準の GNOME 46 (Mutter / X11) を Lachesis の AeroSpace 運用に寄せる。
+# Hyprland を Lachesis の AeroSpace + Hammerspoon + Raycast と同じ使い方に寄せる。
 {
   imports = [
-    ../../../modules/Home/desktop/gnome
+    ../../../modules/Home/desktop/aerogrid
+    ../../../modules/Home/desktop/hyprlock.nix
+    ../../../modules/Home/desktop/rofi.nix
+    ../../../modules/Home/desktop/swaync.nix
+    ../../../modules/Home/desktop/swww.nix
   ];
 }

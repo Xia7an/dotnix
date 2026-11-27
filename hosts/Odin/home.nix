@@ -1,10 +1,4 @@
-{ pkgs, ... }:
 {
-  targets.genericLinux = {
-    enable = true;
-    gpu.enable = pkgs.stdenv.hostPlatform.isx86_64;
-  };
-
   imports = [
     ./home-manager/applications.nix
     ./home-manager/desktop-environment.nix
