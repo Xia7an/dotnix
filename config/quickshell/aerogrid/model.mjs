@@ -57,7 +57,8 @@ export const DEFAULT_METRICS = {
 // 余白は scale 倍し、文字の領域は metrics の高さで確保するので、文字が枠からはみ出さない。
 export function layout(session, frame, metrics = DEFAULT_METRICS) {
     const s = session;
-    const m = { ...DEFAULT_METRICS, ...metrics };
+    // Qt の JavaScript エンジンはオブジェクトのスプレッド構文に対応していないので Object.assign を使う。
+    const m = Object.assign({}, DEFAULT_METRICS, metrics);
     const k = m.scale;
     const gap = 12 * k;
     s.metrics = m;
