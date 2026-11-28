@@ -6,6 +6,7 @@
     ../../../modules/Home/apps/ai/opencode.nix
     ../../../modules/Home/apps/media/multimedia.nix
     ../../../modules/Home/apps/document/pdf.nix
+    ../../../modules/Home/apps/document/notion.nix
     ../../../modules/Home/apps/vdesktop/immersed.nix
     ../../../modules/Home/apps/creative/blender.nix
     ../../../modules/Home/apps/creative/musescore.nix

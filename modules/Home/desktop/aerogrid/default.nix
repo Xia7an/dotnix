@@ -59,5 +59,7 @@ in
     wl-clipboard
     grim
     slurp
+    # Fn+F7〜F9 のメディア操作
+    playerctl
   ];
 }

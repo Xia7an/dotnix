@@ -64,6 +64,13 @@
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
     };
+    # hazkey (azooKey ベースの日本語 IME) を fcitx5 で使うための flake。
+    # 上流リリースのビルド済みバイナリを patchelf して配るだけなのでコンパイルは走らない。
+    nix-hazkey = {
+      url = "github:aster-void/nix-hazkey";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     zed-typst-preview = {
       # private リポジトリなので SSH で取得
       url = "git+ssh://git@github.com/Xia7an/zed-typst-preview";

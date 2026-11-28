@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   username,
   ...
 }:
@@ -20,9 +21,8 @@
     ../../modules/NixOS/networkmanager.nix
     ../../modules/NixOS/services/openssh.nix
     ../../modules/NixOS/services/tailscale.nix
-    ../../modules/NixOS/system/bluetooth.nix
     ../../modules/NixOS/input/fcitx5.nix
-    ../../modules/NixOS/input/karukan.nix
+    inputs.nix-hazkey.nixosModules.hazkey
     ../../modules/NixOS/desktop/gdm.nix
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/desktop/hyprland-aerogrid.nix
@@ -55,12 +55,18 @@
     model = "jp106";
   };
 
-  # 日本語入力は karukan を既定にし、mozc も切り替え先として残す。
-  # 辞書と config.toml は Home Manager 側 (hosts/Odin/home.nix) で配置している。
-  programs.karukan.enable = true;
+  # 日本語入力は hazkey (nix-hazkey) を既定にし、mozc も切り替え先として残す。
+  # fcitx5 アドオン・hazkey-settings・hazkey-server (systemd ユーザーサービス) が入る。
+  # Zenzai の有効化などの変換設定は hazkey-settings の GUI で行う。
+  services.hazkey.enable = true;
+  # nix-hazkey は default.target にしか紐付けないので、ユーザーマネージャーが
+  # 生き残ったまま switch / 再ログインすると hazkey-server が起動せず、
+  # fcitx5 側が接続を待ち続けて一切入力できなくなる。
+  # グラフィカルセッション (Hyprland) の開始時にも必ず起動させる。
+  systemd.user.services.hazkey-server.wantedBy = [ "graphical-session.target" ];
   i18n.inputMethod.fcitx5.settings.inputMethod = {
-    "Groups/0".DefaultIM = lib.mkForce "karukan";
-    "Groups/0/Items/2".Name = "karukan";
+    "Groups/0".DefaultIM = lib.mkForce "hazkey";
+    "Groups/0/Items/2".Name = "hazkey";
   };
 
   networking.hostName = "Odin";
