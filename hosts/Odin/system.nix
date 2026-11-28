@@ -27,6 +27,7 @@
     ../../modules/NixOS/desktop/nvidia.nix
     ../../modules/NixOS/desktop/hyprland-aerogrid.nix
     ../../modules/NixOS/desktop/nautilus.nix
+    ../../modules/NixOS/virtualisation/docker.nix
   ];
 
   # UEFI + systemd-boot。インストール時のディスク構成に合わせて変更する。

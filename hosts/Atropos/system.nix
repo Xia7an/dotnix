@@ -26,6 +26,7 @@
     ../../modules/NixOS/apps/ollama.nix
     ../../modules/NixOS/system/bluetooth.nix
     ../../modules/NixOS/desktop/logiopts.nix
+    ../../modules/NixOS/virtualisation/docker.nix
   ];
 
   boot.loader.grub = {
@@ -81,7 +82,6 @@
   users.users.inoyu.extraGroups = [
     "networkmanager"
     "wheel"
-    "docker"
     "storage"
   ];
 
